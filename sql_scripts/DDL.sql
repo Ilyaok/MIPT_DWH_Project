@@ -39,8 +39,6 @@ CREATE TABLE DEMIPT2.GOLD_DWH_DIM_TERMINALS (
 CREATE TABLE DEMIPT2.GOLD_DWH_DIM_CARDS (
     card_num varchar2(20) primary key,
     account_num varchar2(50),
-    terminal_city varchar2(20),
-    terminal_address varchar2(100),
     create_dt date,
     update_dt date
 );
@@ -66,4 +64,21 @@ CREATE TABLE DEMIPT2.GOLD_DWH_DIM_CLIENTS (
     phone varchar(20),
     create_dt date,
     update_dt date
+);
+
+-- Таблица метаданных (доработать с именами)
+CREATE TABLE DEMIPT2.GOLD_META_TABLENAME (
+    table_db varchar2(30),
+    table_name varchar2(30),
+    last_update_dt date
+);
+
+-- Таблица-отчет по мошенническим операциям
+CREATE TABLE DEMIPT2.GOLD_REP_FRAUD (
+    event_dt date,
+    passport varchar2(20),
+    fio varchar2(100),
+    phone varchar(20),
+    event_type varchar2(100),
+    report_dt date
 );
