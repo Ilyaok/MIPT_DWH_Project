@@ -1,0 +1,10 @@
+2022-04-25 18:21:38,445 - multiprocessing - INFO - Starting __main__
+2022-04-25 18:21:38,445 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-25 18:21:40,231 - multiprocessing - INFO - Connected! Params: (<jaydebeapi.Connection object at 0x000001DD7D48C760>, <jaydebeapi.Cursor object at 0x000001DD7D48C5E0>)
+2022-04-25 18:21:40,815 - multiprocessing - INFO - Connection closed
+2022-04-25 18:21:40,826 - multiprocessing - INFO - process shutting down
+2022-04-25 18:22:18,024 - multiprocessing - INFO - Starting __main__
+2022-04-25 18:22:18,024 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-25 18:22:19,634 - multiprocessing - INFO - Connected! Params: (<jaydebeapi.Connection object at 0x000001F7FEDEC790>, <jaydebeapi.Cursor object at 0x000001F7FEDEC610>)
+2022-04-25 18:22:20,163 - multiprocessing - INFO - Connection closed
+2022-04-25 18:22:20,174 - multiprocessing - INFO - process shutting down

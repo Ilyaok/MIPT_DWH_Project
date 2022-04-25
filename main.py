@@ -1,13 +1,32 @@
 import pandas as pd
 import jaydebeapi
 import logging
+import multiprocessing
 
-from pathlib import Path
 
-log = logging.getLogger(__name__)
-here = Path(__file__).absolute().parent
+# Блок создания логгера
+log = logging.getLogger()
+
+logger = multiprocessing.get_logger()
+logger.setLevel(logging.INFO)
+
+for handler in logger.handlers[:]:
+    logger.removeHandler(handler)
+
+sh = logging.StreamHandler()
+fh = logging.FileHandler('logs/log_process.log')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+sh.setFormatter(formatter)
+fh.setFormatter(formatter)
+logger.addHandler(sh)
+logger.addHandler(fh)
+
 
 def main():
+    logger.info(f'Starting {__name__}')
+
+    # Блог присоединения к БД Oracle
+    logger.info(f'Connecting to Oracle...')
 
     conn = jaydebeapi.connect(
         'oracle.jdbc.driver.OracleDriver',
@@ -19,13 +38,30 @@ def main():
     conn.jconn.setAutoCommit(False)
     curs = conn.cursor()
 
+    logger.info(f'Connected! Params: {conn, curs}')
+
+    # Блок выгрузки таблиц из Oracle в Dataframes
     curs.execute("SELECT * FROM BANK.ACCOUNTS")
     conn.commit()
-    result = curs.fetchall()
+    df_banks = curs.fetchall()
 
-    names = [ x[0] for x in curs.description ]
-    df = pd.DataFrame(result, columns=names)
-    print(df)
+    curs.execute("SELECT * FROM BANK.CARDS")
+    conn.commit()
+    df_cards = curs.fetchall()
+
+    curs.execute("SELECT * FROM BANK.CLIENTS")
+    conn.commit()
+    df_clients = curs.fetchall()
+
+    # names = [ x[0] for x in curs.description ]
+    # df_banks = pd.DataFrame(result, columns=names)
+    print(df_banks)
+    print(df_cards)
+    print(df_clients)
+
+    conn.close()
+
+    logger.info(f'Connection closed')
 
 
 if __name__ == "__main__":
