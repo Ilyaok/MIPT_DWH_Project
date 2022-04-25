@@ -14,3 +14,9 @@ CREATE TABLE DEMIPT2.GOLD_DWH_FACT_TRANSACTIONS (
 );
 
 -- Таблица фактов - черный список паспортов
+CREATE TABLE DEMIPT2.GOLD_DWH_FACT_PASSPORT_BLACKLIST (
+    passport_num varchar2(20),
+    entry_dt date,
+    create_dt date,
+    update_dt date
+);
