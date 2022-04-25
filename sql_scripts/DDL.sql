@@ -20,3 +20,11 @@ CREATE TABLE DEMIPT2.GOLD_DWH_FACT_PASSPORT_BLACKLIST (
     create_dt date,
     update_dt date
 );
+
+-- Таблица измерений - терминалы
+CREATE TABLE DEMIPT2.GOLD_DWH_DIM_TERMINALS (
+    terminal_id varchar2(10) primary key,
+    terminal_type varchar2(10),
+    terminal_city varchar2(20),
+    terminal_address varchar2(100)
+);
