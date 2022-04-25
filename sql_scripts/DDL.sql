@@ -1,7 +1,6 @@
 -- Создание требуемых в задании таблиц
 
 -- Таблицы фактов
-
 -- Таблица фактов - транзакции
 CREATE TABLE DEMIPT2.GOLD_DWH_FACT_TRANSACTIONS (
     trans_id varchar2(30) primary key,
