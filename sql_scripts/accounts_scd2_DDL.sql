@@ -9,8 +9,6 @@ create table demipt2.gold_stg_dim_accounts (
     update_dt date
 );
 
-drop table demipt2.gold_stg_dim_accounts;
-
 -- Создание таблицы по удалениям
 create table demipt2.gold_stg_dim_accounts_del(
     account_num varchar2(50)

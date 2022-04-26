@@ -41,7 +41,7 @@ def main():
     logger.info(f'Connected! Params: {conn, curs}')
 
     # Получение текста запроса из sql-файла (с подстановкой имен таблиц в форматированную строку)
-    with open("sql_scripts/test_pipeline.sql") as sql_file:
+    with open("sql_scripts/tech.sql") as sql_file:
         query = sql_file.read()
 
     query = query.format(

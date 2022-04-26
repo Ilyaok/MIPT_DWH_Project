@@ -62,6 +62,7 @@ where update_dt > (
 insert into demipt2.chrn_stg_del ( id )
 select id from demipt2.chrn_source;
 
+
 -- 4. Выделяем "вставки" и "обновления" и вливаем их в приемник
 
 merge into demipt2.chrn_target tgt
