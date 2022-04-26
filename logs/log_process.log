@@ -8,3 +8,21 @@
 2022-04-25 18:22:19,634 - multiprocessing - INFO - Connected! Params: (<jaydebeapi.Connection object at 0x000001F7FEDEC790>, <jaydebeapi.Cursor object at 0x000001F7FEDEC610>)
 2022-04-25 18:22:20,163 - multiprocessing - INFO - Connection closed
 2022-04-25 18:22:20,174 - multiprocessing - INFO - process shutting down
+2022-04-26 14:54:29,589 - multiprocessing - INFO - Starting __main__
+2022-04-26 14:54:29,589 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-26 14:54:31,778 - multiprocessing - INFO - Connected! Params: (<jaydebeapi.Connection object at 0x000002064C09C580>, <jaydebeapi.Cursor object at 0x000002064C09C430>)
+2022-04-26 14:54:31,813 - multiprocessing - INFO - process shutting down
+2022-04-26 14:54:57,765 - multiprocessing - INFO - Starting __main__
+2022-04-26 14:54:57,765 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-26 14:54:59,279 - multiprocessing - INFO - Connected! Params: (<jaydebeapi.Connection object at 0x0000025AD469C430>, <jaydebeapi.Cursor object at 0x0000025AD469C580>)
+2022-04-26 14:54:59,478 - multiprocessing - INFO - Connection closed
+2022-04-26 14:54:59,500 - multiprocessing - INFO - process shutting down
+2022-04-26 14:55:37,629 - multiprocessing - INFO - Starting __main__
+2022-04-26 14:55:37,629 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-26 14:55:39,042 - multiprocessing - INFO - Connected! Params: (<jaydebeapi.Connection object at 0x0000021DDCBD96D0>, <jaydebeapi.Cursor object at 0x0000021DDCBD9550>)
+2022-04-26 14:55:39,449 - multiprocessing - INFO - Connection closed
+2022-04-26 14:55:39,461 - multiprocessing - INFO - process shutting down
+2022-04-26 14:57:43,337 - multiprocessing - INFO - Starting __main__
+2022-04-26 14:57:43,337 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-26 14:57:44,847 - multiprocessing - INFO - Connected! Params: (<jaydebeapi.Connection object at 0x000001B9F82B6970>, <jaydebeapi.Cursor object at 0x000001B9F82B67F0>)
+2022-04-26 14:57:45,098 - multiprocessing - INFO - process shutting down

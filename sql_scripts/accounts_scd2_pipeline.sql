@@ -17,7 +17,9 @@ select
     valid_to,
     client,
     create_dt,
-    coalesce( update_dt, current_date ) as update_dt
+    case
+    when update_dt is NULL then create_dt
+    else current_date end as update_dt
 from bank.accounts
 where 1=0
     or update_dt > (
@@ -64,50 +66,70 @@ on ( tgt.account_num = stg.account_num )
 when matched then update set effective_to = stg.update_dt - interval '1' second where t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' )
 ;
 
-insert into demipt2.chrn_target ( id, val, effective_from, effective_to, deleted_flg )
+insert into demipt2.gold_dwh_dim_accounts_hist (
+    account_num,
+    valid_to,
+    client,
+    effective_from,
+	effective_to,
+	deleted_flg
+)
 select
-	id,
-	val,
+    account_num,
+    valid_to,
+    client,
 	update_dt as effective_from,
 	to_date( '9999-12-31', 'YYYY-MM-DD' ) as effective_to,
 	'N' as deleted_flg
-from demipt2.chrn_stg;
+from demipt2.gold_stg_dim_accounts;
 
 -- 5. Удаляем из приемника удаленные записи
-insert into demipt2.chrn_target ( id, val, effective_from, effective_to, deleted_flg )
+insert into demipt2.gold_dwh_dim_accounts_hist (
+    account_num,
+    valid_to,
+    client,
+    effective_from,
+	effective_to,
+	deleted_flg
+)
 select
-	id,
-	val,
+    account_num,
+    valid_to,
+    client,
 	current_date() as effective_from,
 	to_date( '9999-12-31', 'YYYY-MM-DD' ) as effective_to,
 	'Y' as deleted_flg
 from (
     select
-        t.id,
-		t.val
-    from demipt2.chrn_target t
-    left join demipt2.chrn_stg_del s
-    on t.id = s.id and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
-    where s.id is null
+        t.account_num,
+        t.valid_to,
+        t.client
+    from demipt2.gold_dwh_dim_accounts_hist t
+    left join demipt2.gold_stg_dim_accounts_del s
+    on t.account_num = s.account_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
+    where s.account_num is null
 );
 
-update demipt2.chrn_target
+update demipt2.gold_dwh_dim_accounts_hist
 set effective_to = current_date() - interval '1' second
-where id in (
+where account_num in (
     select
-        t.id
-    from demipt2.chrn_target t
-    left join demipt2.chrn_stg_del s
-    on t.id = s.id and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
-    where s.id is null
+        t.account_num
+    from demipt2.gold_dwh_dim_accounts_hist t
+    left join demipt2.gold_stg_dim_accounts_del s
+    on t.account_num = s.account_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
+    where s.account_num is null
 )
 and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' )
 and t.deleted_flg = 'N';
 
 -- 6. Обновляем метаданные.
-update demipt2.chrn_meta
-set last_update_dt = ( select max(update_dt) from demipt2.chrn_stg )
-where table_db = 'DEMIPT2' and table_name = 'SOURCE' and ( select max(update_dt) from demipt2.chrn_stg ) is not null;
+update demipt2.gold_meta_bank
+set last_update_dt = ( select max(update_dt) from demipt2.gold_stg_dim_accounts )
+where
+    1=1
+    and table_db = 'bank' and table_name = 'accounts'
+    and ( select max(update_dt) from demipt2.gold_stg_dim_accounts ) is not null;
 
 -- 5. Фиксируем транзакцию.
 commit;
