@@ -13,7 +13,7 @@ insert into demipt2.gold_stg_dim_cards (
 )
 select
     card_num,
-    account_num,
+    account,
     create_dt,
     case
     when update_dt is NULL then create_dt
@@ -28,7 +28,7 @@ where 1=0
 
 -- 3. Захват ключей для вычисления удалений.
 insert into demipt2.gold_stg_dim_cards_del ( card_num )
-select account from bank.cards;
+select card_num from bank.cards;
 
 
 -- 4. Выделяем "вставки" и "обновления" и вливаем их в приемник
