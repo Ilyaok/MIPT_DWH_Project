@@ -33,14 +33,6 @@ create table if not exists demipt2.gold_stg_dim_terminals (
     update_dt date
 );
 
--- стейдж-таблица - карты
-create table if not exists demipt2.gold_stg_dim_cards (
-    card_num varchar2(20) primary key,
-    account_num varchar2(50),
-    create_dt date,
-    update_dt date
-);
-
 -- стейдж-таблица - аккаунты
 create table if not exists demipt2.gold_stg_dim_accounts (
     account_num varchar2(50) primary key,
