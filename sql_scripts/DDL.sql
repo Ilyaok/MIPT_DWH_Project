@@ -42,20 +42,6 @@ create table if not exists demipt2.gold_stg_dim_accounts (
     update_dt date
 );
 
--- стейдж-таблица - клиенты
-create table if not exists demipt2.gold_stg_dim_clients (
-    client_id varchar2(10) primary key,
-    last_name varchar2(30),
-    first_name varchar2(30),
-    patronymic varchar2(30),
-    date_of_birth date,
-    passport_num varchar2(20),
-    passport_valid_to date,
-    phone varchar(20),
-    create_dt date,
-    update_dt date
-);
-
 -- таблицы фактов
 
 -- таблица фактов - транзакции
@@ -88,37 +74,6 @@ create table if not exists demipt2.gold_dwh_dim_terminals_hist (
     terminal_type varchar2(10),
     terminal_city varchar2(20),
     terminal_address varchar2(100),
-    create_dt date,
-    update_dt date
-);
-
--- таблица измерений - карты
-create table if not exists demipt2.gold_dwh_dim_cards_hist (
-    card_num varchar2(20) primary key,
-    account_num varchar2(50),
-    create_dt date,
-    update_dt date
-);
-
--- таблица измерений - аккаунты
-create table if not exists demipt2.gold_dwh_dim_accounts_hist (
-    account_num varchar2(50) primary key,
-    valid_to date,
-    client varchar2(10),
-    create_dt date,
-    update_dt date
-);
-
--- таблица измерений - клиенты
-create table if not exists demipt2.gold_dwh_dim_clients_hist (
-    client_id varchar2(10) primary key,
-    last_name varchar2(30),
-    first_name varchar2(30),
-    patronymic varchar2(30),
-    date_of_birth date,
-    passport_num varchar2(20),
-    passport_valid_to date,
-    phone varchar(20),
     create_dt date,
     update_dt date
 );
