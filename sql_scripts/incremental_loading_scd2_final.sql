@@ -44,9 +44,6 @@ create table demipt2.chrn_meta(
 
 insert into demipt2.chrn_meta(table_db, table_name, last_update_dt) values ( 'DEMIPT2', 'SOURCE',  to_date( '1900-01-01', 'YYYY-MM-DD') );
 
-
-
-
 --------------------------------------------------------------------
 -- Инкрементальная загрузка
 

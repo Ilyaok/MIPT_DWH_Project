@@ -1,86 +1,66 @@
---------------------------------------------------------------------
--- Подготовка данных
-
-create table demipt2.chrn_source(
-    id number,
-    val varchar2(50),
-    update_dt date
-)
-
-insert into demipt2.chrn_source( id, val, update_dt ) values ( 1, 'A', current_date );
-insert into demipt2.chrn_source( id, val, update_dt ) values ( 2, 'B', current_date );
-insert into demipt2.chrn_source( id, val, update_dt ) values ( 5, 'E', current_date );
-
-update demipt2.chrn_source
-set val = null, update_dt = current_date
-where id = 2;
-
-delete from demipt2.chrn_source where id = 3;
-
-create table demipt2.chrn_target(
-    id number,
-    val varchar2(50),
-    effective_from date,
-	effective_to date,
-	deleted_flg char(1)
-)
-
-create table demipt2.chrn_stg(
-    id number,
-    val varchar2(50),
-    update_dt date
-)
-
-create table demipt2.chrn_stg_del(
-    id number
-)
-
-create table demipt2.chrn_meta(
-    table_db varchar2(30),
-    table_name varchar2(30),
-    last_update_dt date
-
-)
-
-insert into demipt2.chrn_meta(table_db, table_name, last_update_dt) values ( 'DEMIPT2', 'SOURCE',  to_date( '1900-01-01', 'YYYY-MM-DD') );
-
-
-
-
---------------------------------------------------------------------
--- Инкрементальная загрузка
+-- Инкрементальная загрузка данных по аккаунтам
 
 -- 1. Очистка стейджингов.
-delete from demipt2.chrn_stg;
-delete from demipt2.chrn_stg_del;
+delete from demipt2.gold_stg_dim_accounts;
+delete from demipt2.gold_stg_dim_accounts_del;
 
 -- 2. Захват данных в стейджинг (кроме удалений).
-insert into demipt2.chrn_stg ( id, val, update_dt )
-select id, val, update_dt from demipt2.chrn_source
-where update_dt > (
+insert into demipt2.gold_stg_dim_accounts (
+    account_num,
+    valid_to,
+    client,
+    create_dt,
+    update_dt
+)
+select
+    account,
+    valid_to,
+    client,
+    create_dt,
+    coalesce( update_dt, current_date ) as update_dt
+from bank.accounts
+where 1=0
+    or update_dt > (
     select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
-    from demipt2.chrn_meta where table_db = 'DEMIPT2' and table_name = 'SOURCE' );
+    from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'accounts' )
+    or update_dt is null;
+
 
 -- 3. Захват ключей для вычисления удалений.
-insert into demipt2.chrn_stg_del ( id )
-select id from demipt2.chrn_source;
+insert into demipt2.gold_stg_dim_accounts_del ( account_num )
+select account from bank.accounts;
+
+select * from demipt2.gold_stg_dim_accounts_del;
+select * from bank.accounts;
 
 -- 4. Выделяем "вставки" и "обновления" и вливаем их в приемник
 
-merge into demipt2.chrn_target tgt
+merge into demipt2.gold_dwh_dim_accounts_hist tgt
 using (
     select
-        s.id,
-        s.val
-    from demipt2.chrn_stg s
-    left join demipt2.chrn_target t
-    on s.id = t.id and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
+        s.account_num,
+        s.valid_to,
+        s.client
+    from demipt2.gold_stg_dim_accounts s
+    left join demipt2.gold_dwh_dim_accounts_hist t
+    on s.account_num = t.account_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
     where
-        t.id is not null and ( 1=0
-          or s.val <> t.val or ( s.val is null and t.val is not null ) or ( s.val is not null and t.val is null )
-        )
+          1=1
+          and t.account_num is not null
+              and (
+                1=0
+                or ( s.valid_to <> t.valid_to )
+                or ( s.valid_to is null and t.valid_to is not null )
+                or ( s.valid_to is not null and t.valid_to is null )
+                  )
+              and (
+                1=0
+                or ( s.client <> t.client )
+                or ( s.client is null and t.client is not null )
+                or ( s.client is not null and t.client is null )
+                  )
 ) stg
-on ( tgt.id = stg.id )
+on ( tgt.account_num = stg.account_num )
 when matched then update set effective_to = stg.update_dt - interval '1' second where t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' )
 ;
 

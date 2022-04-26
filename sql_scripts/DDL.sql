@@ -1,9 +1,9 @@
--- Создание требуемых в задании таблиц
+-- создание требуемых в задании таблиц
 
--- Стейджинговые таблицы
+-- стейджинговые таблицы
 
--- Стейдж-таблица - транзакции
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_FACT_TRANSACTIONS (
+-- стейдж-таблица - транзакции
+create table if not exists demipt2.gold_stg_fact_transactions (
     trans_id varchar2(30) primary key,
     trans_date date,
     card_num varchar2(20),
@@ -15,16 +15,16 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_FACT_TRANSACTIONS (
     update_dt date
 );
 
--- Стейдж-таблица - черный список паспортов
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_FACT_PASSPORT_BLACKLIST (
+-- стейдж-таблица - черный список паспортов
+create table if not exists demipt2.gold_stg_fact_passport_blacklist (
     passport_num varchar2(20),
     entry_dt date,
     create_dt date,
     update_dt date
 );
 
--- Стейдж-таблица - терминалы
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_DIM_TERMINALS (
+-- стейдж-таблица - терминалы
+create table if not exists demipt2.gold_stg_dim_terminals (
     terminal_id varchar2(10) primary key,
     terminal_type varchar2(10),
     terminal_city varchar2(20),
@@ -33,16 +33,16 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_DIM_TERMINALS (
     update_dt date
 );
 
--- Стейдж-таблица - карты
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_DIM_CARDS (
+-- стейдж-таблица - карты
+create table if not exists demipt2.gold_stg_dim_cards (
     card_num varchar2(20) primary key,
     account_num varchar2(50),
     create_dt date,
     update_dt date
 );
 
--- Стейдж-таблица - аккаунты
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_DIM_ACCOUNTS (
+-- стейдж-таблица - аккаунты
+create table if not exists demipt2.gold_stg_dim_accounts (
     account_num varchar2(50) primary key,
     valid_to date,
     client varchar2(10),
@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_DIM_ACCOUNTS (
     update_dt date
 );
 
--- Стейдж-таблица - клиенты
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_DIM_CLIENTS (
+-- стейдж-таблица - клиенты
+create table if not exists demipt2.gold_stg_dim_clients (
     client_id varchar2(10) primary key,
     last_name varchar2(30),
     first_name varchar2(30),
@@ -64,10 +64,10 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_STG_DIM_CLIENTS (
     update_dt date
 );
 
--- Таблицы фактов
+-- таблицы фактов
 
--- Таблица фактов - транзакции
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_FACT_TRANSACTIONS (
+-- таблица фактов - транзакции
+create table if not exists demipt2.gold_dwh_fact_transactions (
     trans_id varchar2(30) primary key,
     trans_date date,
     card_num varchar2(20),
@@ -79,8 +79,8 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_FACT_TRANSACTIONS (
     update_dt date
 );
 
--- Таблица фактов - черный список паспортов
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_FACT_PASSPORT_BLACKLIST_HIST (
+-- таблица фактов - черный список паспортов
+create table if not exists demipt2.gold_dwh_fact_passport_blacklist_hist (
     passport_num varchar2(20),
     entry_dt date,
     effective_from date,
@@ -88,10 +88,10 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_FACT_PASSPORT_BLACKLIST_HIST (
 	deleted_flg char(1)
 );
 
--- Таблицы измерений
+-- таблицы измерений
 
--- Таблица измерений - терминалы
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_DIM_TERMINALS_HIST (
+-- таблица измерений - терминалы
+create table if not exists demipt2.gold_dwh_dim_terminals_hist (
     terminal_id varchar2(10) primary key,
     terminal_type varchar2(10),
     terminal_city varchar2(20),
@@ -100,16 +100,16 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_DIM_TERMINALS_HIST (
     update_dt date
 );
 
--- Таблица измерений - карты
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_DIM_CARDS_HIST (
+-- таблица измерений - карты
+create table if not exists demipt2.gold_dwh_dim_cards_hist (
     card_num varchar2(20) primary key,
     account_num varchar2(50),
     create_dt date,
     update_dt date
 );
 
--- Таблица измерений - аккаунты
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_DIM_ACCOUNTS_HIST (
+-- таблица измерений - аккаунты
+create table if not exists demipt2.gold_dwh_dim_accounts_hist (
     account_num varchar2(50) primary key,
     valid_to date,
     client varchar2(10),
@@ -117,8 +117,8 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_DIM_ACCOUNTS_HIST (
     update_dt date
 );
 
--- Таблица измерений - клиенты
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_DIM_CLIENTS_HIST (
+-- таблица измерений - клиенты
+create table if not exists demipt2.gold_dwh_dim_clients_hist (
     client_id varchar2(10) primary key,
     last_name varchar2(30),
     first_name varchar2(30),
@@ -131,15 +131,8 @@ CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_DWH_DIM_CLIENTS_HIST (
     update_dt date
 );
 
--- Таблица метаданных (доработать с именами)
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_META_BANK (
-    table_db varchar2(30),
-    table_name varchar2(30),
-    last_update_dt date
-);
-
--- Таблица-отчет по мошенническим операциям
-CREATE TABLE IF NOT EXISTS DEMIPT2.GOLD_REP_FRAUD (
+-- таблица-отчет по мошенническим операциям
+create table if not exists demipt2.gold_rep_fraud (
     event_dt date,
     passport varchar2(20),
     fio varchar2(100),
