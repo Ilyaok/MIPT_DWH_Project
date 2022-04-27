@@ -33,67 +33,111 @@ select card_num from bank.cards;
 
 -- 4. Выделяем "вставки" и "обновления" и вливаем их в приемник
 
+-- 4.1. вставка новой строки или закрытие текущей версии по scd2
 merge into demipt2.gold_dwh_dim_cards_hist tgt
 using (
     select
         s.card_num,
         s.account_num,
-        s.update_dt
+        s.update_dt,
+        'n' as  deleted_flg,
+        s.update_dt as effective_from,
+        to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
     from demipt2.gold_stg_dim_cards s
     left join demipt2.gold_dwh_dim_cards_hist t
-    on s.card_num = t.card_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
+    on s.card_num = t.card_num
     where
           1=1
-          and t.card_num is not null
-              and (
-                1=0
-                or ( s.account_num <> t.account_num )
-                or ( s.account_num is null and t.account_num is not null )
-                or ( s.account_num is not null and t.account_num is null )
-                  )
+          and t.card_num is null
+          or (
+            t.card_num is not null
+            and (1 = 0
+                     or (s.account_num <> t.account_num) or (s.account_num is null and t.account_num is not null)
+                     or (s.account_num is not null and t.account_num is null)
+                )
+             )
 ) stg
 on ( tgt.card_num = stg.card_num )
-when matched then update set effective_to = stg.update_dt - interval '1' second
-where tgt.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' );
+when not matched then insert (
+    card_num,
+    account_num,
+    deleted_flg,
+    effective_from,
+    effective_to
+    )
+values (
+    stg.card_num,
+    stg.account_num,
+    'n',
+    stg.effective_from,
+    to_date( '9999-01-01', 'yyyy-mm-dd')
+    )
+when matched then
+update set effective_to = current_date - interval '1' second;
 
 
+-- 4.2. вставка новой версии по scd2 для случая апдейта
 insert into demipt2.gold_dwh_dim_cards_hist (
     card_num,
     account_num,
+    deleted_flg,
     effective_from,
-	effective_to,
-	deleted_flg
+	effective_to
+)
+select
+    s.card_num,
+    s.account_num,
+    'n' as  deleted_flg,
+    current_date as effective_from,
+    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+from demipt2.gold_stg_dim_cards s
+left join demipt2.gold_dwh_dim_cards_hist t
+on s.card_num = t.card_num
+where
+    1=1
+    and t.card_num is null
+    or (
+    t.card_num is not null
+        and (1 = 0
+                 or (s.account_num <> t.account_num) or (s.account_num is null and t.account_num is not null)
+                 or (s.account_num is not null and t.account_num is null)
+            )
+     )
+    and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+;
+
+
+-- 5. проставляем в приемнике флаг для удаленных записей ('y' - для удаленных)
+
+-- 5.1. вставляем актуальную запись по scd2
+insert into demipt2.gold_dwh_dim_cards_hist (
+    card_num,
+    account_num,
+	deleted_flg,
+	effective_from,
+	effective_to
 )
 select
     card_num,
     account_num,
-	update_dt as effective_from,
-	to_date( '9999-12-31', 'YYYY-MM-DD' ) as effective_to,
-	'N' as deleted_flg
-from demipt2.gold_stg_dim_cards;
-
--- 5. Удаляем из приемника удаленные записи
-insert into demipt2.gold_dwh_dim_cards_hist (
-    card_num,
-    account_num,
-    effective_from,
-	effective_to,
-	deleted_flg)
-select
-    card_num,
-    account_num,
+	'y' as deleted_flg,
 	current_date as effective_from,
-	to_date( '9999-12-31', 'YYYY-MM-DD' ) as effective_to,
-	'Y' as deleted_flg
-from (
+	to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+from demipt2.gold_dwh_dim_cards_hist
+where card_num in (
     select
-        t.card_num,
-        t.account_num
+        t.card_num
     from demipt2.gold_dwh_dim_cards_hist t
     left join demipt2.gold_stg_dim_cards_del s
-    on t.card_num = s.card_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
-    where s.card_num is null);
+    on t.card_num = s.card_num
+    where s.card_num is null
+	)
+	and deleted_flg = 'n'
+	and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
 
+;
+
+-- 5.2. обновляем данные об удаленной записи по scd2
 update demipt2.gold_dwh_dim_cards_hist
 set effective_to = current_date - interval '1' second
 where card_num in (
@@ -101,19 +145,19 @@ where card_num in (
         t.card_num
     from demipt2.gold_dwh_dim_cards_hist t
     left join demipt2.gold_stg_dim_cards_del s
-    on t.card_num = s.card_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
+    on t.card_num = s.card_num
     where s.card_num is null
-)
-and effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' )
-and deleted_flg = 'N';
+	)
+	and deleted_flg = 'n'
+	and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+;
 
--- 6. Обновляем метаданные.
+
+-- 6. обновляем метаданные.
 update demipt2.gold_meta_bank
-set last_update_dt = ( select max(update_dt) from demipt2.gold_stg_dim_cards )
-where
-    1=1
-    and table_db = 'bank' and table_name = 'cards'
-    and ( select max(update_dt) from demipt2.gold_stg_dim_cards ) is not null;
+set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_cards_hist )
+where table_db = 'bank' and table_name = 'cards' and ( select max(effective_from) from demipt2.gold_dwh_dim_cards_hist ) is not null;
 
--- 5. Фиксируем транзакцию.
+
+-- 7. фиксируем транзакцию.
 commit;

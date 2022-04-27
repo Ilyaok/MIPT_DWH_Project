@@ -19,7 +19,7 @@ create table demipt2.gold_dwh_dim_accounts_hist (
     account_num varchar2(50) primary key,
     valid_to date,
     client varchar2(10),
+    deleted_flg char(1),
     effective_from date,
-	effective_to date,
-	deleted_flg char(1)
+	effective_to date
 );

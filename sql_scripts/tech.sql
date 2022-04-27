@@ -1,3 +1,5 @@
+commit;
+
 select * from DBA_SEGMENTS;
 
 select * from demipt2.gold_stg_dim_accounts;

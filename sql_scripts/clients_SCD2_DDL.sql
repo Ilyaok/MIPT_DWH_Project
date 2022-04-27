@@ -29,7 +29,7 @@ create table demipt2.gold_dwh_dim_clients_hist (
     passport_num varchar2(20),
     passport_valid_to date,
     phone varchar(20),
+    deleted_flg char(1),
     effective_from date,
-	effective_to date,
-	deleted_flg char(1)
+	effective_to date
 );

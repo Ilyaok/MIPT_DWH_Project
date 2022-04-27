@@ -1,10 +1,10 @@
 -- Инкрементальная загрузка данных по аккаунтам
 
--- 1. Очистка стейджингов.
+-- 1. очистка стейджингов.
 delete from demipt2.gold_stg_dim_accounts;
 delete from demipt2.gold_stg_dim_accounts_del;
 
--- 2. Захват данных в стейджинг (кроме удалений).
+-- 2. захват данных в стейджинг (кроме удалений).
 insert into demipt2.gold_stg_dim_accounts (
     account_num,
     valid_to,
@@ -27,87 +27,128 @@ where 1=0
     from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'accounts' )
     or update_dt is null;
 
-
--- 3. Захват ключей для вычисления удалений.
+-- 3. захват ключей для вычисления удалений.
 insert into demipt2.gold_stg_dim_accounts_del ( account_num )
 select account from bank.accounts;
 
+-- 4. выделяем "вставки" и "обновления" и вливаем их в приемник
 
--- 4. Выделяем "вставки" и "обновления" и вливаем их в приемник
-
+-- 4.1. вставка новой строки или закрытие текущей версии по scd2
 merge into demipt2.gold_dwh_dim_accounts_hist tgt
 using (
     select
         s.account_num,
         s.valid_to,
         s.client,
-        s.update_dt
+        s.update_dt,
+        'n' as  deleted_flg,
+        s.update_dt as effective_from,
+        to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
     from demipt2.gold_stg_dim_accounts s
     left join demipt2.gold_dwh_dim_accounts_hist t
-    on s.account_num = t.account_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
+    on s.account_num = t.account_num
     where
           1=1
-          and t.account_num is not null
-              and (
-                1=0
-                or ( s.valid_to <> t.valid_to )
-                or ( s.valid_to is null and t.valid_to is not null )
-                or ( s.valid_to is not null and t.valid_to is null )
-                  )
-              and (
-                1=0
-                or ( s.client <> t.client )
-                or ( s.client is null and t.client is not null )
-                or ( s.client is not null and t.client is null )
-                  )
+          and t.account_num is null
+          or (
+            t.account_num is not null
+            and (1 = 0
+                     or (s.valid_to <> t.valid_to) or (s.valid_to is null and t.valid_to is not null) or (s.valid_to is not null and t.valid_to is null)
+                )
+            and (1 = 0
+                     or (s.client <> t.client) or (s.client is null and t.client is not null) or (s.client is not null and t.client is null)
+                )
+             )
 ) stg
 on ( tgt.account_num = stg.account_num )
-when matched then update set effective_to = stg.update_dt - interval '1' second
-where tgt.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' );
+when not matched then insert (
+    account_num,
+    valid_to,
+    client,
+    deleted_flg,
+    effective_from,
+    effective_to
+    )
+values (
+    stg.account_num,
+    stg.valid_to,
+    stg.client,
+    'n',
+    stg.effective_from,
+    to_date( '9999-01-01', 'yyyy-mm-dd')
+    )
+when matched then
+update set effective_to = current_date - interval '1' second;
 
 
+
+-- 4.2. вставка новой версии по scd2 для случая апдейта
 insert into demipt2.gold_dwh_dim_accounts_hist (
     account_num,
     valid_to,
     client,
+    deleted_flg,
     effective_from,
-	effective_to,
-	deleted_flg
+	effective_to
+)
+select
+    s.account_num,
+    s.valid_to,
+    s.client,
+    'n' as  deleted_flg,
+    current_date as effective_from,
+    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+from demipt2.gold_stg_dim_accounts s
+left join demipt2.gold_dwh_dim_accounts_hist t
+on s.account_num = t.account_num
+where
+    1=1
+    and t.account_num is null
+    or (
+    t.account_num is not null
+    and (1 = 0
+             or (s.valid_to <> t.valid_to) or (s.valid_to is null and t.valid_to is not null) or (s.valid_to is not null and t.valid_to is null)
+        )
+    and (1 = 0
+             or (s.client <> t.client) or (s.client is null and t.client is not null) or (s.client is not null and t.client is null)
+        )
+     )
+    and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd');
+
+
+-- 5. проставляем в приемнике флаг для удаленных записей ('y' - для удаленных)
+
+-- 5.1. вставляем актуальную запись по scd2
+insert into demipt2.gold_dwh_dim_accounts_hist (
+    account_num,
+    valid_to,
+    client,
+	deleted_flg,
+	effective_from,
+	effective_to
 )
 select
     account_num,
     valid_to,
     client,
-	update_dt as effective_from,
-	to_date( '9999-12-31', 'YYYY-MM-DD' ) as effective_to,
-	'N' as deleted_flg
-from demipt2.gold_stg_dim_accounts;
-
--- 5. Удаляем из приемника удаленные записи
-insert into demipt2.gold_dwh_dim_accounts_hist (
-    account_num,
-    valid_to,
-    client,
-    effective_from,
-	effective_to,
-	deleted_flg)
-select
-    account_num,
-    valid_to,
-    client,
+	'y' as deleted_flg,
 	current_date as effective_from,
-	to_date( '9999-12-31', 'YYYY-MM-DD' ) as effective_to,
-	'Y' as deleted_flg
-from (
+	to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+from demipt2.gold_dwh_dim_accounts_hist
+where account_num in (
     select
-        t.account_num,
-        t.valid_to,
-        t.client
+        t.account_num
     from demipt2.gold_dwh_dim_accounts_hist t
     left join demipt2.gold_stg_dim_accounts_del s
-    on t.account_num = s.account_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
-    where s.account_num is null);
+    on t.account_num = s.account_num
+    where s.account_num is null
+	)
+	and deleted_flg = 'n'
+	and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
 
+;
+
+-- 5.2. обновляем данные об удаленной записи по scd2
 update demipt2.gold_dwh_dim_accounts_hist
 set effective_to = current_date - interval '1' second
 where account_num in (
@@ -115,21 +156,19 @@ where account_num in (
         t.account_num
     from demipt2.gold_dwh_dim_accounts_hist t
     left join demipt2.gold_stg_dim_accounts_del s
-    on t.account_num = s.account_num and t.effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' ) and deleted_flg = 'N'
+    on t.account_num = s.account_num
     where s.account_num is null
-)
-and effective_to = to_date( '9999-12-31', 'YYYY-MM-DD' )
-and deleted_flg = 'N';
+	)
+	and deleted_flg = 'n'
+	and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+;
 
--- 6. Обновляем метаданные.
+
+-- 6. обновляем метаданные.
 update demipt2.gold_meta_bank
-set last_update_dt = ( select max(update_dt) from demipt2.gold_stg_dim_accounts )
-where
-    1=1
-    and table_db = 'bank' and table_name = 'accounts'
-    and ( select max(update_dt) from demipt2.gold_stg_dim_accounts ) is not null;
+set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_accounts_hist )
+where table_db = 'bank' and table_name = 'accounts' and ( select max(effective_from) from demipt2.gold_dwh_dim_accounts_hist ) is not null;
 
--- 5. Фиксируем транзакцию.
+
+-- 7. фиксируем транзакцию.
 commit;
-
-
