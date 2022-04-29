@@ -12,12 +12,3 @@ create table demipt2.gold_stg_dim_cards (
 create table demipt2.gold_stg_dim_cards_del(
     card_num varchar2(50)
 );
-
--- таблица измерений - карты
-create table demipt2.gold_dwh_dim_cards_hist (
-    card_num varchar2(20) primary key,
-    account_num varchar2(50),
-    deleted_flg char(1),
-    effective_from date,
-	effective_to date
-);
