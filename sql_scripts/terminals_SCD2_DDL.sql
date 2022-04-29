@@ -2,7 +2,7 @@
 
 -- стейдж-таблица - терминалы
 create table demipt2.gold_stg_dim_terminals (
-    terminal_id varchar2(10) primary key,
+    terminal_id varchar2(10),
     terminal_type varchar2(10),
     terminal_city varchar2(20),
     terminal_address varchar2(100),

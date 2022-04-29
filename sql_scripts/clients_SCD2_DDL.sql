@@ -2,7 +2,7 @@
 
 -- стейдж-таблица - клиенты
 create table demipt2.gold_stg_dim_clients (
-    client_id varchar2(10) primary key,
+    client_id varchar2(10),
     last_name varchar2(30),
     first_name varchar2(30),
     patronymic varchar2(30),

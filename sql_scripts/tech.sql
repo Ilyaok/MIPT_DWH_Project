@@ -34,6 +34,10 @@ drop table demipt2.gold_stg_dim_clients;
 drop table demipt2.gold_stg_dim_clients_del;
 drop table demipt2.gold_dwh_dim_clients_hist;
 
+drop table demipt2.gold_stg_dim_terminals;
+drop table demipt2.gold_stg_dim_terminals_del;
+drop table demipt2.gold_dwh_dim_terminals_hist;
+
 
 
 

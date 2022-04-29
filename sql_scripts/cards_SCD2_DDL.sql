@@ -2,7 +2,7 @@
 
 -- стейдж-таблица - карты
 create table demipt2.gold_stg_dim_cards (
-    card_num varchar2(20) primary key,
+    card_num varchar2(20),
     account_num varchar2(50),
     create_dt date,
     update_dt date

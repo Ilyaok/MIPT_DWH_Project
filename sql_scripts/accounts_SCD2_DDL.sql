@@ -2,7 +2,7 @@
 
 -- Создание стейдж-таблицы
 create table demipt2.gold_stg_dim_accounts (
-    account_num varchar2(50) primary key,
+    account_num varchar2(50),
     valid_to date,
     client varchar2(10),
     create_dt date,
