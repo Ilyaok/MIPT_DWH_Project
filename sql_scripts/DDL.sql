@@ -24,11 +24,3 @@ create table if not exists demipt2.gold_stg_fact_passport_blacklist (
 );
 
 
--- таблицы фактов
-
-
-
--- таблицы измерений
-
-
-

@@ -22,13 +22,13 @@ create table demipt2.gold_dwh_fact_transactions (
     create_dt date,
     update_dt date,
     --
-	FOREIGN KEY (card_num)
-	REFERENCES DEMIPT2.gold_dwh_dim_cards_hist(card_num)
-	ON DELETE CASCADE,
+	foreign key (card_num)
+	references demipt2.gold_dwh_dim_cards_hist(card_num)
+	on delete cascade,
 	--
-	FOREIGN KEY (terminal)
-	REFERENCES demipt2.gold_dwh_dim_terminals_hist(terminal_id)
-	ON DELETE CASCADE
+	foreign key (terminal)
+	references demipt2.gold_dwh_dim_terminals_hist(terminal_id)
+	on delete cascade
 );
 
 -- таблица фактов - черный список паспортов
