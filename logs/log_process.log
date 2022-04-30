@@ -29772,3 +29772,699 @@ delete from demipt2.gold_stg_dim_terminals_del
 2022-04-30 23:00:20,593 - multiprocessing - INFO - File C:\Users\Ilya\PycharmProjects\GOLD\terminals_05032021.xlsx was successfully backed up to C:\Users\Ilya\PycharmProjects\GOLD\archive\terminals_05032021.xlsx
 2022-04-30 23:00:20,628 - multiprocessing - INFO - Connection closed
 2022-04-30 23:00:20,668 - multiprocessing - INFO - process shutting down
+2022-04-30 23:05:47,528 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:05:47,529 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:05:50,415 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x00000214EBDD5E10>
+2022-04-30 23:05:50,416 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x00000214EBDD5E10> by query: select 1 from DUAL
+2022-04-30 23:05:50,817 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x00000214EBDD5E10> successfully checked
+2022-04-30 23:05:50,817 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:05:50,818 - multiprocessing - INFO - No files matching pattern detected. Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:05:50,863 - multiprocessing - INFO - process shutting down
+2022-04-30 23:06:04,923 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:06:04,923 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:06:08,001 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x0000024F146F5E10>
+2022-04-30 23:06:08,002 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x0000024F146F5E10> by query: select 1 from DUAL
+2022-04-30 23:06:08,398 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x0000024F146F5E10> successfully checked
+2022-04-30 23:06:08,398 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:06:08,400 - multiprocessing - INFO - List of files for processing: ['terminals_07032021.xlsx']
+2022-04-30 23:06:08,405 - multiprocessing - INFO - The actual file: terminals_07032021.xlsx
+2022-04-30 23:06:08,433 - multiprocessing - INFO - Actual date: 2021-03-07
+2022-04-30 23:06:08,433 - multiprocessing - INFO - Date from metadata: 2021-03-05
+2022-04-30 23:06:09,459 - multiprocessing - INFO - Created dataframe:
+2022-04-30 23:06:09,465 - multiprocessing - INFO - 
+  terminal_id terminal_type terminal_city                              terminal_address
+0       A1096           ATM      Кемерово  г. Кемерово, 1-й Электрозаводский пер., д. 3
+2022-04-30 23:06:09,466 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:06:09,476 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,490 - multiprocessing - INFO - Data was inserted into demipt2.gold_stg_dim_terminals_source!
+2022-04-30 23:06:09,491 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals
+            
+2022-04-30 23:06:09,501 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,501 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_del
+            
+2022-04-30 23:06:09,510 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,511 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_stg_dim_terminals (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        from demipt2.gold_stg_dim_terminals_source
+        where 1=0
+            or update_dt > (
+            select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+            from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
+            or update_dt is null
+            
+2022-04-30 23:06:09,522 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,522 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
+            select terminal_id from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:06:09,532 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,532 - multiprocessing - INFO - Making SQL-query:
+
+            merge into demipt2.gold_dwh_dim_terminals_hist tgt
+            using (
+                select
+                    s.terminal_id,
+                    s.terminal_type,
+                    s.terminal_city,
+                    s.terminal_address,
+                    s.update_dt,
+                    'n' as  deleted_flg,
+                    s.update_dt as effective_from,
+                    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+                from demipt2.gold_stg_dim_terminals s
+                left join demipt2.gold_dwh_dim_terminals_hist t
+                on s.terminal_id = t.terminal_id
+                where
+                  1=1
+                  and t.terminal_id is  null
+                  or (
+                  t.terminal_id is not null
+                  and ( 1 = 0
+                        or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                        or (s.terminal_type is not null and t.terminal_type is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                        or (s.terminal_city is not null and t.terminal_city is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                        or (s.terminal_address is not null and t.terminal_address is null)
+                      )
+                  )
+            ) stg
+            on ( tgt.terminal_id = stg.terminal_id )
+            when not matched then insert (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+                )
+            values (
+                stg.terminal_id,
+                stg.terminal_type,
+                stg.terminal_city,
+                stg.terminal_address,
+                'n',
+                stg.effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd')
+                )
+            when matched then
+            update set effective_to = current_date - interval '1' second
+            
+2022-04-30 23:06:09,550 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,550 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_dwh_dim_terminals_hist (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+            )
+            select
+                s.terminal_id,
+                s.terminal_type,
+                s.terminal_city,
+                s.terminal_address,
+                'n' as  deleted_flg,
+                current_date as effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+            from demipt2.gold_stg_dim_terminals s
+            left join demipt2.gold_dwh_dim_terminals_hist t
+            on s.terminal_id = t.terminal_id
+            where
+              1=1
+              and t.terminal_id is  null
+              or (
+              t.terminal_id is not null
+              and ( 1 = 0
+                    or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                    or (s.terminal_type is not null and t.terminal_type is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                    or (s.terminal_city is not null and t.terminal_city is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                    or (s.terminal_address is not null and t.terminal_address is null)
+                  )
+              )
+            and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+                    
+2022-04-30 23:06:09,561 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,562 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_dwh_dim_terminals_hist (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            deleted_flg,
+            effective_from,
+            effective_to
+            )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            'y' as deleted_flg,
+            current_date as effective_from,
+            to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+        from demipt2.gold_dwh_dim_terminals_hist
+        where terminal_id in (
+            select
+                t.terminal_id
+            from demipt2.gold_dwh_dim_terminals_hist t
+            left join demipt2.gold_stg_dim_terminals_del s
+            on t.terminal_id = s.terminal_id
+            where s.terminal_id is null
+            )
+            and deleted_flg = 'n'
+            and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+            
+2022-04-30 23:06:09,593 - multiprocessing - INFO - Failed to perform query with Exception java.sql.SQLIntegrityConstraintViolationException: ORA-00001: нарушено ограничение уникальности (DEMIPT2.SYS_C00106480)
+
+2022-04-30 23:06:09,623 - multiprocessing - INFO - Rollback performed!
+2022-04-30 23:06:09,624 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_dwh_dim_terminals_hist
+        set effective_to = current_date - interval '1' second
+        where terminal_id in (
+        select
+            t.terminal_id
+        from demipt2.gold_dwh_dim_terminals_hist t
+        left join demipt2.gold_stg_dim_terminals_del s
+        on t.terminal_id = s.terminal_id
+        where s.terminal_id is null
+        )
+        and deleted_flg = 'n'
+        and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+        
+2022-04-30 23:06:09,635 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,635 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_meta_bank
+        set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
+        where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+    
+2022-04-30 23:06:09,646 - multiprocessing - INFO - Query performed
+2022-04-30 23:06:09,659 - multiprocessing - INFO - File C:\Users\Ilya\PycharmProjects\GOLD\terminals_07032021.xlsx was successfully backed up to C:\Users\Ilya\PycharmProjects\GOLD\archive\terminals_07032021.xlsx
+2022-04-30 23:06:09,672 - multiprocessing - INFO - Connection closed
+2022-04-30 23:06:09,683 - multiprocessing - INFO - process shutting down
+2022-04-30 23:08:31,047 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:08:31,047 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:08:33,899 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x00000241507A9E10>
+2022-04-30 23:08:33,899 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x00000241507A9E10> by query: select 1 from DUAL
+2022-04-30 23:08:34,309 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x00000241507A9E10> successfully checked
+2022-04-30 23:08:34,309 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:08:34,311 - multiprocessing - INFO - List of files for processing: ['terminals_07032021.xlsx']
+2022-04-30 23:08:34,315 - multiprocessing - INFO - The actual file: terminals_07032021.xlsx
+2022-04-30 23:08:34,336 - multiprocessing - INFO - Actual date: 2021-03-07
+2022-04-30 23:08:34,337 - multiprocessing - INFO - Date from metadata: 2021-03-05
+2022-04-30 23:08:35,382 - multiprocessing - INFO - Created dataframe:
+2022-04-30 23:08:35,387 - multiprocessing - INFO - 
+  terminal_id terminal_type terminal_city                              terminal_address
+0       A1096           ATM      Кемерово  г. Кемерово, 1-й Электрозаводский пер., д. 3
+2022-04-30 23:08:35,388 - multiprocessing - INFO - Making SQL-query:
+
+            drop table demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:08:35,482 - multiprocessing - INFO - Failed to perform query with Exception java.sql.SQLException: ORA-00054: ресурс занят и задано его получение с параметром NOWAIT, либо истекло время ожидания
+
+2022-04-30 23:08:35,490 - multiprocessing - INFO - Rollback performed!
+2022-04-30 23:08:35,490 - multiprocessing - INFO - Making SQL-query:
+
+            create table demipt2.gold_stg_dim_terminals_source (
+                terminal_id varchar2(10),
+                terminal_type varchar2(10),
+                terminal_city varchar2(50),
+                terminal_address varchar2(100),
+                update_dt date
+                )
+            
+2022-04-30 23:08:35,512 - multiprocessing - INFO - Failed to perform query with Exception java.sql.SQLSyntaxErrorException: ORA-00955: имя уже задействовано для существующего объекта
+
+2022-04-30 23:08:35,518 - multiprocessing - INFO - Rollback performed!
+2022-04-30 23:08:35,530 - multiprocessing - INFO - Data was inserted into demipt2.gold_stg_dim_terminals_source!
+2022-04-30 23:08:35,530 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals
+            
+2022-04-30 23:08:35,536 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,536 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_del
+            
+2022-04-30 23:08:35,542 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,542 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_stg_dim_terminals (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        from demipt2.gold_stg_dim_terminals_source
+        where 1=0
+            or update_dt > (
+            select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+            from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
+            or update_dt is null
+            
+2022-04-30 23:08:35,549 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,549 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
+            select terminal_id from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:08:35,555 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,555 - multiprocessing - INFO - Making SQL-query:
+
+            merge into demipt2.gold_dwh_dim_terminals_hist tgt
+            using (
+                select
+                    s.terminal_id,
+                    s.terminal_type,
+                    s.terminal_city,
+                    s.terminal_address,
+                    s.update_dt,
+                    'n' as  deleted_flg,
+                    s.update_dt as effective_from,
+                    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+                from demipt2.gold_stg_dim_terminals s
+                left join demipt2.gold_dwh_dim_terminals_hist t
+                on s.terminal_id = t.terminal_id
+                where
+                  1=1
+                  and t.terminal_id is  null
+                  or (
+                  t.terminal_id is not null
+                  and ( 1 = 0
+                        or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                        or (s.terminal_type is not null and t.terminal_type is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                        or (s.terminal_city is not null and t.terminal_city is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                        or (s.terminal_address is not null and t.terminal_address is null)
+                      )
+                  )
+            ) stg
+            on ( tgt.terminal_id = stg.terminal_id )
+            when not matched then insert (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+                )
+            values (
+                stg.terminal_id,
+                stg.terminal_type,
+                stg.terminal_city,
+                stg.terminal_address,
+                'n',
+                stg.effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd')
+                )
+            when matched then
+            update set effective_to = current_date - interval '1' second
+            
+2022-04-30 23:08:35,563 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,564 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_dwh_dim_terminals_hist (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+            )
+            select
+                s.terminal_id,
+                s.terminal_type,
+                s.terminal_city,
+                s.terminal_address,
+                'n' as  deleted_flg,
+                current_date as effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+            from demipt2.gold_stg_dim_terminals s
+            left join demipt2.gold_dwh_dim_terminals_hist t
+            on s.terminal_id = t.terminal_id
+            where
+              1=1
+              and t.terminal_id is  null
+              or (
+              t.terminal_id is not null
+              and ( 1 = 0
+                    or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                    or (s.terminal_type is not null and t.terminal_type is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                    or (s.terminal_city is not null and t.terminal_city is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                    or (s.terminal_address is not null and t.terminal_address is null)
+                  )
+              )
+            and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+                    
+2022-04-30 23:08:35,571 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,571 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_dwh_dim_terminals_hist (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            deleted_flg,
+            effective_from,
+            effective_to
+            )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            'y' as deleted_flg,
+            current_date as effective_from,
+            to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+        from demipt2.gold_dwh_dim_terminals_hist
+        where terminal_id in (
+            select
+                t.terminal_id
+            from demipt2.gold_dwh_dim_terminals_hist t
+            left join demipt2.gold_stg_dim_terminals_del s
+            on t.terminal_id = s.terminal_id
+            where s.terminal_id is null
+            )
+            and deleted_flg = 'n'
+            and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+            
+2022-04-30 23:08:35,578 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,579 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_dwh_dim_terminals_hist
+        set effective_to = current_date - interval '1' second
+        where terminal_id in (
+        select
+            t.terminal_id
+        from demipt2.gold_dwh_dim_terminals_hist t
+        left join demipt2.gold_stg_dim_terminals_del s
+        on t.terminal_id = s.terminal_id
+        where s.terminal_id is null
+        )
+        and deleted_flg = 'n'
+        and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+        
+2022-04-30 23:08:35,587 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,587 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_meta_bank
+        set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
+        where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+    
+2022-04-30 23:08:35,594 - multiprocessing - INFO - Query performed
+2022-04-30 23:08:35,606 - multiprocessing - INFO - File C:\Users\Ilya\PycharmProjects\GOLD\terminals_07032021.xlsx wasn't backed up with Exception [WinError 183] Невозможно создать файл, так как он уже существует: 'C:\\Users\\Ilya\\PycharmProjects\\GOLD\\archive\\terminals_07032021.xlsx' -> 'C:\\Users\\Ilya\\PycharmProjects\\GOLD\\archive\\terminals_07032021.xlsx.backup'
+2022-04-30 23:08:35,620 - multiprocessing - INFO - Connection closed
+2022-04-30 23:08:35,631 - multiprocessing - INFO - process shutting down
+2022-04-30 23:12:44,500 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:12:44,500 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:12:47,569 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x000002A6241A5E10>
+2022-04-30 23:12:47,569 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x000002A6241A5E10> by query: select 1 from DUAL
+2022-04-30 23:12:48,009 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x000002A6241A5E10> successfully checked
+2022-04-30 23:12:48,010 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:12:48,010 - multiprocessing - INFO - No files matching pattern detected. Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:12:48,045 - multiprocessing - INFO - process shutting down
+2022-04-30 23:13:00,855 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:13:00,855 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:13:04,126 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x000002DAA4B75E10>
+2022-04-30 23:13:04,126 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x000002DAA4B75E10> by query: select 1 from DUAL
+2022-04-30 23:13:04,530 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x000002DAA4B75E10> successfully checked
+2022-04-30 23:13:04,530 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:13:04,531 - multiprocessing - INFO - List of files for processing: ['terminals_07032021.xlsx']
+2022-04-30 23:13:04,536 - multiprocessing - INFO - The actual file: terminals_07032021.xlsx
+2022-04-30 23:13:04,585 - multiprocessing - INFO - Actual date: 2021-03-07
+2022-04-30 23:13:04,585 - multiprocessing - INFO - Date from metadata: 2021-03-05
+2022-04-30 23:13:05,767 - multiprocessing - INFO - Created dataframe:
+2022-04-30 23:13:05,772 - multiprocessing - INFO - 
+  terminal_id terminal_type terminal_city                              terminal_address
+0       A1096           ATM      Кемерово  г. Кемерово, 1-й Электрозаводский пер., д. 3
+2022-04-30 23:13:05,772 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:13:05,781 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,783 - multiprocessing - INFO - Data was not inserted into demipt2.gold_stg_dim_terminals_source! Exception: No matching overloads found for oracle.jdbc.driver.OraclePreparedStatementWrapper.setObject(int,list), options are:
+	public void oracle.jdbc.driver.OraclePreparedStatementWrapper.setObject(int,java.lang.Object,int,int) throws java.sql.SQLException
+	public void oracle.jdbc.driver.OraclePreparedStatementWrapper.setObject(int,java.lang.Object,int) throws java.sql.SQLException
+	public void oracle.jdbc.driver.OraclePreparedStatementWrapper.setObject(int,java.lang.Object) throws java.sql.SQLException
+	public void oracle.jdbc.driver.OraclePreparedStatementWrapper.setObject(int,java.lang.Object,java.sql.SQLType,int) throws java.sql.SQLException
+	public void oracle.jdbc.driver.OraclePreparedStatementWrapper.setObject(int,java.lang.Object,java.sql.SQLType) throws java.sql.SQLException
+
+
+2022-04-30 23:13:05,783 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals
+            
+2022-04-30 23:13:05,793 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,793 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_del
+            
+2022-04-30 23:13:05,801 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,802 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_stg_dim_terminals (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        from demipt2.gold_stg_dim_terminals_source
+        where 1=0
+            or update_dt > (
+            select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+            from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
+            or update_dt is null
+            
+2022-04-30 23:13:05,810 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,811 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
+            select terminal_id from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:13:05,819 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,819 - multiprocessing - INFO - Making SQL-query:
+
+            merge into demipt2.gold_dwh_dim_terminals_hist tgt
+            using (
+                select
+                    s.terminal_id,
+                    s.terminal_type,
+                    s.terminal_city,
+                    s.terminal_address,
+                    s.update_dt,
+                    'n' as  deleted_flg,
+                    s.update_dt as effective_from,
+                    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+                from demipt2.gold_stg_dim_terminals s
+                left join demipt2.gold_dwh_dim_terminals_hist t
+                on s.terminal_id = t.terminal_id
+                where
+                  1=1
+                  and t.terminal_id is  null
+                  or (
+                  t.terminal_id is not null
+                  and ( 1 = 0
+                        or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                        or (s.terminal_type is not null and t.terminal_type is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                        or (s.terminal_city is not null and t.terminal_city is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                        or (s.terminal_address is not null and t.terminal_address is null)
+                      )
+                  )
+            ) stg
+            on ( tgt.terminal_id = stg.terminal_id )
+            when not matched then insert (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+                )
+            values (
+                stg.terminal_id,
+                stg.terminal_type,
+                stg.terminal_city,
+                stg.terminal_address,
+                'n',
+                stg.effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd')
+                )
+            when matched then
+            update set effective_to = current_date - interval '1' second
+            
+2022-04-30 23:13:05,830 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,830 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_dwh_dim_terminals_hist (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+            )
+            select
+                s.terminal_id,
+                s.terminal_type,
+                s.terminal_city,
+                s.terminal_address,
+                'n' as  deleted_flg,
+                current_date as effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+            from demipt2.gold_stg_dim_terminals s
+            left join demipt2.gold_dwh_dim_terminals_hist t
+            on s.terminal_id = t.terminal_id
+            where
+              1=1
+              and t.terminal_id is  null
+              or (
+              t.terminal_id is not null
+              and ( 1 = 0
+                    or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                    or (s.terminal_type is not null and t.terminal_type is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                    or (s.terminal_city is not null and t.terminal_city is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                    or (s.terminal_address is not null and t.terminal_address is null)
+                  )
+              )
+            and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+                    
+2022-04-30 23:13:05,841 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,841 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_dwh_dim_terminals_hist (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            deleted_flg,
+            effective_from,
+            effective_to
+            )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            'y' as deleted_flg,
+            current_date as effective_from,
+            to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+        from demipt2.gold_dwh_dim_terminals_hist
+        where terminal_id in (
+            select
+                t.terminal_id
+            from demipt2.gold_dwh_dim_terminals_hist t
+            left join demipt2.gold_stg_dim_terminals_del s
+            on t.terminal_id = s.terminal_id
+            where s.terminal_id is null
+            )
+            and deleted_flg = 'n'
+            and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+            
+2022-04-30 23:13:05,872 - multiprocessing - INFO - Failed to perform query with Exception java.sql.SQLIntegrityConstraintViolationException: ORA-00001: нарушено ограничение уникальности (DEMIPT2.SYS_C00106480)
+
+2022-04-30 23:13:05,883 - multiprocessing - INFO - Rollback performed!
+2022-04-30 23:13:05,884 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_dwh_dim_terminals_hist
+        set effective_to = current_date - interval '1' second
+        where terminal_id in (
+        select
+            t.terminal_id
+        from demipt2.gold_dwh_dim_terminals_hist t
+        left join demipt2.gold_stg_dim_terminals_del s
+        on t.terminal_id = s.terminal_id
+        where s.terminal_id is null
+        )
+        and deleted_flg = 'n'
+        and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+        
+2022-04-30 23:13:05,893 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,894 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_meta_bank
+        set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
+        where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+    
+2022-04-30 23:13:05,903 - multiprocessing - INFO - Query performed
+2022-04-30 23:13:05,934 - multiprocessing - INFO - File C:\Users\Ilya\PycharmProjects\GOLD\terminals_07032021.xlsx wasn't backed up with Exception [WinError 183] Невозможно создать файл, так как он уже существует: 'C:\\Users\\Ilya\\PycharmProjects\\GOLD\\archive\\terminals_07032021.xlsx' -> 'C:\\Users\\Ilya\\PycharmProjects\\GOLD\\archive\\terminals_07032021.xlsx.backup'
+2022-04-30 23:13:05,949 - multiprocessing - INFO - Connection closed
+2022-04-30 23:13:05,961 - multiprocessing - INFO - process shutting down
