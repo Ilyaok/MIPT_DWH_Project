@@ -73,31 +73,28 @@ def terminals_to_staging (conn, path, logger):
     logger.info('Created dataframe:')
     logger.info(f'\n{df.to_string()}')
 
-
     # Запишем датафрейм в стейджинговую таблицу GOLD_STG_DIM_TERMINALS_SOURCE
     # По условию задачи список терминалов - полносрезный, соответственно, инкрементальная загрузка не требуется
     # Поэтому каждый день перезаписываем таблицу GOLD_STG_DIM_TERMINALS_SOURCE
 
-    # Вставка данных в источнк. Если первая загрузка - вставляем данные в источник GOLD_STG_DIM_TERMINALS_SOURCE
-    # Если не первая загрузка - источник сохраняет данные от предыдущей загрузки (данные из Excel пойдут в Staging GOLD_STG_DIM_TERMINALS)
-    curs.execute("""select * from demipt2.gold_stg_dim_terminals_source""")
-    df_source = curs.fetchall()
-    if len(df_source) == 0:
-        logger.info(f'Source is empty. First filling of the source...')
-        try:
-            curs.executemany(f"""
-                insert into demipt2.GOLD_STG_DIM_TERMINALS (
-                    terminal_id,
-                    terminal_type,
-                    terminal_city,
-                    terminal_address,
-                    update_dt)
-                values (?,?,?,?,to_date('{maxdate.date()}', 'yyyy-mm-dd')) 
-                """, df.values.tolist())
-            logger.info('Data was inserted!')
-        except Exception as e:
-            logger.info(f'Data was not inserted into the source! Exception: {e}')
+    query = """
+            delete from demipt2.gold_stg_dim_terminals_source
+            """
+    make_sql_query(conn=conn, query=query, logger=logger)
 
+    try:
+        curs.executemany(f"""
+            insert into demipt2.gold_stg_dim_terminals_source (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                update_dt)
+            values (?, ?, ?, ?, to_date('{maxdate.date()}', 'yyyy-mm-dd')) 
+            """, df.values.tolist())
+        logger.info('Data was inserted into demipt2.gold_stg_dim_terminals_source!')
+    except Exception as e:
+        logger.info(f'Data was not inserted into demipt2.gold_stg_dim_terminals_source! Exception: {e}')
 
     # Выполнение пайплайна в SCD2
 

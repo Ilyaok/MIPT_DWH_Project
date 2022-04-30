@@ -9,10 +9,12 @@ where table_db = 'bank'
 and table_name = 'terminals';
 
 -- delete from demipt2.gold_stg_dim_terminals;
+-- delete from demipt2.gold_stg_dim_terminals_source;
 -- delete from demipt2.gold_stg_dim_terminals_del;
 -- delete from demipt2.gold_dwh_dim_terminals_hist;
 
 select * from demipt2.gold_stg_dim_terminals;
+select * from demipt2.gold_stg_dim_terminals_source;
 select * from demipt2.gold_stg_dim_terminals_del;
 select * from demipt2.gold_dwh_dim_terminals_hist;
 
