@@ -1,4 +1,22 @@
 commit;
+rollback;
+
+select * from demipt2.gold_stg_dim_terminals_source;
+
+update demipt2.gold_meta_bank
+set last_update_dt = to_date( '1900-01-01', 'yyyy-mm-dd')
+where table_db = 'bank'
+and table_name = 'terminals';
+
+-- delete from demipt2.gold_stg_dim_terminals;
+-- delete from demipt2.gold_stg_dim_terminals_del;
+-- delete from demipt2.gold_dwh_dim_terminals_hist;
+
+select * from demipt2.gold_stg_dim_terminals;
+select * from demipt2.gold_stg_dim_terminals_del;
+select * from demipt2.gold_dwh_dim_terminals_hist;
+
+select * from demipt2.gold_meta_bank;
 
 select * from DBA_SEGMENTS;
 
@@ -15,12 +33,6 @@ select * from demipt2.gold_dwh_dim_cards_hist;
 select * from demipt2.gold_stg_dim_clients;
 select * from demipt2.gold_stg_dim_clients_del;
 select * from demipt2.gold_dwh_dim_clients_hist;
-
-select * from demipt2.gold_stg_dim_terminals;
-select * from demipt2.gold_stg_dim_terminals_del;
-select * from demipt2.gold_dwh_dim_terminals_hist;
-
-select * from demipt2.gold_meta_bank;
 
 SELECT * FROM BANK.ACCOUNTS a ;
 SELECT * FROM BANK.CARDS c ;

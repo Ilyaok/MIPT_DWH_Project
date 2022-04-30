@@ -18,7 +18,13 @@ def main():
     conn = get_jaydebeapi_connection(path=path_to_project, logger=logger)
     check_connection(conn, logger)
 
-    terminals_to_staging(conn=conn, path=path_to_project, logger=logger)
+    try:
+        terminals_to_staging(conn=conn, path=path_to_project, logger=logger)
+    except Exception as e:
+        logger.info(f'Function "terminals_to_staging" failed with Exception: {e}')
+        logger.info(f'ETL-process stopped')
+        conn.close()
+        return 1
 
     conn.close()
 

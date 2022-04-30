@@ -3,9 +3,10 @@
 import pandas as pd
 import os
 import re
+import codecs
 from datetime import datetime
 
-from py_scripts.utils import rename_and_move_file
+from py_scripts.utils import rename_and_move_file, make_sql_query
 
 # Функция для загрузки из Excel в Staging
 def terminals_to_staging (conn, path, logger):
@@ -27,12 +28,14 @@ def terminals_to_staging (conn, path, logger):
 
     if len(filenames_list) == 0:
         logger.info(f'No files matching pattern detected. Pattern: {pattern}')
+        exit()
 
     logger.info(f'List of files for processing: {filenames_list}')
 
     # Находим файл с наиболее свежей датой и выгружаем в датафрейм
 
     maxdate = datetime.min
+    filename_latest = ''
 
     for filename in filenames_list:
         date_time_str = filename[filename.find('_') + 1 : filename.find('.')]
@@ -60,9 +63,9 @@ def terminals_to_staging (conn, path, logger):
     logger.info(f'Actual date: {maxdate.date()}')
     logger.info(f'Date from metadata: {date_from_metadata}')
 
-    if maxdate.date() < date_from_metadata:
-        logger.info(f'No actual data to insert! No dataframe will be created, exit function "terminals_to_staging"')
-        return 0
+    if maxdate.date() <= date_from_metadata:
+        logger.info(f'Maxdate <= date_from_metadata! No actual data to insert! No dataframe will be created, exit function "terminals_to_staging"')
+        exit()
 
     # Сформируем датафрейм
     df = pd.read_excel(os.path.join(path, filename_latest))
@@ -71,40 +74,250 @@ def terminals_to_staging (conn, path, logger):
     logger.info(f'\n{df.to_string()}')
 
 
-    # Запишем датафрейм в стейджинговую таблицу GOLD_STG_DIM_TERMINALS
+    # Запишем датафрейм в стейджинговую таблицу GOLD_STG_DIM_TERMINALS_SOURCE
     # По условию задачи список терминалов - полносрезный, соответственно, инкрементальная загрузка не требуется
-    # Поэтому каждый день перезаписываем стейджинговую таблицу GOLD_STG_DIM_TERMINALS
+    # Поэтому каждый день перезаписываем таблицу GOLD_STG_DIM_TERMINALS_SOURCE
 
-    # Очистка стейджинга
-    try:
-        curs.execute("""delete from demipt2.gold_stg_dim_terminals""")
-        logger.info('Staging was cleared!')
-    except Exception as e:
-        logger.info(f'Staging was not cleared! Exception: {e}')
+    # Вставка данных в источнк. Если первая загрузка - вставляем данные в источник GOLD_STG_DIM_TERMINALS_SOURCE
+    # Если не первая загрузка - источник сохраняет данные от предыдущей загрузки (данные из Excel пойдут в Staging GOLD_STG_DIM_TERMINALS)
+    curs.execute("""select * from demipt2.gold_stg_dim_terminals_source""")
+    df_source = curs.fetchall()
+    if len(df_source) == 0:
+        logger.info(f'Source is empty. First filling of the source...')
+        try:
+            curs.executemany(f"""
+                insert into demipt2.GOLD_STG_DIM_TERMINALS (
+                    terminal_id,
+                    terminal_type,
+                    terminal_city,
+                    terminal_address,
+                    update_dt)
+                values (?,?,?,?,to_date('{maxdate.date()}', 'yyyy-mm-dd')) 
+                """, df.values.tolist())
+            logger.info('Data was inserted!')
+        except Exception as e:
+            logger.info(f'Data was not inserted into the source! Exception: {e}')
 
-    # Захват данных в стейджинг (кроме удалений)
-    try:
-        curs.executemany(f"""
-            insert into demipt2.GOLD_STG_DIM_TERMINALS (
+
+    # Выполнение пайплайна в SCD2
+
+    # 1. Очистка стейджинга
+    query = """
+            delete from demipt2.gold_stg_dim_terminals
+            """
+    make_sql_query(conn=conn, query=query, logger=logger)
+
+    # 1.1 Очистка стейджинга с удаленными значениями
+    query = """
+            delete from demipt2.gold_stg_dim_terminals_del
+            """
+    make_sql_query(conn=conn, query=query, logger=logger)
+
+    # 2. Захват данных в стейджинг (кроме удалений)
+    query = """
+        insert into demipt2.gold_stg_dim_terminals (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        from demipt2.gold_stg_dim_terminals_source
+        where 1=0
+            or update_dt > (
+            select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+            from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
+            or update_dt is null
+            """
+    make_sql_query(conn=conn, query=query, logger=logger)
+
+
+    # 3. Захват ключей для вычисления удалений
+    query = """
+            insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
+            select terminal_id from demipt2.gold_stg_dim_terminals_source
+            """
+    make_sql_query(conn=conn, query=query, logger=logger)
+
+    # 4. Выделяем "вставки" и "обновления" и вливаем их в приемник
+
+    # 4.1 Вставка новой строки или закрытие текущей версии по scd2
+    query = """
+            merge into demipt2.gold_dwh_dim_terminals_hist tgt
+            using (
+                select
+                    s.terminal_id,
+                    s.terminal_type,
+                    s.terminal_city,
+                    s.terminal_address,
+                    s.update_dt,
+                    'n' as  deleted_flg,
+                    s.update_dt as effective_from,
+                    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+                from demipt2.gold_stg_dim_terminals s
+                left join demipt2.gold_dwh_dim_terminals_hist t
+                on s.terminal_id = t.terminal_id
+                where
+                  1=1
+                  and t.terminal_id is  null
+                  or (
+                  t.terminal_id is not null
+                  and ( 1 = 0
+                        or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                        or (s.terminal_type is not null and t.terminal_type is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                        or (s.terminal_city is not null and t.terminal_city is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                        or (s.terminal_address is not null and t.terminal_address is null)
+                      )
+                  )
+            ) stg
+            on ( tgt.terminal_id = stg.terminal_id )
+            when not matched then insert (
                 terminal_id,
                 terminal_type,
                 terminal_city,
                 terminal_address,
-                update_dt)
-            values (?,?,?,?,to_date('{maxdate.date()}', 'yyyy-mm-dd')) 
-            """, df.values.tolist())
-        logger.info('Data was inserted!')
-    except Exception as e:
-        logger.info(f'Data was not inserted! Exception: {e}')
+                deleted_flg,
+                effective_from,
+                effective_to
+                )
+            values (
+                stg.terminal_id,
+                stg.terminal_type,
+                stg.terminal_city,
+                stg.terminal_address,
+                'n',
+                stg.effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd')
+                )
+            when matched then
+            update set effective_to = current_date - interval '1' second
+            """
+    make_sql_query(conn=conn, query=query, logger=logger)
 
-    curs.close()
+    # 4.2 Вставка новой версии по scd2 для случая апдейта
+    query = """
+            insert into demipt2.gold_dwh_dim_terminals_hist (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+            )
+            select
+                s.terminal_id,
+                s.terminal_type,
+                s.terminal_city,
+                s.terminal_address,
+                'n' as  deleted_flg,
+                current_date as effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+            from demipt2.gold_stg_dim_terminals s
+            left join demipt2.gold_dwh_dim_terminals_hist t
+            on s.terminal_id = t.terminal_id
+            where
+              1=1
+              and t.terminal_id is  null
+              or (
+              t.terminal_id is not null
+              and ( 1 = 0
+                    or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                    or (s.terminal_type is not null and t.terminal_type is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                    or (s.terminal_city is not null and t.terminal_city is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                    or (s.terminal_address is not null and t.terminal_address is null)
+                  )
+              )
+            and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+                    """
+    make_sql_query(conn=conn, query=query, logger=logger)
+
+    # 5. Проставляем в приемнике флаг для удаленных записей ('y' - для удаленных)
+
+    # 5.1 Вставляем актуальную запись по scd2
+    query = """
+        insert into demipt2.gold_dwh_dim_terminals_hist (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            deleted_flg,
+            effective_from,
+            effective_to
+            )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            'y' as deleted_flg,
+            current_date as effective_from,
+            to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+        from demipt2.gold_dwh_dim_terminals_hist
+        where terminal_id in (
+            select
+                t.terminal_id
+            from demipt2.gold_dwh_dim_terminals_hist t
+            left join demipt2.gold_stg_dim_terminals_del s
+            on t.terminal_id = s.terminal_id
+            where s.terminal_id is null
+            )
+            and deleted_flg = 'n'
+            and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+            """
+    make_sql_query(conn=conn, query=query, logger=logger)
+
+    # 5.2 Обновляем данные об удаленной записи по scd2
+    query = """
+        update demipt2.gold_dwh_dim_terminals_hist
+        set effective_to = current_date - interval '1' second
+        where terminal_id in (
+        select
+            t.terminal_id
+        from demipt2.gold_dwh_dim_terminals_hist t
+        left join demipt2.gold_stg_dim_terminals_del s
+        on t.terminal_id = s.terminal_id
+        where s.terminal_id is null
+        )
+        and deleted_flg = 'n'
+        and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+        """
+    make_sql_query(conn=conn, query=query, logger=logger)
+
+    # 6. Обновляем метаданные
+    query = """
+        update demipt2.gold_meta_bank
+        set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
+        where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+    """
+    make_sql_query(conn=conn, query=query, logger=logger)
+
+    # 7. Фиксируем транзакцию
+    conn.commit()
 
     source_path = os.path.join(path, filename_latest)
     target_path = os.path.join(path, 'archive', filename_latest)
 
     rename_and_move_file(source_path=source_path, target_path=target_path, logger=logger)
 
-    return 0
 
 
 

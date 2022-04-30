@@ -41,7 +41,7 @@ create table demipt2.gold_dwh_fact_pssprt_blcklst (
 create table demipt2.gold_dwh_dim_terminals_hist (
     terminal_id varchar2(10) primary key,
     terminal_type varchar2(10),
-    terminal_city varchar2(20),
+    terminal_city varchar2(50),
     terminal_address varchar2(100),
     deleted_flg char(1),
     effective_from date,

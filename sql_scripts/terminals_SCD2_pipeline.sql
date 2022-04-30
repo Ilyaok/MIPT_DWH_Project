@@ -1,126 +1,85 @@
 -- Инкрементальная загрузка данных по терминалам
 
--- 1. Очистка стейджинга с удаленными значениеями
+-- 1. Очистка стейджинга с удаленными значениями
+delete from demipt2.gold_stg_dim_terminals;
 delete from demipt2.gold_stg_dim_terminals_del;
 
--- 2. Захват данных в стейджинг (кроме удалений).
-insert into demipt2.gold_stg_dim_clients (
-    client_id,
-    last_name,
-    first_name,
-    patronymic,
-    date_of_birth,
-    passport_num,
-    passport_valid_to,
-    phone,
-    create_dt,
+-- 2. захват данных в стейджинг (кроме удалений).
+insert into demipt2.gold_stg_dim_terminals (
+    terminal_id,
+    terminal_type,
+    terminal_city,
+    terminal_address,
     update_dt
 )
 select
-    client_id,
-    last_name,
-    first_name,
-    patronymic,
-    date_of_birth,
-    passport_num,
-    passport_valid_to,
-    phone,
-    create_dt,
-    case
-    when update_dt is NULL then create_dt
-    else current_date end as update_dt
-from bank.clients
+    terminal_id,
+    terminal_type,
+    terminal_city,
+    terminal_address,
+    update_dt
+from demipt2.gold_stg_dim_terminals_source
 where 1=0
     or update_dt > (
     select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
     from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
     or update_dt is null;
 
-
 -- 3. Захват ключей для вычисления удалений.
-insert into demipt2.gold_stg_dim_clients_del ( client_id )
-select client_id from bank.clients;
-
+insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
+select terminal_id from demipt2.gold_stg_dim_terminals;
 
 -- 4. Выделяем "вставки" и "обновления" и вливаем их в приемник
 
 -- 4.1. вставка новой строки или закрытие текущей версии по scd2
-merge into demipt2.gold_dwh_dim_clients_hist tgt
+merge into demipt2.gold_dwh_dim_terminals_hist tgt
 using (
     select
-        s.client_id,
-        s.last_name,
-        s.first_name,
-        s.patronymic,
-        s.date_of_birth,
-        s.passport_num,
-        s.passport_valid_to,
-        s.phone,
+        s.terminal_id,
+        s.terminal_type,
+        s.terminal_city,
+        s.terminal_address,
         s.update_dt,
         'n' as  deleted_flg,
         s.update_dt as effective_from,
         to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
-    from demipt2.gold_stg_dim_clients s
-    left join demipt2.gold_dwh_dim_clients_hist t
-    on s.client_id = t.client_id
+    from demipt2.gold_stg_dim_terminals s
+    left join demipt2.gold_dwh_dim_terminals_hist t
+    on s.terminal_id = t.terminal_id
     where
       1=1
-      and t.client_id is  null
+      and t.terminal_id is  null
       or (
-      t.client_id is not null
+      t.terminal_id is not null
       and ( 1 = 0
-          or (s.last_name <> t.last_name) or (s.last_name is null and t.last_name is not null) or (s.last_name is not null and t.last_name is null)
+            or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+            or (s.terminal_type is not null and t.terminal_type is null)
           )
       and ( 1 = 0
-                or (s.first_name <> t.first_name) or (s.first_name is null and t.first_name is not null)
-                or (s.first_name is not null and t.first_name is null)
+            or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+            or (s.terminal_city is not null and t.terminal_city is null)
           )
       and ( 1 = 0
-                or (s.patronymic <> t.patronymic) or (s.patronymic is null and t.patronymic is not null)
-                or (s.patronymic is not null and t.patronymic is null)
-          )
-      and ( 1 = 0
-                or (s.date_of_birth <> t.date_of_birth) or (s.date_of_birth is null and t.date_of_birth is not null)
-                or (s.date_of_birth is not null and t.date_of_birth is null)
-          )
-      and ( 1 = 0
-                or (s.passport_num <> t.passport_num) or (s.passport_num is null and t.passport_num is not null)
-                or (s.passport_num is not null and t.passport_num is null)
-          )
-      and ( 1 = 0
-                or (s.passport_valid_to <> t.passport_valid_to) or
-           (s.passport_valid_to is null and t.passport_valid_to is not null)
-                or (s.passport_valid_to is not null and t.passport_valid_to is null)
-          )
-      and (1 = 0
-            or (s.phone <> t.phone) or (s.phone is null and t.phone is not null)
-               or (s.phone is not null and t.phone is null)
+            or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+            or (s.terminal_address is not null and t.terminal_address is null)
           )
       )
 ) stg
-on ( tgt.client_id = stg.client_id )
+on ( tgt.terminal_id = stg.terminal_id )
 when not matched then insert (
-    client_id,
-    last_name,
-    first_name,
-    patronymic,
-    date_of_birth,
-    passport_num,
-    passport_valid_to,
-    phone,
+    terminal_id,
+    terminal_type,
+    terminal_city,
+    terminal_address,
     deleted_flg,
     effective_from,
     effective_to
     )
 values (
-    stg.client_id,
-    stg.last_name,
-    stg.first_name,
-    stg.patronymic,
-    stg.date_of_birth,
-    stg.passport_num,
-    stg.passport_valid_to,
-    stg.phone,
+    stg.terminal_id,
+    stg.terminal_type,
+    stg.terminal_city,
+    stg.terminal_address,
     'n',
     stg.effective_from,
     to_date( '9999-01-01', 'yyyy-mm-dd')
@@ -130,66 +89,42 @@ update set effective_to = current_date - interval '1' second
 ;
 
 -- 4.2. вставка новой версии по scd2 для случая апдейта
-insert into demipt2.gold_dwh_dim_clients_hist (
-    client_id,
-    last_name,
-    first_name,
-    patronymic,
-    date_of_birth,
-    passport_num,
-    passport_valid_to,
-    phone,
+insert into demipt2.gold_dwh_dim_terminals_hist (
+    terminal_id,
+    terminal_type,
+    terminal_city,
+    terminal_address,
     deleted_flg,
     effective_from,
 	effective_to
 )
 select
-    s.client_id,
-    s.last_name,
-    s.first_name,
-    s.patronymic,
-    s.date_of_birth,
-    s.passport_num,
-    s.passport_valid_to,
-    s.phone,
+    s.terminal_id,
+    s.terminal_type,
+    s.terminal_city,
+    s.terminal_address,
     'n' as  deleted_flg,
     current_date as effective_from,
     to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
-from demipt2.gold_stg_dim_clients s
-left join demipt2.gold_dwh_dim_clients_hist t
-on s.client_id = t.client_id
-   where
+from demipt2.gold_stg_dim_terminals s
+left join demipt2.gold_dwh_dim_terminals_hist t
+on s.terminal_id = t.terminal_id
+    where
       1=1
-      and t.client_id is  null
+      and t.terminal_id is  null
       or (
-      t.client_id is not null
+      t.terminal_id is not null
       and ( 1 = 0
-          or (s.last_name <> t.last_name) or (s.last_name is null and t.last_name is not null) or (s.last_name is not null and t.last_name is null)
+            or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+            or (s.terminal_type is not null and t.terminal_type is null)
           )
       and ( 1 = 0
-                or (s.first_name <> t.first_name) or (s.first_name is null and t.first_name is not null)
-                or (s.first_name is not null and t.first_name is null)
+            or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+            or (s.terminal_city is not null and t.terminal_city is null)
           )
       and ( 1 = 0
-                or (s.patronymic <> t.patronymic) or (s.patronymic is null and t.patronymic is not null)
-                or (s.patronymic is not null and t.patronymic is null)
-          )
-      and ( 1 = 0
-                or (s.date_of_birth <> t.date_of_birth) or (s.date_of_birth is null and t.date_of_birth is not null)
-                or (s.date_of_birth is not null and t.date_of_birth is null)
-          )
-      and ( 1 = 0
-                or (s.passport_num <> t.passport_num) or (s.passport_num is null and t.passport_num is not null)
-                or (s.passport_num is not null and t.passport_num is null)
-          )
-      and ( 1 = 0
-                or (s.passport_valid_to <> t.passport_valid_to) or
-           (s.passport_valid_to is null and t.passport_valid_to is not null)
-                or (s.passport_valid_to is not null and t.passport_valid_to is null)
-          )
-      and (1 = 0
-            or (s.phone <> t.phone) or (s.phone is null and t.phone is not null)
-               or (s.phone is not null and t.phone is null)
+            or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+            or (s.terminal_address is not null and t.terminal_address is null)
           )
       )
     and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
@@ -198,54 +133,46 @@ on s.client_id = t.client_id
 -- 5. проставляем в приемнике флаг для удаленных записей ('y' - для удаленных)
 
 -- 5.1. вставляем актуальную запись по scd2
-insert into demipt2.gold_dwh_dim_clients_hist (
-    client_id,
-    last_name,
-    first_name,
-    patronymic,
-    date_of_birth,
-    passport_num,
-    passport_valid_to,
-    phone,
+insert into demipt2.gold_dwh_dim_terminals_hist (
+    terminal_id,
+    terminal_type,
+    terminal_city,
+    terminal_address,
 	deleted_flg,
 	effective_from,
 	effective_to
 	)
 select
-    client_id,
-    last_name,
-    first_name,
-    patronymic,
-    date_of_birth,
-    passport_num,
-    passport_valid_to,
-    phone,
+    terminal_id,
+    terminal_type,
+    terminal_city,
+    terminal_address,
 	'y' as deleted_flg,
 	current_date as effective_from,
 	to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
-from demipt2.gold_dwh_dim_clients_hist
-where client_id in (
+from demipt2.gold_dwh_dim_terminals_hist
+where terminal_id in (
     select
-        t.client_id
-    from demipt2.gold_dwh_dim_clients_hist t
-    left join demipt2.gold_stg_dim_clients_del s
-    on t.client_id = s.client_id
-    where s.client_id is null
+        t.terminal_id
+    from demipt2.gold_dwh_dim_terminals_hist t
+    left join demipt2.gold_stg_dim_terminals_del s
+    on t.terminal_id = s.terminal_id
+    where s.terminal_id is null
 	)
 	and deleted_flg = 'n'
 	and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
 ;
 
 -- 5.2. обновляем данные об удаленной записи по scd2
-update demipt2.gold_dwh_dim_clients_hist
+update demipt2.gold_dwh_dim_terminals_hist
 set effective_to = current_date - interval '1' second
-where client_id in (
+where terminal_id in (
     select
-        t.client_id
-    from demipt2.gold_dwh_dim_clients_hist t
-    left join demipt2.gold_stg_dim_clients_del s
-    on t.client_id = s.client_id
-    where s.client_id is null
+        t.terminal_id
+    from demipt2.gold_dwh_dim_terminals_hist t
+    left join demipt2.gold_stg_dim_terminals_del s
+    on t.terminal_id = s.terminal_id
+    where s.terminal_id is null
 	)
 	and deleted_flg = 'n'
 	and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
@@ -253,8 +180,9 @@ where client_id in (
 
 -- 6. Обновляем метаданные.
 update demipt2.gold_meta_bank
-set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_clients_hist )
-where table_db = 'bank' and table_name = 'clients' and ( select max(effective_from) from demipt2.gold_dwh_dim_clients_hist ) is not null;
+set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
+where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+;
 
 -- 7. Фиксируем транзакцию.
 commit;

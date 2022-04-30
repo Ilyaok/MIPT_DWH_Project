@@ -48,6 +48,31 @@ def check_connection(conn, logger):
         logger.info(f'Connection {conn} successfully checked')
 
 
+def make_sql_query(conn, query, logger):
+    '''
+    Выполняет SQL-запрос для заданного пайплайна
+
+    :param conn: коннектор к БД
+    :param query: SQL-запрос
+    :param logger: логгер
+    :return:
+    '''
+
+    logger.info(f'Making SQL-query:\n{query}')
+    try:
+        curs = conn.cursor()
+        curs.execute(query)
+    except Exception as e:
+        logger.info(f'Failed to perform query with Exception {e}')
+        try:
+            curs.execute('rollback')
+            logger.info('Rollback performed!')
+        except Exception as e:
+            logger.info(f'Rollback not performed with Exception {e}')
+    else:
+        logger.info(f'Query performed')
+
+
 def rename_and_move_file(source_path, target_path, logger):
     try:
         shutil.move(source_path, target_path)
