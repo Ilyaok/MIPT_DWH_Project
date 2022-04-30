@@ -5,6 +5,8 @@ import os
 import re
 from datetime import datetime
 
+from py_scripts.utils import rename_and_move_file
+
 # Функция для загрузки из Excel в Staging
 def terminals_to_staging (conn, path, logger):
     '''
@@ -96,6 +98,11 @@ def terminals_to_staging (conn, path, logger):
         logger.info(f'Data was not inserted! Exception: {e}')
 
     curs.close()
+
+    source_path = os.path.join(path, filename_latest)
+    target_path = os.path.join(path, 'archive', filename_latest)
+
+    rename_and_move_file(source_path=source_path, target_path=target_path, logger=logger)
 
     return 0
 

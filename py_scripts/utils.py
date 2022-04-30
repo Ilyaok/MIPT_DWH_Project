@@ -1,29 +1,8 @@
 import os
 import jaydebeapi
-import cx_Oracle
-import sqlalchemy
-import pandas as pd
+import shutil
 
-from sqlalchemy.exc import SQLAlchemyError
-
-def get_sqlalchemy_connection(logger):
-    '''
-    Функция получения коннектора к БД Oracle через sqlalchemy и cx_Oracle
-    :param logger: получение логгера
-    :return: коннектор к БД
-    '''
-
-    try:
-       engine = sqlalchemy.create_engine(
-           "oracle+cx_oracle://demipt2:peregrintook@de-oracle.chronosavant.ru:1521/?service_name=deoracle", arraysize=1000
-       )
-       orders_sql = """SELECT * FROM BANK.ACCOUNTS"""
-       df_orders = pd.read_sql(orders_sql, engine)
-       logger.info(df_orders)
-    except SQLAlchemyError as e:
-       logger.info(f'Connection failed with Exception: {e}')
-
-def get_jaydebeapi_connection(logger, path):
+def get_jaydebeapi_connection(path, logger):
     '''
     Функция получения коннектора к БД Oracle через jaydebeapi
     :param logger: получение логгера
@@ -67,6 +46,16 @@ def check_connection(conn, logger):
         logger.info(f'Connection {conn} is broken with Exception {e}')
     else:
         logger.info(f'Connection {conn} successfully checked')
+
+
+def rename_and_move_file(source_path, target_path, logger):
+    try:
+        shutil.move(source_path, target_path)
+        os.rename(target_path, target_path + '.backup')
+    except Exception as e:
+        logger.info(f'''File {source_path} wasn't backed up with Exception {e}''')
+    else:
+        logger.info(f'''File {source_path} was successfully backed up to {target_path}''')
 
 
 

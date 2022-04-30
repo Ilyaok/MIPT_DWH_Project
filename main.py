@@ -15,10 +15,10 @@ def main():
 
     logger.info(f'Connecting to Oracle...')
 
-    conn = get_jaydebeapi_connection(logger, path_to_project)
+    conn = get_jaydebeapi_connection(path=path_to_project, logger=logger)
     check_connection(conn, logger)
 
-    terminals_to_staging(conn, path_to_project, logger)
+    terminals_to_staging(conn=conn, path=path_to_project, logger=logger)
 
     conn.close()
 
