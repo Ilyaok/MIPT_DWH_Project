@@ -26,3 +26,19 @@
 2022-04-26 14:57:43,337 - multiprocessing - INFO - Connecting to Oracle...
 2022-04-26 14:57:44,847 - multiprocessing - INFO - Connected! Params: (<jaydebeapi.Connection object at 0x000001B9F82B6970>, <jaydebeapi.Cursor object at 0x000001B9F82B67F0>)
 2022-04-26 14:57:45,098 - multiprocessing - INFO - process shutting down
+2022-04-30 10:35:41,646 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 10:35:41,646 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 10:35:41,647 - multiprocessing - INFO - Connected! Params: conn
+2022-04-30 10:35:41,647 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 10:35:41,665 - multiprocessing - INFO - process shutting down
+2022-04-30 10:37:46,965 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 10:37:46,966 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 10:37:46,966 - multiprocessing - INFO - Connected! Params: conn
+2022-04-30 10:37:46,966 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 10:37:46,968 - multiprocessing - INFO - process shutting down
+2022-04-30 10:38:14,371 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 10:38:14,371 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 10:38:14,372 - multiprocessing - INFO - Connected! Params: conn
+2022-04-30 10:38:14,373 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 10:38:14,373 - multiprocessing - INFO - Connection closed
+2022-04-30 10:38:14,374 - multiprocessing - INFO - process shutting down
