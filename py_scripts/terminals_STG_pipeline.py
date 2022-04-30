@@ -42,8 +42,27 @@ def terminals_to_staging (conn, path, logger):
     logger.info(f'The actual file: {filename_latest}')
 
     # Сверим maxdate с актуальной датой в таблице метаданных
-    # Если
+    # Если maxdate меньше даты из demipt2.gold_meta_bank, значит, информация о терминалах актуальна на источнике
+    # В этом случае не записываем новую информацию и отбрасываем файл filename_latest в архив
 
+    curs = conn.cursor()
+
+    curs.execute("""
+        select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+        from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals'
+    """)
+
+    date_from_metadata = curs.fetchall()[0][0][:10]
+    date_from_metadata = datetime.strptime(date_from_metadata, '%Y-%m-%d').date()
+
+    logger.info(f'Actual date: {maxdate.date()}')
+    logger.info(f'Date from metadata: {date_from_metadata}')
+
+    if maxdate.date() < date_from_metadata:
+        logger.info(f'No actual data to insert! No dataframe will be created, exit function "terminals_to_staging"')
+        return 0
+
+    # Сформируем датафрейм
     df = pd.read_excel(os.path.join(path, filename_latest))
 
     logger.info('Created dataframe:')
@@ -53,8 +72,6 @@ def terminals_to_staging (conn, path, logger):
     # Запишем датафрейм в стейджинговую таблицу GOLD_STG_DIM_TERMINALS
     # По условию задачи список терминалов - полносрезный, соответственно, инкрементальная загрузка не требуется
     # Поэтому каждый день перезаписываем стейджинговую таблицу GOLD_STG_DIM_TERMINALS
-
-    curs = conn.cursor()
 
     # Очистка стейджинга
     try:
@@ -79,6 +96,8 @@ def terminals_to_staging (conn, path, logger):
         logger.info(f'Data was not inserted! Exception: {e}')
 
     curs.close()
+
+    return 0
 
 
 

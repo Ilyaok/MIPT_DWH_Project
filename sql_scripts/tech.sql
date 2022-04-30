@@ -42,6 +42,7 @@ SELECT * FROM BANK.CLIENTS c ;
 -- drop table demipt2.gold_stg_dim_terminals_del;
 -- drop table demipt2.gold_dwh_dim_terminals_hist;
 
-
+select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals';
 
 
