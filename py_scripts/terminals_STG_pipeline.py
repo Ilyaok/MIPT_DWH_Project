@@ -16,20 +16,20 @@ def terminals_to_staging (conn, path, logger):
     '''
 
     # Создадим список всех файлов по паттерну terminals_DDMMYYYY.xlsx
-
-
     pattern = 'terminals_[0-9]+.\.xlsx'
 
     logger.info(f'Start parsing data about Terminals. Path: {path} Pattern: {pattern}')
 
-    files = [f for f in os.listdir(path) if re.match(r'terminals_[0-9]+.\.xlsx', f)]
+    filenames_list = [f for f in os.listdir(path) if re.match(r'terminals_[0-9]+.\.xlsx', f)]
 
-    if len(files) == 0:
+    if len(filenames_list) == 0:
         logger.info(f'No files matching pattern detected. Pattern: {pattern}')
 
-    print(files)
+    logger.info(f'List of files for processing: {filenames_list}')
 
-     # df = pd.read_excel()
+    df = pd.read_excel(os.path.join(path, filenames_list[0]))
+
+    logger.info(df)
 
 
 

@@ -39,7 +39,7 @@ def check_connection(conn, logger):
 
     try:
         logger.info(f'Checking connection: {conn} by query: {query}')
-        curs = conn.get_cursor()
+        curs = conn.cursor()
         curs.execute("select 1 from DUAL")
     except Exception as e:
         logger.info(f'Connection {conn} is broken with Exception {e}')

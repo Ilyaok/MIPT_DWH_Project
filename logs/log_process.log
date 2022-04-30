@@ -62,3 +62,92 @@
 2022-04-30 11:32:17,833 - multiprocessing - INFO - Connecting to Oracle...
 2022-04-30 11:32:17,879 - multiprocessing - INFO - Setting connection failed with Exception: No JVM shared library file (jvm.dll) found. Try setting up the JAVA_HOME environment variable properly.
 2022-04-30 11:32:17,883 - multiprocessing - INFO - process shutting down
+2022-04-30 11:35:54,721 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:35:54,721 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:35:54,980 - multiprocessing - INFO - Setting connection failed with Exception: No JVM shared library file (jvm.dll) found. Try setting up the JAVA_HOME environment variable properly.
+2022-04-30 11:35:54,985 - multiprocessing - INFO - process shutting down
+2022-04-30 11:39:33,630 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:39:33,630 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:39:33,880 - multiprocessing - INFO - Setting connection failed with Exception: No JVM shared library file (jvm.dll) found. Try setting up the JAVA_HOME environment variable properly.
+2022-04-30 11:39:33,883 - multiprocessing - INFO - process shutting down
+2022-04-30 11:49:52,760 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:49:52,761 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:49:58,469 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x000001C582DA5B70>
+2022-04-30 11:49:58,469 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x000001C582DA5B70> by query: select 1 from DUAL
+2022-04-30 11:49:58,470 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x000001C582DA5B70> is broken with Exception 'Connection' object has no attribute 'get_cursor'
+2022-04-30 11:49:58,471 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 11:49:58,517 - multiprocessing - INFO - Connection closed
+2022-04-30 11:49:58,577 - multiprocessing - INFO - process shutting down
+2022-04-30 11:51:11,452 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:51:11,452 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:51:15,184 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x00000226856BDBA0>
+2022-04-30 11:51:15,184 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x00000226856BDBA0> by query: select 1 from DUAL
+2022-04-30 11:51:16,153 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x00000226856BDBA0> successfully checked
+2022-04-30 11:51:16,153 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 11:51:16,266 - multiprocessing - INFO - Connection closed
+2022-04-30 11:51:16,345 - multiprocessing - INFO - process shutting down
+2022-04-30 11:52:11,047 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:52:11,048 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:52:14,954 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x000001D510DA5B70>
+2022-04-30 11:52:14,954 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x000001D510DA5B70> by query: select 1 from DUAL
+2022-04-30 11:52:16,515 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x000001D510DA5B70> successfully checked
+2022-04-30 11:52:16,515 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 11:52:16,517 - multiprocessing - INFO - ['terminals_01032021.xlsx', 'terminals_02032021.xlsx', 'terminals_03032021.xlsx']
+2022-04-30 11:52:16,540 - multiprocessing - INFO - Connection closed
+2022-04-30 11:52:16,555 - multiprocessing - INFO - process shutting down
+2022-04-30 12:09:11,762 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 12:09:11,763 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 12:09:15,134 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x000001BC0E335B70>
+2022-04-30 12:09:15,134 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x000001BC0E335B70> by query: select 1 from DUAL
+2022-04-30 12:09:15,831 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x000001BC0E335B70> successfully checked
+2022-04-30 12:09:15,831 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 12:09:15,833 - multiprocessing - INFO - List of files for processing: ['terminals_01032021.xlsx', 'terminals_02032021.xlsx', 'terminals_03032021.xlsx']
+2022-04-30 12:09:15,853 - multiprocessing - INFO - Connection closed
+2022-04-30 12:09:15,867 - multiprocessing - INFO - process shutting down
+2022-04-30 12:16:40,314 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 12:16:40,315 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 12:16:44,119 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x0000023617435B40>
+2022-04-30 12:16:44,119 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x0000023617435B40> by query: select 1 from DUAL
+2022-04-30 12:16:45,223 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x0000023617435B40> successfully checked
+2022-04-30 12:16:45,224 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 12:16:45,225 - multiprocessing - INFO - List of files for processing: ['terminals_01032021.xlsx', 'terminals_02032021.xlsx', 'terminals_03032021.xlsx']
+2022-04-30 12:16:45,386 - multiprocessing - INFO - process shutting down
+2022-04-30 12:17:29,398 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 12:17:29,399 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 12:17:33,406 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x000001A27C095B40>
+2022-04-30 12:17:33,407 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x000001A27C095B40> by query: select 1 from DUAL
+2022-04-30 12:17:33,982 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x000001A27C095B40> successfully checked
+2022-04-30 12:17:33,982 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 12:17:33,983 - multiprocessing - INFO - List of files for processing: ['terminals_01032021.xlsx', 'terminals_02032021.xlsx', 'terminals_03032021.xlsx']
+2022-04-30 12:17:34,031 - multiprocessing - INFO - process shutting down
+2022-04-30 12:18:30,393 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 12:18:30,393 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 12:18:33,440 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x00000275B9405B40>
+2022-04-30 12:18:33,440 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x00000275B9405B40> by query: select 1 from DUAL
+2022-04-30 12:18:33,838 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x00000275B9405B40> successfully checked
+2022-04-30 12:18:33,838 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 12:18:33,839 - multiprocessing - INFO - List of files for processing: ['terminals_01032021.xlsx', 'terminals_02032021.xlsx', 'terminals_03032021.xlsx']
+2022-04-30 12:18:33,940 - multiprocessing - INFO - process shutting down
+2022-04-30 12:21:49,239 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 12:21:49,239 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 12:21:52,026 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x000002AB121F9B40>
+2022-04-30 12:21:52,026 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x000002AB121F9B40> by query: select 1 from DUAL
+2022-04-30 12:21:52,453 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x000002AB121F9B40> successfully checked
+2022-04-30 12:21:52,453 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 12:21:52,454 - multiprocessing - INFO - List of files for processing: ['terminals_01032021.xlsx', 'terminals_02032021.xlsx', 'terminals_03032021.xlsx']
+2022-04-30 12:21:53,883 - multiprocessing - INFO -     terminal_id  ...                              terminal_address
+0         A1096  ...  г. Кемерово, 1-й Электрозаводский пер., д. 3
+1         A1099  ...          г. Баймак, Б. Лёвшинский пер., д. 37
+2         A1203  ...    г. Стерлитамак, Электрозаводская ул., д. 3
+3         A1553  ...            г. Воронеж, пр. Энтузиастов, д. 44
+4         A1641  ...        г. Москва, 1-й Южнопортовый пр., д. 26
+..          ...  ...                                           ...
+145       P9862  ...     г. Новокузнецк, Б. Лёвшинский пер., д. 21
+146       P9889  ...               г. Усмань, Шушенская ул., д. 14
+147       P9974  ...                   г. Томск, ул. Шухова, д. 22
+148       P9977  ...    г. Нижний Новгород, М. Юшуньская ул., д. 1
+149       P9978  ...          г. Знаменск, Электролитный пр., д. 5
+
+[150 rows x 4 columns]
+2022-04-30 12:21:53,967 - multiprocessing - INFO - Connection closed
+2022-04-30 12:21:53,990 - multiprocessing - INFO - process shutting down
