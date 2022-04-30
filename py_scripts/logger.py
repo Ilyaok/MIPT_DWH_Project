@@ -15,7 +15,6 @@ def create_logger(path):
     '''
 
     path_to_logs = os.path.join(path, "logs", "log_process.log")
-    print(path_to_logs)
 
     # Блок создания логгера
     logger = multiprocessing.get_logger()

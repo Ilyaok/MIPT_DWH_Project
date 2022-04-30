@@ -42,3 +42,23 @@
 2022-04-30 10:38:14,373 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
 2022-04-30 10:38:14,373 - multiprocessing - INFO - Connection closed
 2022-04-30 10:38:14,374 - multiprocessing - INFO - process shutting down
+2022-04-30 11:01:59,375 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:01:59,376 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:01:59,377 - multiprocessing - INFO - Connected! Params: conn
+2022-04-30 11:01:59,377 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 11:01:59,378 - multiprocessing - INFO - Connection closed
+2022-04-30 11:01:59,378 - multiprocessing - INFO - process shutting down
+2022-04-30 11:28:02,694 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:28:02,695 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:28:03,074 - multiprocessing - INFO - Setting connection failed with Exception: No JVM shared library file (jvm.dll) found. Try setting up the JAVA_HOME environment variable properly.
+2022-04-30 11:28:03,079 - multiprocessing - INFO - process shutting down
+2022-04-30 11:30:22,774 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:30:22,774 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:30:22,775 - multiprocessing - INFO - process shutting down
+2022-04-30 11:31:24,534 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:31:24,534 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:31:24,536 - multiprocessing - INFO - process shutting down
+2022-04-30 11:32:17,833 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 11:32:17,833 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 11:32:17,879 - multiprocessing - INFO - Setting connection failed with Exception: No JVM shared library file (jvm.dll) found. Try setting up the JAVA_HOME environment variable properly.
+2022-04-30 11:32:17,883 - multiprocessing - INFO - process shutting down
