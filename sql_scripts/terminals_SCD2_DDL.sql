@@ -4,11 +4,9 @@
 create table demipt2.gold_stg_dim_terminals (
     terminal_id varchar2(10),
     terminal_type varchar2(10),
-    terminal_city varchar2(20),
+    terminal_city varchar2(50),
     terminal_address varchar2(100),
-    deleted_flg char(1),
-    effective_from date,
-	effective_to date
+    update_dt date
 );
 
 -- Создание таблицы по удалениям

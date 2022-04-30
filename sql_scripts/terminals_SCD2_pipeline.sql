@@ -1,8 +1,7 @@
 -- Инкрементальная загрузка данных по терминалам
 
--- 1. Очистка стейджингов.
-delete from demipt2.gold_stg_dim_clients;
-delete from demipt2.gold_stg_dim_clients_del;
+-- 1. Очистка стейджинга с удаленными значениеями
+delete from demipt2.gold_stg_dim_terminals_del;
 
 -- 2. Захват данных в стейджинг (кроме удалений).
 insert into demipt2.gold_stg_dim_clients (
@@ -34,7 +33,7 @@ from bank.clients
 where 1=0
     or update_dt > (
     select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
-    from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'clients' )
+    from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
     or update_dt is null;
 
 

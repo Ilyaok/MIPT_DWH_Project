@@ -1,7 +1,29 @@
 import os
 import jaydebeapi
+import cx_Oracle
+import sqlalchemy
+import pandas as pd
 
-def get_connection(logger, path):
+from sqlalchemy.exc import SQLAlchemyError
+
+def get_sqlalchemy_connection(logger):
+    '''
+    Функция получения коннектора к БД Oracle через sqlalchemy и cx_Oracle
+    :param logger: получение логгера
+    :return: коннектор к БД
+    '''
+
+    try:
+       engine = sqlalchemy.create_engine(
+           "oracle+cx_oracle://demipt2:peregrintook@de-oracle.chronosavant.ru:1521/?service_name=deoracle", arraysize=1000
+       )
+       orders_sql = """SELECT * FROM BANK.ACCOUNTS"""
+       df_orders = pd.read_sql(orders_sql, engine)
+       logger.info(df_orders)
+    except SQLAlchemyError as e:
+       logger.info(f'Connection failed with Exception: {e}')
+
+def get_jaydebeapi_connection(logger, path):
     '''
     Функция получения коннектора к БД Oracle через jaydebeapi
     :param logger: получение логгера

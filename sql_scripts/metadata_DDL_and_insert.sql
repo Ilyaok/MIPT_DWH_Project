@@ -14,3 +14,6 @@ values ( 'bank', 'cards',  to_date( '1900-01-01', 'yyyy-mm-dd') );
 
 insert into demipt2.gold_meta_bank(table_db, table_name, last_update_dt)
 values ( 'bank', 'clients',  to_date( '1900-01-01', 'yyyy-mm-dd') );
+
+insert into demipt2.gold_meta_bank(table_db, table_name, last_update_dt)
+values ( 'bank', 'terminals',  to_date( '1900-01-01', 'yyyy-mm-dd') );
