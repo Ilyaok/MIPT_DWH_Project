@@ -30468,3 +30468,1119 @@ delete from demipt2.gold_stg_dim_terminals_del
 2022-04-30 23:13:05,934 - multiprocessing - INFO - File C:\Users\Ilya\PycharmProjects\GOLD\terminals_07032021.xlsx wasn't backed up with Exception [WinError 183] Невозможно создать файл, так как он уже существует: 'C:\\Users\\Ilya\\PycharmProjects\\GOLD\\archive\\terminals_07032021.xlsx' -> 'C:\\Users\\Ilya\\PycharmProjects\\GOLD\\archive\\terminals_07032021.xlsx.backup'
 2022-04-30 23:13:05,949 - multiprocessing - INFO - Connection closed
 2022-04-30 23:13:05,961 - multiprocessing - INFO - process shutting down
+2022-04-30 23:22:24,455 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:22:24,456 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:22:28,410 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x00000154E2049E10>
+2022-04-30 23:22:28,411 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x00000154E2049E10> by query: select 1 from DUAL
+2022-04-30 23:22:29,269 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x00000154E2049E10> successfully checked
+2022-04-30 23:22:29,270 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:22:29,290 - multiprocessing - INFO - List of files for processing: ['terminals_01032021.xlsx']
+2022-04-30 23:22:29,295 - multiprocessing - INFO - The actual file: terminals_01032021.xlsx
+2022-04-30 23:22:29,312 - multiprocessing - INFO - Actual date: 2021-03-01
+2022-04-30 23:22:29,312 - multiprocessing - INFO - Date from metadata: 2021-03-05
+2022-04-30 23:22:29,312 - multiprocessing - INFO - Maxdate <= date_from_metadata! No actual data to insert! No dataframe will be created, exit function "terminals_to_staging"
+2022-04-30 23:22:29,322 - multiprocessing - INFO - process shutting down
+2022-04-30 23:22:42,695 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:22:42,695 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:22:45,454 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x0000025BE4575E10>
+2022-04-30 23:22:45,454 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x0000025BE4575E10> by query: select 1 from DUAL
+2022-04-30 23:22:45,969 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x0000025BE4575E10> successfully checked
+2022-04-30 23:22:45,969 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:22:45,970 - multiprocessing - INFO - List of files for processing: ['terminals_01032021.xlsx']
+2022-04-30 23:22:45,976 - multiprocessing - INFO - The actual file: terminals_01032021.xlsx
+2022-04-30 23:22:46,018 - multiprocessing - INFO - Actual date: 2021-03-01
+2022-04-30 23:22:46,018 - multiprocessing - INFO - Date from metadata: 1900-01-01
+2022-04-30 23:22:47,202 - multiprocessing - INFO - Created dataframe:
+2022-04-30 23:22:47,214 - multiprocessing - INFO - 
+    terminal_id terminal_type      terminal_city                                terminal_address
+0         A1096           ATM           Кемерово    г. Кемерово, 1-й Электрозаводский пер., д. 3
+1         A1099           ATM             Баймак            г. Баймак, Б. Лёвшинский пер., д. 37
+2         A1203           ATM        Стерлитамак      г. Стерлитамак, Электрозаводская ул., д. 3
+3         A1553           ATM            Воронеж              г. Воронеж, пр. Энтузиастов, д. 44
+4         A1641           ATM             Москва          г. Москва, 1-й Южнопортовый пр., д. 26
+5         A1642           ATM     Новокуйбышевск   г. Новокуйбышевск, 1-й Щипковский пер., д. 19
+6         A1882           ATM            Иркутск                  г. Иркутск, Юровская ул., д. 3
+7         A2293           ATM          Краснодар                  г. Краснодар, Южный пр., д. 20
+8         A2674           ATM              Истра                      г. Истра, ул. Юности, д. 8
+9         A2758           ATM          Жигулёвск           г. Жигулёвск, М. Юшуньская ул., д. 25
+10        A2822           ATM              Томск                  г. Томск, Юрловский пр., д. 22
+11        A3174           ATM             Москва           г. Москва, 1-й Щемиловский пер., д. 8
+12        A3231           ATM             Москва                   г. Москва, ул. Щепкина, д. 17
+13        A3275           ATM           Петухово             г. Петухово, Элеваторная ул., д. 39
+14        A3618           ATM       Малая Вишера         г. Малая Вишера, Элеваторная ул., д. 39
+15        A3763           ATM              Лиски                     г. Лиски, пл. Юности, д. 38
+16        A3786           ATM            Воронеж           г. Воронеж, 4-й Щипковский пер., д. 7
+17        A3800           ATM            Воронеж             г. Воронеж, М. Юшуньская ул., д. 25
+18        A3939           ATM            Воронеж                  г. Воронеж, ул. Щепкина, д. 17
+19        A3961           ATM              Бийск           г. Бийск, 2-й Щемиловский пер., д. 18
+20        A4274           ATM               Тула                г. Тула, Южнопортовая ул., д. 31
+21        A4322           ATM        Новокузнецк                г. Новокузнецк, ул. Щипок, д. 17
+22        A4352           ATM          Кировград             г. Кировград, Щёлковский пр., д. 37
+23        A4418           ATM             Москва               г. Москва, пр. Энтузиастов, д. 26
+24        A4902           ATM           Тольятти          г. Тольятти, ул. Степана Шутова, д. 42
+25        A4956           ATM             Баймак               г. Баймак, Электродный пр., д. 14
+26        A5083           ATM             Донецк            г. Донецк, ул. Степана Шутова, д. 42
+27        A5128           ATM               Тула                      г. Тула, ул. Шухова, д. 22
+28        A5188           ATM      Верхнеуральск       г. Верхнеуральск, Элеваторный пер., д. 24
+29        A5235           ATM      Верхняя Пышма             г. Верхняя Пышма, пл. Юности, д. 38
+30        A5301           ATM            Воронеж              г. Воронеж, Элеваторная ул., д. 39
+31        A5308           ATM    Нижний Новгород      г. Нижний Новгород, пр. Энтузиастов, д. 44
+32        A5532           ATM             Усмань          г. Усмань, Электрозаводская ул., д. 45
+33        A5587           ATM              Томск                 г. Томск, Щёлковский пр., д. 37
+34        A5602           ATM             Ворсма           г. Ворсма, 2-й Южнопортовый пр., д. 4
+35        A5652           ATM             Кашира              г. Кашира, Южнопортовая ул., д. 31
+36        A5830           ATM           Харабали            г. Харабали, Щербаковская ул., д. 36
+37        A6069           ATM          Махачкала        г. Махачкала, Электрозаводская ул., д. 3
+38        A6204           ATM          Котельнич       г. Котельнич, 1-й Южнопортовый пр., д. 26
+39        A6387           ATM             Кашира                   г. Кашира, Юровская ул., д. 3
+40        A6481           ATM       Благовещенск           г. Благовещенск, Шушенская ул., д. 14
+41        A6603           ATM       Усть-Джегута           г. Усть-Джегута, Юрьевская ул., д. 14
+42        A6659           ATM     Новокуйбышевск         г. Новокуйбышевск, Щукинская ул., д. 26
+43        A6672           ATM      Верхнеуральск       г. Верхнеуральск, Щербаковская ул., д. 36
+44        A6714           ATM            Ангарск              г. Ангарск, Элеваторная ул., д. 39
+45        A6755           ATM          Котельнич                  г. Котельнич, ул. Шухова, д. 9
+46        A6766           ATM  Каменск-Уральский     г. Каменск-Уральский, Щёлковский пр., д. 37
+47        A6773           ATM             Донецк              г. Донецк, Элеваторный пер., д. 24
+48        A6821           ATM       Малая Вишера              г. Малая Вишера, пл. Юности, д. 38
+49        A7123           ATM            Иркутск                г. Иркутск, Щукинская ул., д. 26
+50        A7275           ATM              Бийск             г. Бийск, ул. Степана Шутова, д. 37
+51        A7368           ATM          Челябинск         г. Челябинск, Энергетический пр., д. 38
+52        A7483           ATM          Краснодар                 г. Краснодар, ул. Юности, д. 10
+53        A7709           ATM             Москва              г. Москва, Элеваторный пер., д. 24
+54        A7800           ATM        Новоуральск   г. Новоуральск, ул. Сергея Эйзенштейна, д. 41
+55        A7859           ATM          Жигулёвск           г. Жигулёвск, Элеваторный пер., д. 26
+56        A7919           ATM       Благовещенск        г. Благовещенск, Щербаковская ул., д. 36
+57        A7985           ATM           Кемерово                   г. Кемерово, ул. Щипок, д. 17
+58        A8107           ATM           Знаменск          г. Знаменск, 4-й Щипковский пер., д. 7
+59        A8244           ATM             Ворсма               г. Ворсма, М. Юшуньская ул., д. 1
+60        A8312           ATM    Санкт-Петербург        г. Санкт-Петербург, Щукинская ул., д. 26
+61        A8367           ATM     Ростов-на-Дону           г. Ростов-на-Дону, ул. Щепкина, д. 17
+62        A8454           ATM              Бийск               г. Бийск, Щербаковская ул., д. 36
+63        A8616           ATM           Харабали                  г. Харабали, пл. Юности, д. 38
+64        A8676           ATM             Кашира                     г. Кашира, ул. Щипок, д. 17
+65        A8725           ATM            Воронеж              г. Воронеж, М. Юшуньская ул., д. 1
+66        A8966           ATM        Новоуральск                г. Новоуральск, Южный пр., д. 44
+67        A9007           ATM        Новосибирск          г. Новосибирск, Электродная ул., д. 18
+68        A9052           ATM             Баймак               г. Баймак, Элеваторная ул., д. 39
+69        A9109           ATM          Котельнич         г. Котельнич, Б. Лёвшинский пер., д. 37
+70        A9191           ATM              Лиски            г. Лиски, 1-й Щемиловский пер., д. 8
+71        A9257           ATM          Челябинск        г. Челябинск, Электрозаводская ул., д. 3
+72        A9314           ATM          Кировград       г. Кировград, 2-й Щемиловский пер., д. 16
+73        A9547           ATM  Каменск-Уральский          г. Каменск-Уральский, ул. Щипок, д. 17
+74        A9748           ATM      Верхняя Пышма       г. Верхняя Пышма, М. Юшуньская ул., д. 25
+75        A9878           ATM             Тюмень            г. Тюмень, ул. Степана Шутова, д. 37
+76        P1107           POS       Усть-Джегута       г. Усть-Джегута, Электролитный пр., д. 49
+77        P1113           POS     Новокуйбышевск       г. Новокуйбышевск, М. Юшуньская ул., д. 1
+78        P1178           POS    Нижний Новгород     г. Нижний Новгород, М. Юшуньская ул., д. 25
+79        P1201           POS            Иркутск           г. Иркутск, Энергетическая ул., д. 44
+80        P1203           POS             Москва            г. Москва, ул. Степана Шутова, д. 37
+81        P1288           POS            Бабаево            г. Бабаево, Электролитный пр., д. 49
+82        P1397           POS       Усть-Джегута               г. Усть-Джегута, Южный пр., д. 20
+83        P1459           POS           Тольятти            г. Тольятти, Элеваторный пер., д. 35
+84        P1550           POS              Истра             г. Истра, ул. Степана Шутова, д. 42
+85        P1594           POS           Петухово               г. Петухово, Шушенская ул., д. 14
+86        P1778           POS             Ворсма                    г. Ворсма, пл. Юности, д. 38
+87        P1887           POS       Благовещенск             г. Благовещенск, Юровская ул., д. 3
+88        P1949           POS          Кировград                г. Кировград, ул. Щепкина, д. 44
+89        P2046           POS               Тула                       г. Тула, ул. Шухова, д. 9
+90        P2230           POS             Москва          г. Москва, 2-й Щемиловский пер., д. 16
+91        P2250           POS        Новосибирск         г. Новосибирск, Электролитный пр., д. 5
+92        P2285           POS        Новосибирск              г. Новосибирск, ул. Щепкина, д. 44
+93        P2585           POS             Москва                     г. Москва, ул. Юности, д. 8
+94        P2829           POS          Челябинск     г. Челябинск, ул. Сергея Эйзенштейна, д. 41
+95        P3128           POS          Жигулёвск           г. Жигулёвск, М. Юшуньская ул., д. 25
+96        P3149           POS            Ангарск            г. Ангарск, Электролитный пр., д. 49
+97        P3218           POS         Светлоград          г. Светлоград, Южнопортовая ул., д. 31
+98        P3292           POS          Махачкала                 г. Махачкала, ул. Юности, д. 10
+99        P3317           POS        Новокузнецк     г. Новокузнецк, 2-й Щемиловский пер., д. 18
+100       P3451           POS      Верхнеуральск       г. Верхнеуральск, Электролитный пр., д. 5
+101       P3462           POS           Тольятти            г. Тольятти, Электролитный пр., д. 5
+102       P3808           POS             Москва      г. Москва, 1-й Электрозаводский пер., д. 3
+103       P3814           POS           Тольятти          г. Тольятти, Энергетический пр., д. 38
+104       P4478           POS     Ростов-на-Дону  г. Ростов-на-Дону, 2-й Щемиловский пер., д. 18
+105       P4705           POS        Новосибирск          г. Новосибирск, Электродная ул., д. 18
+106       P4744           POS      Верхняя Пышма        г. Верхняя Пышма, пр. Энтузиастов, д. 44
+107       P4829           POS           Тольятти            г. Тольятти, Щербаковская ул., д. 36
+108       P4853           POS            Воронеж              г. Воронеж, Электродная ул., д. 18
+109       P4910           POS        Стерлитамак            г. Стерлитамак, Юрловский пр., д. 22
+110       P5262           POS    Санкт-Петербург           г. Санкт-Петербург, ул. Шухова, д. 22
+111       P5456           POS             Москва                    г. Москва, ул. Шухова, д. 22
+112       P5758           POS            Бабаево                г. Бабаево, Шушенская ул., д. 14
+113       P5839           POS             Москва          г. Москва, 1-й Южнопортовый пр., д. 26
+114       P5893           POS          Махачкала           г. Махачкала, Элеваторный пер., д. 26
+115       P5930           POS             Москва        г. Москва, ул. Сергея Эйзенштейна, д. 41
+116       P6147           POS           Знаменск                  г. Знаменск, ул. Юности, д. 10
+117       P6162           POS              Истра            г. Истра, Электрозаводская ул., д. 3
+118       P6335           POS             Москва              г. Москва, М. Юшуньская ул., д. 25
+119       P6541           POS  Каменск-Уральский   г. Каменск-Уральский, Электролитный пр., д. 5
+120       P6759           POS             Москва                 г. Москва, Шушенская ул., д. 14
+121       P6876           POS            Бабаево           г. Бабаево, 4-й Щипковский пер., д. 7
+122       P6934           POS       Малая Вишера         г. Малая Вишера, пр. Энтузиастов, д. 44
+123       P6946           POS              Лиски                      г. Лиски, Южный пр., д. 20
+124       P6949           POS         Светлоград       г. Светлоград, 1-й Щемиловский пер., д. 8
+125       P6958           POS             Усмань               г. Усмань, Электродная ул., д. 18
+126       P7403           POS           Петухово          г. Петухово, ул. Степана Шутова, д. 42
+127       P7451           POS        Новосибирск              г. Новосибирск, ул. Щепкина, д. 17
+128       P7575           POS           Харабали    г. Харабали, 1-й Электрозаводский пер., д. 3
+129       P7869           POS     Ростов-на-Дону         г. Ростов-на-Дону, Шушенская ул., д. 14
+130       P8072           POS            Ангарск         г. Ангарск, 2-й Щемиловский пер., д. 18
+131       P8114           POS             Донецк                    г. Донецк, пл. Юности, д. 27
+132       P8225           POS    Санкт-Петербург      г. Санкт-Петербург, пр. Энтузиастов, д. 44
+133       P8262           POS          Краснодар        г. Краснодар, 2-й Южнопортовый пр., д. 4
+134       P8410           POS            Воронеж                  г. Воронеж, Юровская ул., д. 3
+135       P8663           POS           Кемерово                  г. Кемерово, пл. Юности, д. 27
+136       P8667           POS             Тюмень           г. Тюмень, Электрозаводская ул., д. 3
+137       P8712           POS        Новоуральск       г. Новоуральск, Б. Лёвшинский пер., д. 21
+138       P8714           POS         Светлоград          г. Светлоград, Элеваторный пер., д. 24
+139       P8946           POS           Тольятти        г. Тольятти, 2-й Щемиловский пер., д. 16
+140       P9037           POS        Новосибирск               г. Новосибирск, ул. Юности, д. 10
+141       P9098           POS        Стерлитамак              г. Стерлитамак, Юровская ул., д. 3
+142       P9464           POS            Воронеж                    г. Воронеж, Южный пр., д. 20
+143       P9579           POS             Москва                   г. Москва, Юровская ул., д. 3
+144       P9606           POS             Тюмень              г. Тюмень, Щербаковская ул., д. 36
+145       P9862           POS        Новокузнецк       г. Новокузнецк, Б. Лёвшинский пер., д. 21
+146       P9889           POS             Усмань                 г. Усмань, Шушенская ул., д. 14
+147       P9974           POS              Томск                     г. Томск, ул. Шухова, д. 22
+148       P9977           POS    Нижний Новгород      г. Нижний Новгород, М. Юшуньская ул., д. 1
+149       P9978           POS           Знаменск            г. Знаменск, Электролитный пр., д. 5
+2022-04-30 23:22:47,235 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:22:47,243 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,336 - multiprocessing - INFO - Data was inserted into demipt2.gold_stg_dim_terminals_source!
+2022-04-30 23:22:47,336 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals
+            
+2022-04-30 23:22:47,343 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,343 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_del
+            
+2022-04-30 23:22:47,349 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,349 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_stg_dim_terminals (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        from demipt2.gold_stg_dim_terminals_source
+        where 1=0
+            or update_dt > (
+            select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+            from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
+            or update_dt is null
+            
+2022-04-30 23:22:47,357 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,358 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
+            select terminal_id from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:22:47,364 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,364 - multiprocessing - INFO - Making SQL-query:
+
+            merge into demipt2.gold_dwh_dim_terminals_hist tgt
+            using (
+                select
+                    s.terminal_id,
+                    s.terminal_type,
+                    s.terminal_city,
+                    s.terminal_address,
+                    s.update_dt,
+                    'n' as  deleted_flg,
+                    s.update_dt as effective_from,
+                    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+                from demipt2.gold_stg_dim_terminals s
+                left join demipt2.gold_dwh_dim_terminals_hist t
+                on s.terminal_id = t.terminal_id
+                where
+                  1=1
+                  and t.terminal_id is  null
+                  or (
+                  t.terminal_id is not null
+                  and ( 1 = 0
+                        or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                        or (s.terminal_type is not null and t.terminal_type is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                        or (s.terminal_city is not null and t.terminal_city is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                        or (s.terminal_address is not null and t.terminal_address is null)
+                      )
+                  )
+            ) stg
+            on ( tgt.terminal_id = stg.terminal_id )
+            when not matched then insert (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+                )
+            values (
+                stg.terminal_id,
+                stg.terminal_type,
+                stg.terminal_city,
+                stg.terminal_address,
+                'n',
+                stg.effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd')
+                )
+            when matched then
+            update set effective_to = current_date - interval '1' second
+            
+2022-04-30 23:22:47,379 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,380 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_dwh_dim_terminals_hist (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+            )
+            select
+                s.terminal_id,
+                s.terminal_type,
+                s.terminal_city,
+                s.terminal_address,
+                'n' as  deleted_flg,
+                current_date as effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+            from demipt2.gold_stg_dim_terminals s
+            left join demipt2.gold_dwh_dim_terminals_hist t
+            on s.terminal_id = t.terminal_id
+            where
+              1=1
+              and t.terminal_id is  null
+              or (
+              t.terminal_id is not null
+              and ( 1 = 0
+                    or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                    or (s.terminal_type is not null and t.terminal_type is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                    or (s.terminal_city is not null and t.terminal_city is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                    or (s.terminal_address is not null and t.terminal_address is null)
+                  )
+              )
+            and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+                    
+2022-04-30 23:22:47,389 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,389 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_dwh_dim_terminals_hist (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            deleted_flg,
+            effective_from,
+            effective_to
+            )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            'y' as deleted_flg,
+            current_date as effective_from,
+            to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+        from demipt2.gold_dwh_dim_terminals_hist
+        where terminal_id in (
+            select
+                t.terminal_id
+            from demipt2.gold_dwh_dim_terminals_hist t
+            left join demipt2.gold_stg_dim_terminals_del s
+            on t.terminal_id = s.terminal_id
+            where s.terminal_id is null
+            )
+            and deleted_flg = 'n'
+            and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+            
+2022-04-30 23:22:47,395 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,396 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_dwh_dim_terminals_hist
+        set effective_to = current_date - interval '1' second
+        where terminal_id in (
+        select
+            t.terminal_id
+        from demipt2.gold_dwh_dim_terminals_hist t
+        left join demipt2.gold_stg_dim_terminals_del s
+        on t.terminal_id = s.terminal_id
+        where s.terminal_id is null
+        )
+        and deleted_flg = 'n'
+        and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+        
+2022-04-30 23:22:47,404 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,404 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_meta_bank
+        set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
+        where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+    
+2022-04-30 23:22:47,410 - multiprocessing - INFO - Query performed
+2022-04-30 23:22:47,444 - multiprocessing - INFO - File C:\Users\Ilya\PycharmProjects\GOLD\terminals_01032021.xlsx was successfully backed up to C:\Users\Ilya\PycharmProjects\GOLD\archive\terminals_01032021.xlsx
+2022-04-30 23:22:47,472 - multiprocessing - INFO - Connection closed
+2022-04-30 23:22:47,603 - multiprocessing - INFO - process shutting down
+2022-04-30 23:23:28,592 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:23:28,593 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:23:32,908 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x000001F22EB95E10>
+2022-04-30 23:23:32,908 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x000001F22EB95E10> by query: select 1 from DUAL
+2022-04-30 23:23:33,857 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x000001F22EB95E10> successfully checked
+2022-04-30 23:23:33,857 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:23:33,859 - multiprocessing - INFO - List of files for processing: ['terminals_02032021.xlsx']
+2022-04-30 23:23:33,864 - multiprocessing - INFO - The actual file: terminals_02032021.xlsx
+2022-04-30 23:23:33,888 - multiprocessing - INFO - Actual date: 2021-03-02
+2022-04-30 23:23:33,888 - multiprocessing - INFO - Date from metadata: 2021-03-01
+2022-04-30 23:23:35,396 - multiprocessing - INFO - Created dataframe:
+2022-04-30 23:23:35,691 - multiprocessing - INFO - 
+    terminal_id terminal_type      terminal_city                                terminal_address
+0         A1096           ATM           Кемерово    г. Кемерово, 1-й Электрозаводский пер., д. 3
+1         A1099           ATM             Баймак            г. Баймак, Б. Лёвшинский пер., д. 37
+2         A1203           ATM        Стерлитамак      г. Стерлитамак, Электрозаводская ул., д. 3
+3         A1553           ATM            Воронеж              г. Воронеж, пр. Энтузиастов, д. 44
+4         A1641           ATM             Москва          г. Москва, 1-й Южнопортовый пр., д. 26
+5         A1642           ATM     Новокуйбышевск   г. Новокуйбышевск, 1-й Щипковский пер., д. 19
+6         A1882           ATM            Иркутск                  г. Иркутск, Юровская ул., д. 3
+7         A2293           ATM          Краснодар                  г. Краснодар, Южный пр., д. 20
+8         A2674           ATM              Истра                      г. Истра, ул. Юности, д. 8
+9         A2758           ATM          Жигулёвск           г. Жигулёвск, М. Юшуньская ул., д. 25
+10        A2822           ATM              Томск                  г. Томск, Юрловский пр., д. 22
+11        A3174           ATM             Москва           г. Москва, 1-й Щемиловский пер., д. 8
+12        A3231           ATM             Москва                   г. Москва, ул. Щепкина, д. 17
+13        A3275           ATM           Петухово             г. Петухово, Элеваторная ул., д. 39
+14        A3618           ATM       Малая Вишера         г. Малая Вишера, Элеваторная ул., д. 39
+15        A3763           ATM              Лиски                     г. Лиски, пл. Юности, д. 38
+16        A3786           ATM            Воронеж           г. Воронеж, 4-й Щипковский пер., д. 7
+17        A3800           ATM            Воронеж             г. Воронеж, М. Юшуньская ул., д. 25
+18        A3939           ATM            Воронеж                  г. Воронеж, ул. Щепкина, д. 17
+19        A3961           ATM              Бийск           г. Бийск, 2-й Щемиловский пер., д. 18
+20        A4274           ATM               Тула                г. Тула, Южнопортовая ул., д. 31
+21        A4322           ATM        Новокузнецк                г. Новокузнецк, ул. Щипок, д. 17
+22        A4352           ATM          Кировград             г. Кировград, Щёлковский пр., д. 37
+23        A4418           ATM             Москва               г. Москва, пр. Энтузиастов, д. 26
+24        A4902           ATM           Тольятти          г. Тольятти, ул. Степана Шутова, д. 42
+25        A4956           ATM             Баймак               г. Баймак, Электродный пр., д. 14
+26        A5083           ATM             Донецк            г. Донецк, ул. Степана Шутова, д. 42
+27        A5128           ATM               Тула                      г. Тула, ул. Шухова, д. 22
+28        A5188           ATM      Верхнеуральск       г. Верхнеуральск, Элеваторный пер., д. 24
+29        A5235           ATM      Верхняя Пышма             г. Верхняя Пышма, пл. Юности, д. 38
+30        A5301           ATM            Воронеж              г. Воронеж, Элеваторная ул., д. 39
+31        A5308           ATM    Нижний Новгород      г. Нижний Новгород, пр. Энтузиастов, д. 44
+32        A5532           ATM             Усмань          г. Усмань, Электрозаводская ул., д. 45
+33        A5587           ATM              Томск                 г. Томск, Щёлковский пр., д. 37
+34        A5602           ATM             Ворсма           г. Ворсма, 2-й Южнопортовый пр., д. 4
+35        A5652           ATM             Кашира              г. Кашира, Южнопортовая ул., д. 31
+36        A5830           ATM           Харабали            г. Харабали, Щербаковская ул., д. 36
+37        A6069           ATM          Махачкала        г. Махачкала, Электрозаводская ул., д. 3
+38        A6204           ATM          Котельнич       г. Котельнич, 1-й Южнопортовый пр., д. 26
+39        A6387           ATM             Кашира                   г. Кашира, Юровская ул., д. 3
+40        A6481           ATM       Благовещенск           г. Благовещенск, Шушенская ул., д. 14
+41        A6603           ATM       Усть-Джегута           г. Усть-Джегута, Юрьевская ул., д. 14
+42        A6659           ATM     Новокуйбышевск         г. Новокуйбышевск, Щукинская ул., д. 26
+43        A6672           ATM      Верхнеуральск       г. Верхнеуральск, Щербаковская ул., д. 36
+44        A6714           ATM            Ангарск              г. Ангарск, Элеваторная ул., д. 39
+45        A6755           ATM          Котельнич                  г. Котельнич, ул. Шухова, д. 9
+46        A6766           ATM  Каменск-Уральский     г. Каменск-Уральский, Щёлковский пр., д. 37
+47        A6773           ATM             Донецк              г. Донецк, Элеваторный пер., д. 24
+48        A6821           ATM       Малая Вишера              г. Малая Вишера, пл. Юности, д. 38
+49        A7123           ATM            Иркутск                г. Иркутск, Щукинская ул., д. 26
+50        A7275           ATM              Бийск             г. Бийск, ул. Степана Шутова, д. 37
+51        A7368           ATM          Челябинск         г. Челябинск, Энергетический пр., д. 38
+52        A7483           ATM          Краснодар                 г. Краснодар, ул. Юности, д. 10
+53        A7709           ATM             Москва              г. Москва, Элеваторный пер., д. 24
+54        A7800           ATM        Новоуральск   г. Новоуральск, ул. Сергея Эйзенштейна, д. 41
+55        A7859           ATM          Жигулёвск           г. Жигулёвск, Элеваторный пер., д. 26
+56        A7919           ATM       Благовещенск        г. Благовещенск, Щербаковская ул., д. 36
+57        A7985           ATM           Кемерово                   г. Кемерово, ул. Щипок, д. 17
+58        A8107           ATM           Знаменск          г. Знаменск, 4-й Щипковский пер., д. 7
+59        A8244           ATM             Ворсма               г. Ворсма, М. Юшуньская ул., д. 1
+60        A8312           ATM    Санкт-Петербург        г. Санкт-Петербург, Щукинская ул., д. 26
+61        A8367           ATM     Ростов-на-Дону           г. Ростов-на-Дону, ул. Щепкина, д. 17
+62        A8454           ATM              Бийск               г. Бийск, Щербаковская ул., д. 36
+63        A8616           ATM           Харабали                  г. Харабали, пл. Юности, д. 38
+64        A8676           ATM             Кашира                     г. Кашира, ул. Щипок, д. 17
+65        A8725           ATM            Воронеж              г. Воронеж, М. Юшуньская ул., д. 1
+66        A8966           ATM        Новоуральск       г. Новоуральск, ул. Степана Шутова, д. 37
+67        A9007           ATM        Новосибирск          г. Новосибирск, Электродная ул., д. 18
+68        A9052           ATM             Баймак               г. Баймак, Элеваторная ул., д. 39
+69        A9109           ATM          Котельнич         г. Котельнич, Б. Лёвшинский пер., д. 37
+70        A9191           ATM              Лиски            г. Лиски, 1-й Щемиловский пер., д. 8
+71        A9257           ATM          Челябинск        г. Челябинск, Электрозаводская ул., д. 3
+72        A9314           ATM          Кировград       г. Кировград, 2-й Щемиловский пер., д. 16
+73        A9547           ATM  Каменск-Уральский          г. Каменск-Уральский, ул. Щипок, д. 17
+74        A9748           ATM      Верхняя Пышма       г. Верхняя Пышма, М. Юшуньская ул., д. 25
+75        A9878           ATM             Тюмень            г. Тюмень, ул. Степана Шутова, д. 37
+76        P1107           POS       Усть-Джегута       г. Усть-Джегута, Электролитный пр., д. 49
+77        P1113           POS     Новокуйбышевск       г. Новокуйбышевск, М. Юшуньская ул., д. 1
+78        P1178           POS    Нижний Новгород     г. Нижний Новгород, М. Юшуньская ул., д. 25
+79        P1201           POS            Иркутск           г. Иркутск, Энергетическая ул., д. 44
+80        P1203           POS             Москва            г. Москва, ул. Степана Шутова, д. 37
+81        P1288           POS            Бабаево            г. Бабаево, Электролитный пр., д. 49
+82        P1397           POS       Усть-Джегута               г. Усть-Джегута, Южный пр., д. 20
+83        P1459           POS           Тольятти            г. Тольятти, Элеваторный пер., д. 35
+84        P1550           POS              Истра             г. Истра, ул. Степана Шутова, д. 42
+85        P1594           POS           Петухово               г. Петухово, Шушенская ул., д. 14
+86        P1778           POS             Ворсма                    г. Ворсма, пл. Юности, д. 38
+87        P1887           POS       Благовещенск             г. Благовещенск, Юровская ул., д. 3
+88        P1949           POS          Кировград                г. Кировград, ул. Щепкина, д. 44
+89        P2046           POS               Тула                       г. Тула, ул. Шухова, д. 9
+90        P2230           POS             Москва          г. Москва, 2-й Щемиловский пер., д. 16
+91        P2250           POS        Новосибирск         г. Новосибирск, Электролитный пр., д. 5
+92        P2285           POS        Новосибирск              г. Новосибирск, ул. Щепкина, д. 44
+93        P2585           POS             Москва                     г. Москва, ул. Юности, д. 8
+94        P2829           POS          Челябинск     г. Челябинск, ул. Сергея Эйзенштейна, д. 41
+95        P3128           POS          Жигулёвск           г. Жигулёвск, М. Юшуньская ул., д. 25
+96        P3149           POS            Ангарск            г. Ангарск, Электролитный пр., д. 49
+97        P3218           POS         Светлоград          г. Светлоград, Южнопортовая ул., д. 31
+98        P3292           POS          Махачкала                 г. Махачкала, ул. Юности, д. 10
+99        P3317           POS        Новокузнецк     г. Новокузнецк, 2-й Щемиловский пер., д. 18
+100       P3451           POS      Верхнеуральск       г. Верхнеуральск, Электролитный пр., д. 5
+101       P3462           POS           Тольятти            г. Тольятти, Электролитный пр., д. 5
+102       P3808           POS             Москва      г. Москва, 1-й Электрозаводский пер., д. 3
+103       P3814           POS           Тольятти          г. Тольятти, Энергетический пр., д. 38
+104       P4478           POS     Ростов-на-Дону  г. Ростов-на-Дону, 2-й Щемиловский пер., д. 18
+105       P4705           POS        Новосибирск          г. Новосибирск, Электродная ул., д. 18
+106       P4744           POS      Верхняя Пышма        г. Верхняя Пышма, пр. Энтузиастов, д. 44
+107       P4829           POS           Тольятти            г. Тольятти, Щербаковская ул., д. 36
+108       P4853           POS            Воронеж              г. Воронеж, Электродная ул., д. 18
+109       P4910           POS        Стерлитамак            г. Стерлитамак, Юрловский пр., д. 22
+110       P5262           POS    Санкт-Петербург           г. Санкт-Петербург, ул. Шухова, д. 22
+111       P5456           POS             Москва                    г. Москва, ул. Шухова, д. 22
+112       P5758           POS            Бабаево                г. Бабаево, Шушенская ул., д. 14
+113       P5839           POS             Москва          г. Москва, 1-й Южнопортовый пр., д. 26
+114       P5893           POS          Махачкала           г. Махачкала, Элеваторный пер., д. 26
+115       P5930           POS             Москва        г. Москва, ул. Сергея Эйзенштейна, д. 41
+116       P6147           POS           Знаменск                  г. Знаменск, ул. Юности, д. 10
+117       P6162           POS              Истра            г. Истра, Электрозаводская ул., д. 3
+118       P6335           POS             Москва              г. Москва, М. Юшуньская ул., д. 25
+119       P6541           POS  Каменск-Уральский   г. Каменск-Уральский, Электролитный пр., д. 5
+120       P6759           POS             Москва                 г. Москва, Шушенская ул., д. 14
+121       P6876           POS            Бабаево           г. Бабаево, 4-й Щипковский пер., д. 7
+122       P6934           POS       Малая Вишера    г. Малая Вишера, 2-й Щемиловский пер., д. 18
+123       P6946           POS              Лиски                      г. Лиски, Южный пр., д. 20
+124       P6949           POS         Светлоград       г. Светлоград, 1-й Щемиловский пер., д. 8
+125       P6958           POS             Усмань               г. Усмань, Электродная ул., д. 18
+126       P7403           POS           Петухово          г. Петухово, ул. Степана Шутова, д. 42
+127       P7451           POS        Новосибирск              г. Новосибирск, ул. Щепкина, д. 17
+128       P7575           POS           Харабали    г. Харабали, 1-й Электрозаводский пер., д. 3
+129       P7869           POS     Ростов-на-Дону         г. Ростов-на-Дону, Шушенская ул., д. 14
+130       P8072           POS            Ангарск         г. Ангарск, 2-й Щемиловский пер., д. 18
+131       P8114           POS             Донецк                    г. Донецк, пл. Юности, д. 27
+132       P8225           POS    Санкт-Петербург      г. Санкт-Петербург, пр. Энтузиастов, д. 44
+133       P8262           POS          Краснодар        г. Краснодар, 2-й Южнопортовый пр., д. 4
+134       P8410           POS            Воронеж                  г. Воронеж, Юровская ул., д. 3
+135       P8663           POS           Кемерово                  г. Кемерово, пл. Юности, д. 27
+136       P8667           POS             Тюмень           г. Тюмень, Электрозаводская ул., д. 3
+137       P8712           POS        Новоуральск       г. Новоуральск, Б. Лёвшинский пер., д. 21
+138       P8714           POS         Светлоград          г. Светлоград, Элеваторный пер., д. 24
+139       P8946           POS           Тольятти        г. Тольятти, 2-й Щемиловский пер., д. 16
+140       P9037           POS        Новосибирск               г. Новосибирск, ул. Юности, д. 10
+141       P9098           POS        Стерлитамак              г. Стерлитамак, Юровская ул., д. 3
+142       P9111           POS             Тюмень                 г. Тюмень, Шушенская ул., д. 14
+143       P9464           POS            Воронеж                    г. Воронеж, Южный пр., д. 20
+144       P9579           POS             Москва                   г. Москва, Юровская ул., д. 3
+145       P9606           POS             Тюмень              г. Тюмень, Щербаковская ул., д. 36
+146       P9862           POS        Новокузнецк       г. Новокузнецк, Б. Лёвшинский пер., д. 21
+147       P9889           POS             Усмань                 г. Усмань, Шушенская ул., д. 14
+148       P9974           POS              Томск                     г. Томск, ул. Шухова, д. 22
+149       P9977           POS    Нижний Новгород      г. Нижний Новгород, М. Юшуньская ул., д. 1
+150       P9978           POS           Знаменск            г. Знаменск, Электролитный пр., д. 5
+2022-04-30 23:23:35,695 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:23:35,705 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:35,844 - multiprocessing - INFO - Data was inserted into demipt2.gold_stg_dim_terminals_source!
+2022-04-30 23:23:35,845 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals
+            
+2022-04-30 23:23:35,858 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:35,858 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_del
+            
+2022-04-30 23:23:35,909 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:35,909 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_stg_dim_terminals (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        from demipt2.gold_stg_dim_terminals_source
+        where 1=0
+            or update_dt > (
+            select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+            from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
+            or update_dt is null
+            
+2022-04-30 23:23:35,938 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:35,938 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
+            select terminal_id from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:23:35,969 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:35,970 - multiprocessing - INFO - Making SQL-query:
+
+            merge into demipt2.gold_dwh_dim_terminals_hist tgt
+            using (
+                select
+                    s.terminal_id,
+                    s.terminal_type,
+                    s.terminal_city,
+                    s.terminal_address,
+                    s.update_dt,
+                    'n' as  deleted_flg,
+                    s.update_dt as effective_from,
+                    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+                from demipt2.gold_stg_dim_terminals s
+                left join demipt2.gold_dwh_dim_terminals_hist t
+                on s.terminal_id = t.terminal_id
+                where
+                  1=1
+                  and t.terminal_id is  null
+                  or (
+                  t.terminal_id is not null
+                  and ( 1 = 0
+                        or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                        or (s.terminal_type is not null and t.terminal_type is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                        or (s.terminal_city is not null and t.terminal_city is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                        or (s.terminal_address is not null and t.terminal_address is null)
+                      )
+                  )
+            ) stg
+            on ( tgt.terminal_id = stg.terminal_id )
+            when not matched then insert (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+                )
+            values (
+                stg.terminal_id,
+                stg.terminal_type,
+                stg.terminal_city,
+                stg.terminal_address,
+                'n',
+                stg.effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd')
+                )
+            when matched then
+            update set effective_to = current_date - interval '1' second
+            
+2022-04-30 23:23:35,981 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:35,982 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_dwh_dim_terminals_hist (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+            )
+            select
+                s.terminal_id,
+                s.terminal_type,
+                s.terminal_city,
+                s.terminal_address,
+                'n' as  deleted_flg,
+                current_date as effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+            from demipt2.gold_stg_dim_terminals s
+            left join demipt2.gold_dwh_dim_terminals_hist t
+            on s.terminal_id = t.terminal_id
+            where
+              1=1
+              and t.terminal_id is  null
+              or (
+              t.terminal_id is not null
+              and ( 1 = 0
+                    or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                    or (s.terminal_type is not null and t.terminal_type is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                    or (s.terminal_city is not null and t.terminal_city is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                    or (s.terminal_address is not null and t.terminal_address is null)
+                  )
+              )
+            and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+                    
+2022-04-30 23:23:35,991 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:35,991 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_dwh_dim_terminals_hist (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            deleted_flg,
+            effective_from,
+            effective_to
+            )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            'y' as deleted_flg,
+            current_date as effective_from,
+            to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+        from demipt2.gold_dwh_dim_terminals_hist
+        where terminal_id in (
+            select
+                t.terminal_id
+            from demipt2.gold_dwh_dim_terminals_hist t
+            left join demipt2.gold_stg_dim_terminals_del s
+            on t.terminal_id = s.terminal_id
+            where s.terminal_id is null
+            )
+            and deleted_flg = 'n'
+            and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+            
+2022-04-30 23:23:36,032 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:36,033 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_dwh_dim_terminals_hist
+        set effective_to = current_date - interval '1' second
+        where terminal_id in (
+        select
+            t.terminal_id
+        from demipt2.gold_dwh_dim_terminals_hist t
+        left join demipt2.gold_stg_dim_terminals_del s
+        on t.terminal_id = s.terminal_id
+        where s.terminal_id is null
+        )
+        and deleted_flg = 'n'
+        and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+        
+2022-04-30 23:23:36,046 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:36,046 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_meta_bank
+        set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
+        where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+    
+2022-04-30 23:23:36,087 - multiprocessing - INFO - Query performed
+2022-04-30 23:23:36,102 - multiprocessing - INFO - File C:\Users\Ilya\PycharmProjects\GOLD\terminals_02032021.xlsx was successfully backed up to C:\Users\Ilya\PycharmProjects\GOLD\archive\terminals_02032021.xlsx
+2022-04-30 23:23:36,118 - multiprocessing - INFO - Connection closed
+2022-04-30 23:23:36,443 - multiprocessing - INFO - process shutting down
+2022-04-30 23:24:31,093 - multiprocessing - INFO - Starting C:\Users\Ilya\PycharmProjects\GOLD/__main__
+2022-04-30 23:24:31,093 - multiprocessing - INFO - Connecting to Oracle...
+2022-04-30 23:24:34,236 - multiprocessing - INFO - Connection established! Params: <jaydebeapi.Connection object at 0x00000249C51D5E10>
+2022-04-30 23:24:34,236 - multiprocessing - INFO - Checking connection: <jaydebeapi.Connection object at 0x00000249C51D5E10> by query: select 1 from DUAL
+2022-04-30 23:24:34,651 - multiprocessing - INFO - Connection <jaydebeapi.Connection object at 0x00000249C51D5E10> successfully checked
+2022-04-30 23:24:34,651 - multiprocessing - INFO - Start parsing data about Terminals. Path: C:\Users\Ilya\PycharmProjects\GOLD Pattern: terminals_[0-9]+.\.xlsx
+2022-04-30 23:24:34,652 - multiprocessing - INFO - List of files for processing: ['terminals_03032021.xlsx']
+2022-04-30 23:24:34,657 - multiprocessing - INFO - The actual file: terminals_03032021.xlsx
+2022-04-30 23:24:34,677 - multiprocessing - INFO - Actual date: 2021-03-03
+2022-04-30 23:24:34,677 - multiprocessing - INFO - Date from metadata: 2021-03-02
+2022-04-30 23:24:35,662 - multiprocessing - INFO - Created dataframe:
+2022-04-30 23:24:35,677 - multiprocessing - INFO - 
+    terminal_id terminal_type      terminal_city                                terminal_address
+0         A1096           ATM           Кемерово    г. Кемерово, 1-й Электрозаводский пер., д. 3
+1         A1099           ATM             Баймак            г. Баймак, Б. Лёвшинский пер., д. 37
+2         A1203           ATM        Стерлитамак      г. Стерлитамак, Электрозаводская ул., д. 3
+3         A1553           ATM            Воронеж              г. Воронеж, пр. Энтузиастов, д. 44
+4         A1641           ATM             Москва          г. Москва, 1-й Южнопортовый пр., д. 26
+5         A1642           ATM     Новокуйбышевск   г. Новокуйбышевск, 1-й Щипковский пер., д. 19
+6         A1882           ATM            Иркутск                  г. Иркутск, Юровская ул., д. 3
+7         A2293           ATM          Краснодар                  г. Краснодар, Южный пр., д. 20
+8         A2674           ATM              Истра                      г. Истра, ул. Юности, д. 8
+9         A2758           ATM          Жигулёвск           г. Жигулёвск, М. Юшуньская ул., д. 25
+10        A2822           ATM              Томск                  г. Томск, Юрловский пр., д. 22
+11        A3174           ATM             Москва           г. Москва, 1-й Щемиловский пер., д. 8
+12        A3231           ATM             Москва                   г. Москва, ул. Щепкина, д. 17
+13        A3275           ATM           Петухово             г. Петухово, Элеваторная ул., д. 39
+14        A3618           ATM       Малая Вишера         г. Малая Вишера, Элеваторная ул., д. 39
+15        A3763           ATM              Лиски                     г. Лиски, пл. Юности, д. 38
+16        A3786           ATM            Воронеж           г. Воронеж, 4-й Щипковский пер., д. 7
+17        A3800           ATM            Воронеж             г. Воронеж, М. Юшуньская ул., д. 25
+18        A3939           ATM            Воронеж                  г. Воронеж, ул. Щепкина, д. 17
+19        A3961           ATM              Бийск           г. Бийск, 2-й Щемиловский пер., д. 18
+20        A4274           ATM               Тула                г. Тула, Южнопортовая ул., д. 31
+21        A4322           ATM        Новокузнецк                г. Новокузнецк, ул. Щипок, д. 17
+22        A4352           ATM          Кировград             г. Кировград, Щёлковский пр., д. 37
+23        A4418           ATM             Москва               г. Москва, пр. Энтузиастов, д. 26
+24        A4902           ATM           Тольятти          г. Тольятти, ул. Степана Шутова, д. 42
+25        A4956           ATM             Баймак               г. Баймак, Электродный пр., д. 14
+26        A5083           ATM             Донецк            г. Донецк, ул. Степана Шутова, д. 42
+27        A5128           ATM               Тула                      г. Тула, ул. Шухова, д. 22
+28        A5188           ATM      Верхнеуральск       г. Верхнеуральск, Элеваторный пер., д. 24
+29        A5235           ATM      Верхняя Пышма             г. Верхняя Пышма, пл. Юности, д. 38
+30        A5301           ATM            Воронеж              г. Воронеж, Элеваторная ул., д. 39
+31        A5308           ATM    Нижний Новгород      г. Нижний Новгород, пр. Энтузиастов, д. 44
+32        A5532           ATM             Усмань          г. Усмань, Электрозаводская ул., д. 45
+33        A5587           ATM              Томск                 г. Томск, Щёлковский пр., д. 37
+34        A5602           ATM             Ворсма           г. Ворсма, 2-й Южнопортовый пр., д. 4
+35        A5652           ATM             Кашира              г. Кашира, Южнопортовая ул., д. 31
+36        A5830           ATM           Харабали            г. Харабали, Щербаковская ул., д. 36
+37        A6069           ATM          Махачкала        г. Махачкала, Электрозаводская ул., д. 3
+38        A6204           ATM          Котельнич       г. Котельнич, 1-й Южнопортовый пр., д. 26
+39        A6387           ATM             Кашира                   г. Кашира, Юровская ул., д. 3
+40        A6481           ATM       Благовещенск           г. Благовещенск, Шушенская ул., д. 14
+41        A6603           ATM       Усть-Джегута           г. Усть-Джегута, Юрьевская ул., д. 14
+42        A6659           ATM     Новокуйбышевск         г. Новокуйбышевск, Щукинская ул., д. 26
+43        A6672           ATM      Верхнеуральск       г. Верхнеуральск, Щербаковская ул., д. 36
+44        A6714           ATM            Ангарск              г. Ангарск, Элеваторная ул., д. 39
+45        A6755           ATM          Котельнич                  г. Котельнич, ул. Шухова, д. 9
+46        A6766           ATM  Каменск-Уральский     г. Каменск-Уральский, Щёлковский пр., д. 37
+47        A6773           ATM             Донецк              г. Донецк, Элеваторный пер., д. 24
+48        A6821           ATM       Малая Вишера              г. Малая Вишера, пл. Юности, д. 38
+49        A7123           ATM            Иркутск                г. Иркутск, Щукинская ул., д. 26
+50        A7275           ATM              Бийск             г. Бийск, ул. Степана Шутова, д. 37
+51        A7368           ATM          Челябинск         г. Челябинск, Энергетический пр., д. 38
+52        A7483           ATM          Краснодар                 г. Краснодар, ул. Юности, д. 10
+53        A7709           ATM             Москва              г. Москва, Элеваторный пер., д. 24
+54        A7800           ATM        Новоуральск   г. Новоуральск, ул. Сергея Эйзенштейна, д. 41
+55        A7859           ATM          Жигулёвск           г. Жигулёвск, Элеваторный пер., д. 26
+56        A7919           ATM       Благовещенск        г. Благовещенск, Щербаковская ул., д. 36
+57        A7985           ATM           Кемерово                   г. Кемерово, ул. Щипок, д. 17
+58        A8107           ATM           Знаменск          г. Знаменск, 4-й Щипковский пер., д. 7
+59        A8244           ATM             Ворсма               г. Ворсма, М. Юшуньская ул., д. 1
+60        A8312           ATM    Санкт-Петербург        г. Санкт-Петербург, Щукинская ул., д. 26
+61        A8367           ATM     Ростов-на-Дону           г. Ростов-на-Дону, ул. Щепкина, д. 17
+62        A8454           ATM              Бийск               г. Бийск, Щербаковская ул., д. 36
+63        A8616           ATM           Харабали                  г. Харабали, пл. Юности, д. 38
+64        A8676           ATM             Кашира                     г. Кашира, ул. Щипок, д. 17
+65        A8725           ATM            Воронеж              г. Воронеж, М. Юшуньская ул., д. 1
+66        A8966           ATM        Новоуральск        г. Новоуральск, ул. Степана Шутова, д. 3
+67        A9007           ATM        Новосибирск          г. Новосибирск, Электродная ул., д. 18
+68        A9052           ATM             Баймак               г. Баймак, Элеваторная ул., д. 39
+69        A9109           ATM          Котельнич         г. Котельнич, Б. Лёвшинский пер., д. 37
+70        A9191           ATM              Лиски            г. Лиски, 1-й Щемиловский пер., д. 8
+71        A9257           ATM          Челябинск        г. Челябинск, Электрозаводская ул., д. 3
+72        A9314           ATM          Кировград       г. Кировград, 2-й Щемиловский пер., д. 16
+73        A9547           ATM  Каменск-Уральский          г. Каменск-Уральский, ул. Щипок, д. 17
+74        A9748           ATM      Верхняя Пышма       г. Верхняя Пышма, М. Юшуньская ул., д. 25
+75        A9878           ATM             Тюмень            г. Тюмень, ул. Степана Шутова, д. 37
+76        P1107           POS       Усть-Джегута       г. Усть-Джегута, Электролитный пр., д. 49
+77        P1113           POS     Новокуйбышевск       г. Новокуйбышевск, М. Юшуньская ул., д. 1
+78        P1178           POS    Нижний Новгород     г. Нижний Новгород, М. Юшуньская ул., д. 25
+79        P1201           POS            Иркутск           г. Иркутск, Энергетическая ул., д. 44
+80        P1203           POS             Москва            г. Москва, ул. Степана Шутова, д. 37
+81        P1288           POS            Бабаево            г. Бабаево, Электролитный пр., д. 49
+82        P1397           POS       Усть-Джегута               г. Усть-Джегута, Южный пр., д. 20
+83        P1459           POS           Тольятти            г. Тольятти, Элеваторный пер., д. 35
+84        P1550           POS              Истра             г. Истра, ул. Степана Шутова, д. 42
+85        P1594           POS           Петухово               г. Петухово, Шушенская ул., д. 14
+86        P1778           POS             Ворсма                    г. Ворсма, пл. Юности, д. 38
+87        P1887           POS       Благовещенск             г. Благовещенск, Юровская ул., д. 3
+88        P1949           POS          Кировград                г. Кировград, ул. Щепкина, д. 44
+89        P2046           POS               Тула                       г. Тула, ул. Шухова, д. 9
+90        P2230           POS             Москва          г. Москва, 2-й Щемиловский пер., д. 16
+91        P2250           POS        Новосибирск         г. Новосибирск, Электролитный пр., д. 5
+92        P2285           POS        Новосибирск              г. Новосибирск, ул. Щепкина, д. 44
+93        P2585           POS             Москва                     г. Москва, ул. Юности, д. 8
+94        P2829           POS          Челябинск     г. Челябинск, ул. Сергея Эйзенштейна, д. 41
+95        P3128           POS          Жигулёвск           г. Жигулёвск, М. Юшуньская ул., д. 25
+96        P3149           POS            Ангарск            г. Ангарск, Электролитный пр., д. 49
+97        P3218           POS         Светлоград          г. Светлоград, Южнопортовая ул., д. 31
+98        P3292           POS          Махачкала                 г. Махачкала, ул. Юности, д. 10
+99        P3317           POS        Новокузнецк     г. Новокузнецк, 2-й Щемиловский пер., д. 18
+100       P3451           POS      Верхнеуральск       г. Верхнеуральск, Электролитный пр., д. 5
+101       P3462           POS           Тольятти            г. Тольятти, Электролитный пр., д. 5
+102       P3808           POS             Москва      г. Москва, 1-й Электрозаводский пер., д. 3
+103       P3814           POS           Тольятти          г. Тольятти, Энергетический пр., д. 38
+104       P4478           POS     Ростов-на-Дону  г. Ростов-на-Дону, 2-й Щемиловский пер., д. 18
+105       P4705           POS        Новосибирск          г. Новосибирск, Электродная ул., д. 18
+106       P4744           POS      Верхняя Пышма        г. Верхняя Пышма, пр. Энтузиастов, д. 44
+107       P4829           POS           Тольятти            г. Тольятти, Щербаковская ул., д. 36
+108       P4853           POS            Воронеж              г. Воронеж, Электродная ул., д. 18
+109       P4910           POS        Стерлитамак            г. Стерлитамак, Юрловский пр., д. 22
+110       P5262           POS    Санкт-Петербург           г. Санкт-Петербург, ул. Шухова, д. 22
+111       P5456           POS             Москва                    г. Москва, ул. Шухова, д. 22
+112       P5758           POS            Бабаево                г. Бабаево, Шушенская ул., д. 14
+113       P5839           POS             Москва          г. Москва, 1-й Южнопортовый пр., д. 26
+114       P5893           POS          Махачкала           г. Махачкала, Элеваторный пер., д. 26
+115       P5930           POS             Москва        г. Москва, ул. Сергея Эйзенштейна, д. 41
+116       P6147           POS           Знаменск                  г. Знаменск, ул. Юности, д. 10
+117       P6162           POS              Истра            г. Истра, Электрозаводская ул., д. 3
+118       P6335           POS             Москва              г. Москва, М. Юшуньская ул., д. 25
+119       P6541           POS  Каменск-Уральский   г. Каменск-Уральский, Электролитный пр., д. 5
+120       P6759           POS             Москва                 г. Москва, Шушенская ул., д. 14
+121       P6876           POS            Бабаево           г. Бабаево, 4-й Щипковский пер., д. 7
+122       P6934           POS       Малая Вишера    г. Малая Вишера, 2-й Щемиловский пер., д. 18
+123       P6946           POS              Лиски                      г. Лиски, Южный пр., д. 20
+124       P6949           POS         Светлоград       г. Светлоград, 1-й Щемиловский пер., д. 8
+125       P6958           POS             Усмань               г. Усмань, Электродная ул., д. 18
+126       P7403           POS           Петухово          г. Петухово, ул. Степана Шутова, д. 42
+127       P7451           POS        Новосибирск              г. Новосибирск, ул. Щепкина, д. 17
+128       P7575           POS           Харабали    г. Харабали, 1-й Электрозаводский пер., д. 3
+129       P7869           POS     Ростов-на-Дону         г. Ростов-на-Дону, Шушенская ул., д. 14
+130       P8072           POS            Ангарск         г. Ангарск, 2-й Щемиловский пер., д. 18
+131       P8114           POS             Донецк                    г. Донецк, пл. Юности, д. 27
+132       P8225           POS    Санкт-Петербург      г. Санкт-Петербург, пр. Энтузиастов, д. 44
+133       P8262           POS          Краснодар        г. Краснодар, 2-й Южнопортовый пр., д. 4
+134       P8410           POS            Воронеж                  г. Воронеж, Юровская ул., д. 3
+135       P8663           POS           Кемерово                  г. Кемерово, пл. Юности, д. 27
+136       P8667           POS             Тюмень           г. Тюмень, Электрозаводская ул., д. 3
+137       P8712           POS        Новоуральск       г. Новоуральск, Б. Лёвшинский пер., д. 21
+138       P8714           POS         Светлоград          г. Светлоград, Элеваторный пер., д. 24
+139       P8946           POS           Тольятти        г. Тольятти, 2-й Щемиловский пер., д. 16
+140       P9037           POS        Новосибирск               г. Новосибирск, ул. Юности, д. 10
+141       P9098           POS        Стерлитамак              г. Стерлитамак, Юровская ул., д. 3
+142       P9464           POS            Воронеж                    г. Воронеж, Южный пр., д. 20
+143       P9579           POS             Москва                   г. Москва, Юровская ул., д. 3
+144       P9606           POS             Тюмень              г. Тюмень, Щербаковская ул., д. 36
+145       P9862           POS        Новокузнецк       г. Новокузнецк, Б. Лёвшинский пер., д. 21
+146       P9889           POS             Усмань                 г. Усмань, Шушенская ул., д. 14
+147       P9974           POS              Томск                     г. Томск, ул. Шухова, д. 22
+148       P9977           POS    Нижний Новгород      г. Нижний Новгород, М. Юшуньская ул., д. 1
+149       P9978           POS           Знаменск            г. Знаменск, Электролитный пр., д. 5
+2022-04-30 23:24:35,686 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:24:35,695 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,727 - multiprocessing - INFO - Data was inserted into demipt2.gold_stg_dim_terminals_source!
+2022-04-30 23:24:35,727 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals
+            
+2022-04-30 23:24:35,756 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,756 - multiprocessing - INFO - Making SQL-query:
+
+            delete from demipt2.gold_stg_dim_terminals_del
+            
+2022-04-30 23:24:35,763 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,763 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_stg_dim_terminals (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            update_dt
+        from demipt2.gold_stg_dim_terminals_source
+        where 1=0
+            or update_dt > (
+            select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+            from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
+            or update_dt is null
+            
+2022-04-30 23:24:35,773 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,773 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
+            select terminal_id from demipt2.gold_stg_dim_terminals_source
+            
+2022-04-30 23:24:35,779 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,779 - multiprocessing - INFO - Making SQL-query:
+
+            merge into demipt2.gold_dwh_dim_terminals_hist tgt
+            using (
+                select
+                    s.terminal_id,
+                    s.terminal_type,
+                    s.terminal_city,
+                    s.terminal_address,
+                    s.update_dt,
+                    'n' as  deleted_flg,
+                    s.update_dt as effective_from,
+                    to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+                from demipt2.gold_stg_dim_terminals s
+                left join demipt2.gold_dwh_dim_terminals_hist t
+                on s.terminal_id = t.terminal_id
+                where
+                  1=1
+                  and t.terminal_id is  null
+                  or (
+                  t.terminal_id is not null
+                  and ( 1 = 0
+                        or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                        or (s.terminal_type is not null and t.terminal_type is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                        or (s.terminal_city is not null and t.terminal_city is null)
+                      )
+                  and ( 1 = 0
+                        or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                        or (s.terminal_address is not null and t.terminal_address is null)
+                      )
+                  )
+            ) stg
+            on ( tgt.terminal_id = stg.terminal_id )
+            when not matched then insert (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+                )
+            values (
+                stg.terminal_id,
+                stg.terminal_type,
+                stg.terminal_city,
+                stg.terminal_address,
+                'n',
+                stg.effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd')
+                )
+            when matched then
+            update set effective_to = current_date - interval '1' second
+            
+2022-04-30 23:24:35,787 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,787 - multiprocessing - INFO - Making SQL-query:
+
+            insert into demipt2.gold_dwh_dim_terminals_hist (
+                terminal_id,
+                terminal_type,
+                terminal_city,
+                terminal_address,
+                deleted_flg,
+                effective_from,
+                effective_to
+            )
+            select
+                s.terminal_id,
+                s.terminal_type,
+                s.terminal_city,
+                s.terminal_address,
+                'n' as  deleted_flg,
+                current_date as effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+            from demipt2.gold_stg_dim_terminals s
+            left join demipt2.gold_dwh_dim_terminals_hist t
+            on s.terminal_id = t.terminal_id
+            where
+              1=1
+              and t.terminal_id is  null
+              or (
+              t.terminal_id is not null
+              and ( 1 = 0
+                    or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                    or (s.terminal_type is not null and t.terminal_type is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                    or (s.terminal_city is not null and t.terminal_city is null)
+                  )
+              and ( 1 = 0
+                    or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                    or (s.terminal_address is not null and t.terminal_address is null)
+                  )
+              )
+            and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+                    
+2022-04-30 23:24:35,794 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,794 - multiprocessing - INFO - Making SQL-query:
+
+        insert into demipt2.gold_dwh_dim_terminals_hist (
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            deleted_flg,
+            effective_from,
+            effective_to
+            )
+        select
+            terminal_id,
+            terminal_type,
+            terminal_city,
+            terminal_address,
+            'y' as deleted_flg,
+            current_date as effective_from,
+            to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+        from demipt2.gold_dwh_dim_terminals_hist
+        where terminal_id in (
+            select
+                t.terminal_id
+            from demipt2.gold_dwh_dim_terminals_hist t
+            left join demipt2.gold_stg_dim_terminals_del s
+            on t.terminal_id = s.terminal_id
+            where s.terminal_id is null
+            )
+            and deleted_flg = 'n'
+            and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+            
+2022-04-30 23:24:35,816 - multiprocessing - INFO - Failed to perform query with Exception java.sql.SQLIntegrityConstraintViolationException: ORA-00001: нарушено ограничение уникальности (DEMIPT2.SYS_C00106480)
+
+2022-04-30 23:24:35,838 - multiprocessing - INFO - Rollback performed!
+2022-04-30 23:24:35,838 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_dwh_dim_terminals_hist
+        set effective_to = current_date - interval '1' second
+        where terminal_id in (
+        select
+            t.terminal_id
+        from demipt2.gold_dwh_dim_terminals_hist t
+        left join demipt2.gold_stg_dim_terminals_del s
+        on t.terminal_id = s.terminal_id
+        where s.terminal_id is null
+        )
+        and deleted_flg = 'n'
+        and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+        
+2022-04-30 23:24:35,846 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,846 - multiprocessing - INFO - Making SQL-query:
+
+        update demipt2.gold_meta_bank
+        set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
+        where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+    
+2022-04-30 23:24:35,853 - multiprocessing - INFO - Query performed
+2022-04-30 23:24:35,863 - multiprocessing - INFO - File C:\Users\Ilya\PycharmProjects\GOLD\terminals_03032021.xlsx was successfully backed up to C:\Users\Ilya\PycharmProjects\GOLD\archive\terminals_03032021.xlsx
+2022-04-30 23:24:35,874 - multiprocessing - INFO - Connection closed
+2022-04-30 23:24:35,899 - multiprocessing - INFO - process shutting down
