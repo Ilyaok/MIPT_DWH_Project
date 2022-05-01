@@ -1,11 +1,11 @@
 commit;
 rollback;
 
-update demipt2.gold_meta_bank
-set last_update_dt = to_date( '1900-01-01', 'yyyy-mm-dd')
-where table_db = 'bank'
-and table_name = 'terminals';
-
+-- update demipt2.gold_meta_bank
+-- set last_update_dt = to_date( '1900-01-01', 'yyyy-mm-dd')
+-- where table_db = 'bank'
+-- and table_name = 'terminals';
+--
 -- delete from demipt2.gold_stg_dim_terminals;
 -- delete from demipt2.gold_stg_dim_terminals_raw;
 -- delete from demipt2.gold_stg_dim_terminals_del;
@@ -14,7 +14,10 @@ and table_name = 'terminals';
 select * from demipt2.gold_stg_dim_terminals order by TERMINAL_ID;
 select * from demipt2.gold_stg_dim_terminals_raw order by TERMINAL_ID;
 select * from demipt2.gold_stg_dim_terminals_del order by TERMINAL_ID;
-select * from demipt2.gold_dwh_dim_terminals_hist order by TERMINAL_ID;
+select * from demipt2.gold_dwh_dim_terminals_hist order by TERMINAL_ID, EFFECTIVE_FROM;
+
+delete from demipt2.gold_dwh_dim_terminals_hist
+where TERMINAL_ID = 'A8966' and TERMINAL_ADDRESS = 'г. Новоуральск, ул. Степана Шутова, д. 3';
 
 select * from demipt2.gold_meta_bank;
 

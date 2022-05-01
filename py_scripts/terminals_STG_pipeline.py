@@ -162,6 +162,7 @@ def terminals_to_staging (conn, path, logger):
                 from demipt2.gold_stg_dim_terminals s
                 left join demipt2.gold_dwh_dim_terminals_hist t
                 on s.terminal_id = t.terminal_id
+                and t.effective_to = to_date( '9999-01-01', 'yyyy-mm-dd' ) and deleted_flg = 'n'
                 where
                   t.terminal_id is null
                   or (
@@ -177,30 +178,13 @@ def terminals_to_staging (conn, path, logger):
                   )
             ) stg
             on ( tgt.terminal_id = stg.terminal_id )
-            when not matched then insert (
-                terminal_id,
-                terminal_type,
-                terminal_city,
-                terminal_address,
-                deleted_flg,
-                effective_from,
-                effective_to
-                )
-            values (
-                stg.terminal_id,
-                stg.terminal_type,
-                stg.terminal_city,
-                stg.terminal_address,
-                'n',
-                stg.effective_from,
-                to_date( '9999-01-01', 'yyyy-mm-dd')
-                )
             when matched then
             update set effective_to = current_date - interval '1' second
+            where effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
             """
     make_sql_query(conn=conn, query=query, logger=logger)
 
-    # 4.2 Вставка новой версии по scd2 для случая апдейта
+    # 4.2 Вставка новой версии по scd2
     query = f"""
             insert into demipt2.gold_dwh_dim_terminals_hist (
                 terminal_id,
@@ -234,48 +218,13 @@ def terminals_to_staging (conn, path, logger):
                     or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
                     or (s.terminal_address is not null and t.terminal_address is null)
                     )
-              and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
               )
+              and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
 
                     """
     make_sql_query(conn=conn, query=query, logger=logger)
 
-    # 5. Вставка актуальной записи и обновление информации об удалениях (для удаленных - флаг 'y')
-
-    # 5.1 Вставляем актуальную запись по scd2
-    query = f"""
-        insert into demipt2.gold_dwh_dim_terminals_hist (
-            terminal_id,
-            terminal_type,
-            terminal_city,
-            terminal_address,
-            deleted_flg,
-            effective_from,
-            effective_to
-            )
-        select
-            terminal_id,
-            terminal_type,
-            terminal_city,
-            terminal_address,
-            'y' as deleted_flg,
-            current_date as effective_from,
-            to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
-        from demipt2.gold_dwh_dim_terminals_hist
-        where terminal_id in (
-            select
-                t.terminal_id
-            from demipt2.gold_dwh_dim_terminals_hist t
-            left join demipt2.gold_stg_dim_terminals_del s
-            on t.terminal_id = s.terminal_id
-            where s.terminal_id is null
-            )
-            and deleted_flg = 'n'
-            and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
-            """
-    make_sql_query(conn=conn, query=query, logger=logger)
-
-    # 5.2 Обновляем данные об удаленной записи по scd2
+    # 5. Обновление информации об удалениях (для удаленных - флаг 'y')
     query = f"""
         update demipt2.gold_dwh_dim_terminals_hist
         set 
