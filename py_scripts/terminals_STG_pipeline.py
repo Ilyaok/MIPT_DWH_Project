@@ -57,12 +57,12 @@ def terminals_to_staging (conn, path, logger):
     """)
 
     date_from_metadata = curs.fetchall()[0][0][:10]
-    date_from_metadata = datetime.strptime(date_from_metadata, '%Y-%m-%d').date()
+    date_from_metadata = datetime.strptime(date_from_metadata, '%Y-%m-%d')
 
-    logger.info(f'Actual date: {maxdate.date()}')
+    logger.info(f'Actual date: {maxdate}')
     logger.info(f'Date from metadata: {date_from_metadata}')
 
-    if maxdate.date() <= date_from_metadata:
+    if maxdate <= date_from_metadata:
         logger.info(f'Maxdate <= date_from_metadata! No actual data to insert! No dataframe will be created, exit function "terminals_to_staging"')
         exit()
 
@@ -144,7 +144,7 @@ def terminals_to_staging (conn, path, logger):
     # 4. Выделяем "вставки" и "обновления" и вливаем их в приемник
 
     # 4.1 Вставка новой строки или закрытие текущей версии по scd2
-    query = """
+    query = f"""
             merge into demipt2.gold_dwh_dim_terminals_hist tgt
             using (
                 select
@@ -197,7 +197,7 @@ def terminals_to_staging (conn, path, logger):
                 to_date( '9999-01-01', 'yyyy-mm-dd')
                 )
             when matched then
-            update set effective_to = current_date - interval '1' second
+            update set effective_to = {maxdate} - interval '1' second
             """
     make_sql_query(conn=conn, query=query, logger=logger)
 
@@ -218,8 +218,8 @@ def terminals_to_staging (conn, path, logger):
                 s.terminal_city,
                 s.terminal_address,
                 'n' as  deleted_flg,
-                current_date as effective_from,
-                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
+                '{maxdate}' as effective_from,
+                effective_to
             from demipt2.gold_stg_dim_terminals s
             left join demipt2.gold_dwh_dim_terminals_hist t
             on s.terminal_id = t.terminal_id
@@ -227,27 +227,24 @@ def terminals_to_staging (conn, path, logger):
               t.terminal_id is null
               or (
               t.terminal_id is not null
-              and ( 1 = 0
+                and ( 1=0
                     or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
                     or (s.terminal_type is not null and t.terminal_type is null)
-                  )
-              and ( 1 = 0
                     or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
                     or (s.terminal_city is not null and t.terminal_city is null)
-                  )
-              and ( 1 = 0
                     or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
                     or (s.terminal_address is not null and t.terminal_address is null)
-                  )
+                    )
+              and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
               )
-            and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
+
                     """
     make_sql_query(conn=conn, query=query, logger=logger)
 
     # 5. Проставляем в приемнике флаг для удаленных записей ('y' - для удаленных)
 
     # 5.1 Вставляем актуальную запись по scd2
-    query = """
+    query = f"""
         insert into demipt2.gold_dwh_dim_terminals_hist (
             terminal_id,
             terminal_type,
@@ -263,7 +260,7 @@ def terminals_to_staging (conn, path, logger):
             terminal_city,
             terminal_address,
             'y' as deleted_flg,
-            current_date as effective_from,
+            '{maxdate}' as effective_from,
             to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
         from demipt2.gold_dwh_dim_terminals_hist
         where terminal_id in (
@@ -283,7 +280,7 @@ def terminals_to_staging (conn, path, logger):
     query = """
         update demipt2.gold_dwh_dim_terminals_hist
         set 
-        effective_to = current_date - interval '1' second,
+        effective_to = '{maxdate}' - interval '1' second,
         deleted_flg = 'y'
         where terminal_id in (
         select

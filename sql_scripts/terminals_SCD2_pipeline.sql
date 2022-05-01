@@ -18,7 +18,7 @@ select
     terminal_city,
     terminal_address,
     update_dt
-from demipt2.gold_stg_dim_terminals_source
+from demipt2.gold_stg_dim_terminals_raw
 where 1=0
     or update_dt > (
     select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
