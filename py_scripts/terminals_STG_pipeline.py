@@ -32,7 +32,6 @@ def terminals_to_staging (conn, path, logger):
     logger.info(f'List of files for processing: {filenames_list}')
 
     # Находим файл с наиболее свежей датой и выгружаем в датафрейм
-
     maxdate = datetime.min
     filename_latest = ''
 
@@ -45,27 +44,6 @@ def terminals_to_staging (conn, path, logger):
 
     logger.info(f'The actual file: {filename_latest}')
 
-    # Сверим maxdate с актуальной датой в таблице метаданных
-    # Если maxdate меньше даты из demipt2.gold_meta_bank, значит, информация о терминалах актуальна на источнике
-    # В этом случае не записываем новую информацию и отбрасываем файл filename_latest в архив
-
-    curs = conn.cursor()
-
-    curs.execute("""
-        select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
-        from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals'
-    """)
-
-    # date_from_metadata = curs.fetchall()[0][0][:10]
-    # date_from_metadata = datetime.strptime(date_from_metadata, '%Y-%m-%d')
-    #
-    # logger.info(f'Actual date: {maxdate}')
-    # logger.info(f'Date from metadata: {date_from_metadata}')
-    #
-    # if maxdate <= date_from_metadata:
-    #     logger.info(f'Maxdate <= date_from_metadata! No actual data to insert! No dataframe will be created, exit function "terminals_to_staging"')
-    #     exit()
-
     # Сформируем датафрейм
     df = pd.read_excel(os.path.join(path, filename_latest))
 
@@ -73,13 +51,12 @@ def terminals_to_staging (conn, path, logger):
     logger.info(f'\n{df.to_string()}')
 
     # Запишем датафрейм в слой сырых данных demipt2.gold_stg_dim_terminals_raw
-    # По условию задачи список терминалов - полносрезный, соответственно, инкрементальная загрузка не требуется
-    # Поэтому каждый день перезаписываем таблицу demipt2.gold_stg_dim_terminals_raw
-
     query = """
             delete from demipt2.gold_stg_dim_terminals_raw
             """
     make_sql_query(conn=conn, query=query, logger=logger)
+
+    curs = conn.cursor()
 
     try:
         query = f"""
@@ -260,13 +237,11 @@ def terminals_to_staging (conn, path, logger):
     # 7. Фиксируем транзакцию
     conn.commit()
 
+    # Переместим файл-источник в архив с маркировкой .backup
     source_path = os.path.join(path, filename_latest)
     target_path = os.path.join(path, 'archive', filename_latest)
 
     rename_and_move_file(source_path=source_path, target_path=target_path, logger=logger)
-
-
-
 
 
 
