@@ -193,7 +193,7 @@ def terminals_to_staging (conn, path, logger):
                 stg.terminal_address,
                 'n',
                 stg.effective_from,
-                to_date( '9999-01-01', 'yyyy-mm-dd' )
+                to_date( '9999-01-01', 'yyyy-mm-dd')
                 )
             when matched then
             update set effective_to = current_date - interval '1' second
@@ -310,7 +310,6 @@ def terminals_to_staging (conn, path, logger):
     target_path = os.path.join(path, 'archive', filename_latest)
 
     rename_and_move_file(source_path=source_path, target_path=target_path, logger=logger)
-
 
 
 
