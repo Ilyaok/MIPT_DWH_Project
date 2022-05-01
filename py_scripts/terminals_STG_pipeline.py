@@ -234,7 +234,7 @@ def terminals_to_staging (conn, path, logger):
                     or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
                     or (s.terminal_address is not null and t.terminal_address is null)
                     )
-              and effective_to = to_date( '9999-01-01', 'yyyy-mm-dd')
+              and effective_to <> to_date( '9999-01-01', 'yyyy-mm-dd')
               )
 
                     """
