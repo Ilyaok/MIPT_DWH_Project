@@ -56,15 +56,15 @@ def terminals_to_staging (conn, path, logger):
         from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals'
     """)
 
-    date_from_metadata = curs.fetchall()[0][0][:10]
-    date_from_metadata = datetime.strptime(date_from_metadata, '%Y-%m-%d')
-
-    logger.info(f'Actual date: {maxdate}')
-    logger.info(f'Date from metadata: {date_from_metadata}')
-
-    if maxdate <= date_from_metadata:
-        logger.info(f'Maxdate <= date_from_metadata! No actual data to insert! No dataframe will be created, exit function "terminals_to_staging"')
-        exit()
+    # date_from_metadata = curs.fetchall()[0][0][:10]
+    # date_from_metadata = datetime.strptime(date_from_metadata, '%Y-%m-%d')
+    #
+    # logger.info(f'Actual date: {maxdate}')
+    # logger.info(f'Date from metadata: {date_from_metadata}')
+    #
+    # if maxdate <= date_from_metadata:
+    #     logger.info(f'Maxdate <= date_from_metadata! No actual data to insert! No dataframe will be created, exit function "terminals_to_staging"')
+    #     exit()
 
     # Сформируем датафрейм
     df = pd.read_excel(os.path.join(path, filename_latest))
@@ -82,15 +82,18 @@ def terminals_to_staging (conn, path, logger):
     make_sql_query(conn=conn, query=query, logger=logger)
 
     try:
-        curs.executemany(f"""
+        query = f"""
             insert into demipt2.gold_stg_dim_terminals_raw (
                 terminal_id,
                 terminal_type,
                 terminal_city,
                 terminal_address,
                 update_dt)
-            values (?,?,?,?,to_date('{maxdate.date()}', 'yyyy-mm-dd'))
-            """, df.values.tolist())
+            values (?,?,?,?,current_date)
+            """
+        logger.info('Insert data into demipt2.gold_stg_dim_terminals_raw with query:\n')
+        logger.info(query)
+        curs.executemany(query, df.values.tolist())
         logger.info('Data was inserted into demipt2.gold_stg_dim_terminals_raw!')
     except Exception as e:
         logger.info(f'Data was not inserted into demipt2.gold_stg_dim_terminals_raw! Exception: {e}')
@@ -163,18 +166,14 @@ def terminals_to_staging (conn, path, logger):
                   t.terminal_id is null
                   or (
                   t.terminal_id is not null
-                  and ( 1 = 0
-                        or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
-                        or (s.terminal_type is not null and t.terminal_type is null)
-                      )
-                  and ( 1 = 0
-                        or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
-                        or (s.terminal_city is not null and t.terminal_city is null)
-                      )
-                  and ( 1 = 0
-                        or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
-                        or (s.terminal_address is not null and t.terminal_address is null)
-                      )
+                  and ( 1=0
+                    or (s.terminal_type <> t.terminal_type) or (s.terminal_type is null and t.terminal_type is not null)
+                    or (s.terminal_type is not null and t.terminal_type is null)
+                    or (s.terminal_city <> t.terminal_city) or (s.terminal_city is null and t.terminal_city is not null)
+                    or (s.terminal_city is not null and t.terminal_city is null)
+                    or (s.terminal_address <> t.terminal_address) or (s.terminal_address is null and t.terminal_address is not null)
+                    or (s.terminal_address is not null and t.terminal_address is null)
+                    )
                   )
             ) stg
             on ( tgt.terminal_id = stg.terminal_id )
@@ -197,12 +196,12 @@ def terminals_to_staging (conn, path, logger):
                 to_date( '9999-01-01', 'yyyy-mm-dd')
                 )
             when matched then
-            update set effective_to = {maxdate} - interval '1' second
+            update set effective_to = current_date - interval '1' second
             """
     make_sql_query(conn=conn, query=query, logger=logger)
 
     # 4.2 Вставка новой версии по scd2 для случая апдейта
-    query = """
+    query = f"""
             insert into demipt2.gold_dwh_dim_terminals_hist (
                 terminal_id,
                 terminal_type,
@@ -218,8 +217,8 @@ def terminals_to_staging (conn, path, logger):
                 s.terminal_city,
                 s.terminal_address,
                 'n' as  deleted_flg,
-                '{maxdate}' as effective_from,
-                effective_to
+                current_date as effective_from,
+                to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
             from demipt2.gold_stg_dim_terminals s
             left join demipt2.gold_dwh_dim_terminals_hist t
             on s.terminal_id = t.terminal_id
@@ -241,7 +240,7 @@ def terminals_to_staging (conn, path, logger):
                     """
     make_sql_query(conn=conn, query=query, logger=logger)
 
-    # 5. Проставляем в приемнике флаг для удаленных записей ('y' - для удаленных)
+    # 5. Вставка актуальной записи и обновление информации об удалениях (для удаленных - флаг 'y')
 
     # 5.1 Вставляем актуальную запись по scd2
     query = f"""
@@ -260,7 +259,7 @@ def terminals_to_staging (conn, path, logger):
             terminal_city,
             terminal_address,
             'y' as deleted_flg,
-            '{maxdate}' as effective_from,
+            current_date as effective_from,
             to_date( '9999-01-01', 'yyyy-mm-dd') as effective_to
         from demipt2.gold_dwh_dim_terminals_hist
         where terminal_id in (
@@ -277,10 +276,10 @@ def terminals_to_staging (conn, path, logger):
     make_sql_query(conn=conn, query=query, logger=logger)
 
     # 5.2 Обновляем данные об удаленной записи по scd2
-    query = """
+    query = f"""
         update demipt2.gold_dwh_dim_terminals_hist
         set 
-        effective_to = '{maxdate}' - interval '1' second,
+        effective_to = current_date - interval '1' second,
         deleted_flg = 'y'
         where terminal_id in (
         select

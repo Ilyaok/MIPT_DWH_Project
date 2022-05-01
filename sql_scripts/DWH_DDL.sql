@@ -36,8 +36,8 @@ create table demipt2.gold_dwh_dim_terminals_hist (
     terminal_city varchar2(50),
     terminal_address varchar2(100),
     deleted_flg char(1),
-    effective_from timestamp,
-	effective_to timestamp
+    effective_from date,
+	effective_to date
 );
 
 -- таблица измерений в SCD2 - карты
