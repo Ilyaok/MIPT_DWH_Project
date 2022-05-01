@@ -17,7 +17,8 @@ select * from demipt2.gold_stg_dim_terminals_del order by TERMINAL_ID;
 select * from demipt2.gold_dwh_dim_terminals_hist order by TERMINAL_ID, EFFECTIVE_FROM;
 
 delete from demipt2.gold_dwh_dim_terminals_hist
-where TERMINAL_ID = 'A8966' and TERMINAL_ADDRESS = 'г. Новоуральск, ул. Степана Шутова, д. 3';
+where TERMINAL_ID = 'A8966' and TERMINAL_ADDRESS = 'г. Новоуральск, ул. Степана Шутова, д. 3'
+;
 
 select * from demipt2.gold_meta_bank;
 
