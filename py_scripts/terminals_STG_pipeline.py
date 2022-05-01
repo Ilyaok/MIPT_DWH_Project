@@ -3,7 +3,6 @@
 import pandas as pd
 import os
 import re
-import codecs
 from datetime import datetime
 
 from py_scripts.utils import rename_and_move_file, make_sql_query
@@ -73,28 +72,30 @@ def terminals_to_staging (conn, path, logger):
     logger.info('Created dataframe:')
     logger.info(f'\n{df.to_string()}')
 
-    # Запишем датафрейм в стейджинговую таблицу GOLD_STG_DIM_TERMINALS_SOURCE
+    # Запишем датафрейм в слой сырых данных demipt2.gold_stg_dim_terminals_raw
     # По условию задачи список терминалов - полносрезный, соответственно, инкрементальная загрузка не требуется
-    # Поэтому каждый день перезаписываем таблицу GOLD_STG_DIM_TERMINALS_SOURCE
+    # Поэтому каждый день перезаписываем таблицу demipt2.gold_stg_dim_terminals_raw
 
     query = """
-            delete from demipt2.gold_stg_dim_terminals_source
+            delete from demipt2.gold_stg_dim_terminals_raw
             """
     make_sql_query(conn=conn, query=query, logger=logger)
 
     try:
         curs.executemany(f"""
-            insert into demipt2.gold_stg_dim_terminals_source (
+            insert into demipt2.gold_stg_dim_terminals_raw (
                 terminal_id,
                 terminal_type,
                 terminal_city,
                 terminal_address,
                 update_dt)
-            values (?, ?, ?, ?, to_date('{maxdate.date()}', 'yyyy-mm-dd')) 
+            values (?,?,?,?,to_date('{maxdate.date()}', 'yyyy-mm-dd'))
             """, df.values.tolist())
-        logger.info('Data was inserted into demipt2.gold_stg_dim_terminals_source!')
+        logger.info('Data was inserted into demipt2.gold_stg_dim_terminals_raw!')
     except Exception as e:
-        logger.info(f'Data was not inserted into demipt2.gold_stg_dim_terminals_source! Exception: {e}')
+        logger.info(f'Data was not inserted into demipt2.gold_stg_dim_terminals_raw! Exception: {e}')
+
+    conn.commit()
 
     # Выполнение пайплайна в SCD2
 
@@ -125,20 +126,18 @@ def terminals_to_staging (conn, path, logger):
             terminal_city,
             terminal_address,
             update_dt
-        from demipt2.gold_stg_dim_terminals_source
-        where 1=0
-            or update_dt > (
+        from demipt2.gold_stg_dim_terminals_raw
+        where update_dt > (
             select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
             from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
             or update_dt is null
             """
     make_sql_query(conn=conn, query=query, logger=logger)
 
-
     # 3. Захват ключей для вычисления удалений
     query = """
             insert into demipt2.gold_stg_dim_terminals_del ( terminal_id )
-            select terminal_id from demipt2.gold_stg_dim_terminals_source
+            select terminal_id from demipt2.gold_stg_dim_terminals_raw
             """
     make_sql_query(conn=conn, query=query, logger=logger)
 
@@ -161,8 +160,7 @@ def terminals_to_staging (conn, path, logger):
                 left join demipt2.gold_dwh_dim_terminals_hist t
                 on s.terminal_id = t.terminal_id
                 where
-                  1=1
-                  and t.terminal_id is  null
+                  t.terminal_id is null
                   or (
                   t.terminal_id is not null
                   and ( 1 = 0
@@ -226,8 +224,7 @@ def terminals_to_staging (conn, path, logger):
             left join demipt2.gold_dwh_dim_terminals_hist t
             on s.terminal_id = t.terminal_id
             where
-              1=1
-              and t.terminal_id is  null
+              t.terminal_id is null
               or (
               t.terminal_id is not null
               and ( 1 = 0
@@ -285,7 +282,9 @@ def terminals_to_staging (conn, path, logger):
     # 5.2 Обновляем данные об удаленной записи по scd2
     query = """
         update demipt2.gold_dwh_dim_terminals_hist
-        set effective_to = current_date - interval '1' second
+        set 
+        effective_to = current_date - interval '1' second,
+        deleted_flg = 'y'
         where terminal_id in (
         select
             t.terminal_id
@@ -303,7 +302,8 @@ def terminals_to_staging (conn, path, logger):
     query = """
         update demipt2.gold_meta_bank
         set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
-        where table_db = 'bank' and table_name = 'terminals' and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
+        where table_db = 'bank' and table_name = 'terminals' 
+        and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
     """
     make_sql_query(conn=conn, query=query, logger=logger)
 

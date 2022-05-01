@@ -1,30 +1,20 @@
 commit;
 rollback;
 
-select * from demipt2.gold_stg_dim_terminals_source;
-
-insert into demipt2.gold_stg_dim_terminals_source (
-    terminal_id,
-    terminal_type,
-    terminal_city,
-    terminal_address,
-    update_dt)
-values (1, 2, 3, 4, current_date);
-
 update demipt2.gold_meta_bank
 set last_update_dt = to_date( '1900-01-01', 'yyyy-mm-dd')
 where table_db = 'bank'
 and table_name = 'terminals';
 
 -- delete from demipt2.gold_stg_dim_terminals;
--- delete from demipt2.gold_stg_dim_terminals_source;
+-- delete from demipt2.gold_stg_dim_terminals_raw;
 -- delete from demipt2.gold_stg_dim_terminals_del;
 -- delete from demipt2.gold_dwh_dim_terminals_hist;
 
-select * from demipt2.gold_stg_dim_terminals;
-select * from demipt2.gold_stg_dim_terminals_source;
-select * from demipt2.gold_stg_dim_terminals_del;
-select * from demipt2.gold_dwh_dim_terminals_hist;
+select * from demipt2.gold_stg_dim_terminals order by TERMINAL_ID;
+select * from demipt2.gold_stg_dim_terminals_raw order by TERMINAL_ID;
+select * from demipt2.gold_stg_dim_terminals_del order by TERMINAL_ID;
+select * from demipt2.gold_dwh_dim_terminals_hist order by TERMINAL_ID;
 
 select * from demipt2.gold_meta_bank;
 

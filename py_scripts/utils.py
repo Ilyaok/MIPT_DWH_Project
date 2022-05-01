@@ -62,6 +62,7 @@ def make_sql_query(conn, query, logger):
     try:
         curs = conn.cursor()
         curs.execute(query)
+        conn.commit()
     except Exception as e:
         logger.info(f'Failed to perform query with Exception {e}')
         try:

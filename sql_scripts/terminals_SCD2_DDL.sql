@@ -1,7 +1,7 @@
 -- Подготовка данных для загрузки данных по терминалам
 
--- первая стейдж-таблица (имитация таблицы-источника)
-create table demipt2.gold_stg_dim_terminals_source (
+-- Таблица для слоя сырых данных
+create table demipt2.gold_stg_dim_terminals_raw (
     terminal_id varchar2(10),
     terminal_type varchar2(10),
     terminal_city varchar2(50),
