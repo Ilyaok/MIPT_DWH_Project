@@ -23,7 +23,7 @@ select
 from bank.accounts
 where 1=0
     or update_dt > (
-    select coalesce( last_update_dt, to_date( '1900-01-01', 'YYYY-MM-DD') )
+    select coalesce( last_update_dt, to_date( '1900-01-01', 'yyyy-mm-dd') )
     from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'accounts' )
     or update_dt is null;
 
@@ -48,14 +48,11 @@ using (
     left join demipt2.gold_dwh_dim_accounts_hist t
     on s.account_num = t.account_num
     where
-          1=1
-          and t.account_num is null
+          t.account_num is null
           or (
             t.account_num is not null
             and (1 = 0
                      or (s.valid_to <> t.valid_to) or (s.valid_to is null and t.valid_to is not null) or (s.valid_to is not null and t.valid_to is null)
-                )
-            and (1 = 0
                      or (s.client <> t.client) or (s.client is null and t.client is not null) or (s.client is not null and t.client is null)
                 )
              )
@@ -81,7 +78,6 @@ when matched then
 update set effective_to = current_date - interval '1' second;
 
 
-
 -- 4.2. вставка новой версии по scd2 для случая апдейта
 insert into demipt2.gold_dwh_dim_accounts_hist (
     account_num,
@@ -102,8 +98,7 @@ from demipt2.gold_stg_dim_accounts s
 left join demipt2.gold_dwh_dim_accounts_hist t
 on s.account_num = t.account_num
 where
-    1=1
-    and t.account_num is null
+    t.account_num is null
     or (
     t.account_num is not null
     and (1 = 0

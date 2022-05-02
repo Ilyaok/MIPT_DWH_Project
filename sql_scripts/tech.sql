@@ -3,6 +3,23 @@ rollback;
 
 -- update demipt2.gold_meta_bank
 -- set last_update_dt = to_date( '1900-01-01', 'yyyy-mm-dd')
+-- where table_db = 'demipt2' and table_name = 'gold_dwh_dim_accounts_hist';
+--
+-- delete from demipt2.gold_stg_dim_accounts;
+-- delete from demipt2.gold_stg_dim_accounts_del;
+-- delete from demipt2.gold_dwh_dim_accounts_hist;
+
+select * from demipt2.gold_stg_dim_accounts;
+select * from demipt2.gold_stg_dim_accounts_del;
+select * from demipt2.gold_dwh_dim_accounts_hist;
+
+select count(*) from bank.ACCOUNTS;
+select count(*) from demipt2.gold_dwh_dim_accounts_hist;
+
+select * from demipt2.gold_meta_bank;
+
+-- update demipt2.gold_meta_bank
+-- set last_update_dt = to_date( '1900-01-01', 'yyyy-mm-dd')
 -- where table_db = 'demipt2' and table_name = 'gold_dwh_fact_transactions';
 --
 -- delete from demipt2.gold_stg_transactions_raw;

@@ -1,9 +1,9 @@
 import os
-import pandas as pd
 
-from py_scripts.terminals_pipeline import terminals_to_staging
-from py_scripts.passport_blacklist import passport_blacklist_to_staging
-from py_scripts.transactions_pipeline import transactions_to_staging
+from py_scripts.pipeline_terminals import terminals_to_dwh
+from py_scripts.pipeline_passport_blacklist import passport_blacklist_to_dwh
+from py_scripts.pipeline_transactions import transactions_to_dwh
+from py_scripts.pipeline_accounts import accounts_to_dwh
 from py_scripts.logger import create_logger
 from py_scripts.utils import get_jaydebeapi_connection, check_connection
 
@@ -19,13 +19,16 @@ def main():
     check_connection(conn, logger)
 
     # Загрузка данных о терминалах из Excel-файлов в DWH
-    terminals_to_staging(conn=conn, path=path_to_project, logger=logger)
+    terminals_to_dwh(conn=conn, path=path_to_project, logger=logger)
 
     # Загрузка данных о черном списке паспортов из Excel-файлов в DWH
-    passport_blacklist_to_staging(conn=conn, path=path_to_project, logger=logger)
+    passport_blacklist_to_dwh(conn=conn, path=path_to_project, logger=logger)
 
     # Загрузка данных о транзакциях из txt-файлов в DWH
-    transactions_to_staging(conn=conn, path=path_to_project, logger=logger)
+    transactions_to_dwh(conn=conn, path=path_to_project, logger=logger)
+
+    # Загрузка данных об аккаунтах из таблицы-источника в схеме BANK в DWH
+    accounts_to_dwh(conn, logger)
 
     conn.close()
     logger.info(f'Connection closed')
