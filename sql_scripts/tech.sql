@@ -1,6 +1,14 @@
 commit;
 rollback;
 
+-- delete from demipt2.gold_stg_pssprt_blcklst;
+-- delete from demipt2.gold_stg_pssprt_blcklst_raw;
+-- delete from demipt2.gold_dwh_fact_pssprt_blcklst;
+
+select * from demipt2.gold_stg_pssprt_blcklst_raw;
+select * from demipt2.gold_stg_pssprt_blcklst;
+select * from demipt2.gold_dwh_fact_pssprt_blcklst;
+
 -- update demipt2.gold_meta_bank
 -- set last_update_dt = to_date( '1900-01-01', 'yyyy-mm-dd')
 -- where table_db = 'bank'
@@ -11,8 +19,8 @@ rollback;
 -- delete from demipt2.gold_stg_dim_terminals_del;
 -- delete from demipt2.gold_dwh_dim_terminals_hist;
 
-select * from demipt2.gold_stg_dim_terminals order by TERMINAL_ID;
 select * from demipt2.gold_stg_dim_terminals_raw order by TERMINAL_ID;
+select * from demipt2.gold_stg_dim_terminals order by TERMINAL_ID;
 select * from demipt2.gold_stg_dim_terminals_del order by TERMINAL_ID;
 select * from demipt2.gold_dwh_dim_terminals_hist order by TERMINAL_ID, EFFECTIVE_FROM;
 

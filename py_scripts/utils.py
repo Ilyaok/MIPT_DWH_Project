@@ -70,11 +70,11 @@ def make_sql_query(conn, query, logger):
             curs.execute('rollback')
             logger.info('Rollback performed!')
             curs.close()
-            exit()
+            return 1
         except Exception as e:
             logger.info(f'Rollback not performed with Exception {e}')
             curs.close()
-            exit()
+            return 1
     else:
         logger.info(f'Query performed!')
 
