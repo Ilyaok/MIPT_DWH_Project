@@ -17,7 +17,7 @@ def terminals_to_staging(conn, path, logger):
     :param conn: коннектор к БД
     :param path: путь расположению файлов
     :param logger: логгер
-    :return:
+    :return: None
     """
 
     # Создадим список всех файлов по паттерну terminals_DDMMYYYY.xlsx
@@ -42,7 +42,7 @@ def terminals_to_staging(conn, path, logger):
         # Пауза необходима, т.к. в запросах идет сравнение по времени записей в БД, например, update_dt
         # Если цикл будет выполняться без паузы, время в некоторых случаях будет одинаковым, и запросы сработают некорректно
         pause_time = 3
-        logger.info(f'Waiting for {pause_time} seconds...')
+        logger.info(f'Waiting {pause_time} seconds...')
         sleep( pause_time)
 
         df = pd.read_excel(os.path.join(path, filename))
@@ -77,7 +77,7 @@ def terminals_to_staging(conn, path, logger):
             logger.info('Data was inserted into demipt2.gold_stg_dim_terminals_raw!')
         except Exception as e:
             logger.info(f'Data was not inserted into demipt2.gold_stg_dim_terminals_raw! Exception: {e}')
-            return 1
+            exit()
 
         conn.commit()
         curs.close()
@@ -114,7 +114,8 @@ def terminals_to_staging(conn, path, logger):
             from demipt2.gold_stg_dim_terminals_raw
             where update_dt > (
                 select coalesce( last_update_dt, to_date( '1900-01-01', 'yyyy-mm-dd') )
-                from demipt2.gold_meta_bank where table_db = 'bank' and table_name = 'terminals' )
+                from demipt2.gold_meta_bank 
+                where table_db = 'demipt2' and table_name = 'gold_dwh_dim_terminals_hist' )
                 or update_dt is null
                 """
         make_sql_query(conn=conn, query=query, logger=logger)
@@ -234,7 +235,7 @@ def terminals_to_staging(conn, path, logger):
         query = """
             update demipt2.gold_meta_bank
             set last_update_dt = ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist )
-            where table_db = 'bank' and table_name = 'terminals' 
+            where table_db = 'demipt2' and table_name = 'gold_dwh_dim_terminals_hist' 
             and ( select max(effective_from) from demipt2.gold_dwh_dim_terminals_hist ) is not null
         """
         make_sql_query(conn=conn, query=query, logger=logger)
