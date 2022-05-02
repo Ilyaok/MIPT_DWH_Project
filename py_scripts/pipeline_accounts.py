@@ -1,11 +1,12 @@
 # Загрузка данных об аккаунтах из таблицы-источника в схеме BANK в DWH
 
 from py_scripts.utils import make_sql_query
+from time import sleep
 
 
 def accounts_to_dwh(conn, logger):
     """
-    Ф-ция забирает файлы с данными об аккаунтах из таблицы-источника в схеме BANK в DWH.
+    Ф-ция выгружает файлы с данными об аккаунтах из таблицы-источника в схеме BANK в DWH.
 
     :param conn: коннектор к БД
     :param logger: логгер
@@ -15,6 +16,12 @@ def accounts_to_dwh(conn, logger):
     logger.info(f"""
     Start parsing data: BANK.ACCOUNTS to DWH
     """)
+
+    # Пауза необходима, т.к. в запросах идет сравнение по времени записей в БД, например, update_dt
+    # Если цикл будет выполняться без паузы, время в некоторых случаях будет одинаковым, и запросы сработают некорректно
+    pause_time = 3
+    logger.info(f'Waiting {pause_time} seconds...')
+    sleep(pause_time)
 
     # Выполнение пайплайна в SCD2
 

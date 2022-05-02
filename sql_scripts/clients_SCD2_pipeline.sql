@@ -69,33 +69,14 @@ using (
       and t.client_id is  null
       or (
       t.client_id is not null
-      and ( 1 = 0
-          or (s.last_name <> t.last_name) or (s.last_name is null and t.last_name is not null) or (s.last_name is not null and t.last_name is null)
-          )
-      and ( 1 = 0
-                or (s.first_name <> t.first_name) or (s.first_name is null and t.first_name is not null)
-                or (s.first_name is not null and t.first_name is null)
-          )
-      and ( 1 = 0
-                or (s.patronymic <> t.patronymic) or (s.patronymic is null and t.patronymic is not null)
-                or (s.patronymic is not null and t.patronymic is null)
-          )
-      and ( 1 = 0
-                or (s.date_of_birth <> t.date_of_birth) or (s.date_of_birth is null and t.date_of_birth is not null)
-                or (s.date_of_birth is not null and t.date_of_birth is null)
-          )
-      and ( 1 = 0
-                or (s.passport_num <> t.passport_num) or (s.passport_num is null and t.passport_num is not null)
-                or (s.passport_num is not null and t.passport_num is null)
-          )
-      and ( 1 = 0
-                or (s.passport_valid_to <> t.passport_valid_to) or
-           (s.passport_valid_to is null and t.passport_valid_to is not null)
-                or (s.passport_valid_to is not null and t.passport_valid_to is null)
-          )
-      and (1 = 0
-            or (s.phone <> t.phone) or (s.phone is null and t.phone is not null)
-               or (s.phone is not null and t.phone is null)
+      and ( 1= 0
+        or (s.last_name <> t.last_name) or (s.last_name is null and t.last_name is not null) or (s.last_name is not null and t.last_name is null)
+        or (s.first_name <> t.first_name) or (s.first_name is null and t.first_name is not null) or (s.first_name is not null and t.first_name is null)
+        or (s.patronymic <> t.patronymic) or (s.patronymic is null and t.patronymic is not null) or (s.patronymic is not null and t.patronymic is null)
+        or (s.date_of_birth <> t.date_of_birth) or (s.date_of_birth is null and t.date_of_birth is not null) or (s.date_of_birth is not null and t.date_of_birth is null)
+        or (s.passport_num <> t.passport_num) or (s.passport_num is null and t.passport_num is not null) or (s.passport_num is not null and t.passport_num is null)
+        or (s.passport_valid_to <> t.passport_valid_to) or (s.passport_valid_to is null and t.passport_valid_to is not null) or (s.passport_valid_to is not null and t.passport_valid_to is null)
+        or (s.phone <> t.phone) or (s.phone is null and t.phone is not null) or (s.phone is not null and t.phone is null)
           )
       )
 ) stg
