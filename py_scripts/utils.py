@@ -63,23 +63,26 @@ def make_sql_query(conn, query, logger):
         curs = conn.cursor()
         curs.execute(query)
         conn.commit()
+        curs.close()
     except Exception as e:
         logger.info(f'Failed to perform query with Exception {e}')
         try:
             curs.execute('rollback')
             logger.info('Rollback performed!')
+            curs.close()
             exit()
         except Exception as e:
             logger.info(f'Rollback not performed with Exception {e}')
+            curs.close()
             exit()
     else:
-        logger.info(f'Query performed')
+        logger.info(f'Query performed!')
+
 
 
 def rename_and_move_file(source_path, target_path, logger):
     try:
         shutil.move(source_path, target_path)
-        os.rename(target_path, target_path + '.backup')
     except Exception as e:
         logger.info(f'''File {source_path} wasn't backed up with Exception {e}''')
     else:
