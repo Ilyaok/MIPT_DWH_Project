@@ -13,7 +13,7 @@ from py_scripts.utils import get_jaydebeapi_connection, check_connection
 def main():
     path_to_project = os.getcwd()
 
-    logger = create_logger(path_to_project)
+    logger = create_logger()
     logger.info(f'Starting {path_to_project}/{__name__}')
     logger.info(f'Connecting to Oracle...')
 
