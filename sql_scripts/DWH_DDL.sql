@@ -14,13 +14,11 @@ create table demipt2.gold_rep_fraud (
 create table demipt2.gold_dwh_fact_transactions (
     trans_id varchar2(30),
     trans_date date,
-    card_num varchar2(20),
+    card_num varchar2(30),
     oper_type varchar2(20),
-    amt decimal,
+    amt number,
     oper_result varchar2(20),
-    terminal varchar2(20),
-    create_dt date,
-    update_dt date
+    terminal varchar2(20)
 );
 
 -- таблица фактов - черный список паспортов

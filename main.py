@@ -3,6 +3,7 @@ import pandas as pd
 
 from py_scripts.terminals_pipeline import terminals_to_staging
 from py_scripts.passport_blacklist import passport_blacklist_to_staging
+from py_scripts.transactions_pipeline import transactions_to_staging
 from py_scripts.logger import create_logger
 from py_scripts.utils import get_jaydebeapi_connection, check_connection
 
@@ -22,6 +23,9 @@ def main():
 
     # Загрузка данных о черном списке паспортов из Excel-файлов в DWH
     passport_blacklist_to_staging(conn=conn, path=path_to_project, logger=logger)
+
+    # Загрузка данных о транзакциях из txt-файлов в DWH
+    transactions_to_staging(conn=conn, path=path_to_project, logger=logger)
 
     conn.close()
     logger.info(f'Connection closed')

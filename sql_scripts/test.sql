@@ -1,5 +1,26 @@
-select coalesce( last_update_dt, to_date( '1900-01-01', 'yyyy-mm-dd') )
-from demipt2.gold_meta_bank where table_db = 'demipt2' and table_name = 'gold_dwh_fact_pssprt_blcklst';
+insert into demipt2.gold_stg_transactions_raw (
+                    transaction_id,
+                    transaction_date,
+                    amount,
+                    card_num,
+                    oper_type,
+                    oper_result,
+                    terminal
+                    )
+                values ('43845789347', to_date('2021-03-01 00:10:34', 'yyyy-mm-dd hh:mi:ss'), 1046, '4513 5880 2369 1799', 'PAYMENT', 'SUCCESS', 'P5456');
 
-select last_update_dt
-from demipt2.gold_meta_bank where table_db = 'demipt2' and table_name = 'gold_dwh_fact_pssprt_blcklst';
+insert into demipt2.gold_stg_transactions_raw (
+                    transaction_id,
+                    transaction_date,
+                    amount,
+                    card_num,
+                    oper_type,
+                    oper_result,
+                    terminal
+                    )
+                values ('43845789347', to_date('2018-05-15 8:30:55', 'yyyy-mm-dd hh:mi:ss'), '1046,67', '4513 5880 2369 1799', 'PAYMENT', 'SUCCESS', 'P5456');
+
+SELECT TO_DATE('2015/05/15 8:30:25', 'YYYY/MM/DD HH:MI:SS')
+FROM dual;
+
+select * from demipt2.gold_stg_transactions_raw;
