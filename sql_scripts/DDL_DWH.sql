@@ -40,7 +40,7 @@ create table demipt2.gold_dwh_dim_terminals_hist (
 
 -- таблица измерений в SCD2 - карты
 create table demipt2.gold_dwh_dim_cards_hist (
-    card_num varchar2(20),
+    card_num varchar2(30),
     account_num varchar2(50),
     deleted_flg char(1),
     effective_from date,

@@ -1,6 +1,9 @@
 -- Скрипт для отладки.
 -- Очищает все данные в БД и возвращает к исходному состоянию, до старта любых ETL-процессов.
 
+-- Очистка отчета о мошеннических операциях
+delete from demipt2.gold_rep_fraud;
+
 -- Очистка DWH и сброс метаданных - Аккаунты
 update demipt2.gold_meta_bank
 set last_update_dt = to_date( '1900-01-01', 'yyyy-mm-dd')
@@ -56,3 +59,5 @@ where table_db = 'demipt2' and table_name = 'gold_dwh_fact_transactions';
 delete from demipt2.gold_stg_transactions_raw;
 delete from demipt2.gold_stg_transactions;
 delete from demipt2.gold_dwh_fact_transactions;
+
+commit;

@@ -47,9 +47,9 @@ def accounts_to_dwh(conn, logger):
                 update_dt
             )
             select
-                account,
+                trim(account),
                 valid_to,
-                client,
+                trim(client),
                 create_dt,
                 case
                 when update_dt is NULL then create_dt

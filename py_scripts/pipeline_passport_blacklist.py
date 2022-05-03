@@ -93,7 +93,7 @@ def passport_blacklist_to_dwh(conn, path, logger):
         # Захват данных в стейджинг (кроме удалений).
         query = """
                 insert into demipt2.gold_stg_pssprt_blcklst ( passport_num, entry_dt )
-                select passport_num, entry_dt 
+                select trim(passport_num), trim(entry_dt)
                 from demipt2.gold_stg_pssprt_blcklst_raw
                 where entry_dt > ( 
                     select coalesce( last_update_dt, to_date( '1900-01-01', 'yyyy-mm-dd') ) 

@@ -45,8 +45,8 @@ def cards_to_dwh(conn, logger):
                 update_dt
             )
             select
-                card_num,
-                account,
+                trim(card_num),
+                trim(account),
                 create_dt,
                 case
                 when update_dt is NULL then create_dt

@@ -105,10 +105,10 @@ def terminals_to_dwh(conn, path, logger):
                 update_dt
             )
             select
-                terminal_id,
-                terminal_type,
-                terminal_city,
-                terminal_address,
+                trim(terminal_id),
+                trim(terminal_type),
+                trim(terminal_city),
+                trim(terminal_address),
                 update_dt
             from demipt2.gold_stg_dim_terminals_raw
             where update_dt > (

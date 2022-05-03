@@ -6,6 +6,7 @@ from py_scripts.pipeline_transactions import transactions_to_dwh
 from py_scripts.pipeline_accounts import accounts_to_dwh
 from py_scripts.pipeline_cards import cards_to_dwh
 from py_scripts.pipeline_clients import clients_to_dwh
+from py_scripts.create_fraud_report import create_fraud_report
 from py_scripts.logger import create_logger
 from py_scripts.utils import get_jaydebeapi_connection, check_connection
 
@@ -38,9 +39,13 @@ def main():
     # Загрузка данных о клиентах из таблицы-источника в схеме BANK в DWH
     clients_to_dwh(conn, logger)
 
+    # Создание отчета о мошеннических операциях
+    create_fraud_report(conn, logger)
+
     conn.close()
     logger.info(f'Connection closed')
 
 
 if __name__ == "__main__":
     main()
+

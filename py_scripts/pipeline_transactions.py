@@ -106,13 +106,13 @@ def transactions_to_dwh(conn, path, logger):
                             terminal
                         )
                         select 
-                            transaction_id,
+                            trim(transaction_id),
                             transaction_date,
-                            card_num,
-                            oper_type,
+                            trim(card_num),
+                            trim(oper_type),
                             amount,
-                            oper_result,
-                            terminal
+                            trim(oper_result),
+                            trim(terminal)
                         from demipt2.gold_stg_transactions_raw
                         where transaction_date > ( 
                             select coalesce( last_update_dt, to_date( '1900-01-01', 'yyyy-mm-dd') ) 

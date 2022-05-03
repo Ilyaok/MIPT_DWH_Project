@@ -52,14 +52,14 @@ def clients_to_dwh(conn, logger):
                 update_dt
             )
             select
-                client_id,
-                last_name,
-                first_name,
-                patronymic,
+                trim(client_id),
+                trim(last_name),
+                trim(first_name),
+                trim(patronymic),
                 date_of_birth,
-                passport_num,
+                trim(passport_num),
                 passport_valid_to,
-                phone,
+                trim(phone),
                 create_dt,
                 case
                 when update_dt is NULL then create_dt
