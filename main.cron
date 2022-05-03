@@ -1,0 +1,2 @@
+# Start main.py at 01:17 every day
+17 1 * * * /home/demipt2/GOLD/main.py
