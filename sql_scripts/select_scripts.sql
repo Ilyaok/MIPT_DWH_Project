@@ -20,7 +20,7 @@ select * from demipt2.gold_rep_fraud
 select count(*) from demipt2.gold_rep_fraud;
 
 select count(*) from demipt2.gold_rep_fraud
-    where EVENT_TYPE = 1;
+    where EVENT_TYPE = 3;
 
 select * from demipt2.gold_rep_fraud
     where EVENT_TYPE = 3;

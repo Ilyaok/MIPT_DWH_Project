@@ -125,25 +125,20 @@ select
     t1.t1_passport as passport,
     t1.t1_fio as fio,
     t1.t1_phone as phone,
-    t1.t1_event_type as event_type,
-    t1_report_dt as report_dt,
+    3 as event_type,
+    current_date as report_dt,
     t1.t1_trans_date as t1_trans_date,
     t2.t2_trans_date as t2_trans_date,
-    24 * (t2.t2_trans_date - t1.t1_trans_date) as date_diff,
-    t1.t1_term_city,
-    t2.t2_term_city
+    1440 * (t2.t2_trans_date - t1.t1_trans_date) as date_diff
 from
     (
         select
-            transactions.TRANS_DATE as t1_event_dt,
-            clients.PASSPORT_NUM as t1_passport,
+            transactions.trans_date as t1_event_dt,
+            clients.passport_num as t1_passport,
             clients.last_name || ' ' || clients.first_name || ' ' || clients.patronymic as t1_fio,
             clients.phone as t1_phone,
-            3 as t1_event_type,
-            current_date as t1_report_dt,
-            transactions.CARD_NUM as t1_card_num,
-            transactions.TRANS_DATE as t1_trans_date,
-            terminals.TERMINAL_CITY as t1_term_city
+            transactions.card_num as t1_card_num,
+            transactions.trans_date as t1_trans_date
         from demipt2.gold_dwh_fact_transactions transactions
              left join demipt2.gold_dwh_dim_terminals_hist terminals on transactions.terminal = terminals.terminal_id
              left join demipt2.gold_dwh_dim_cards_hist cards on transactions.card_num = cards.card_num
@@ -154,15 +149,12 @@ from
          ) t1
 inner join (
         select
-            transactions.TRANS_DATE as t2_event_dt,
-            clients.PASSPORT_NUM as t2_passport,
+            transactions.trans_date as t2_event_dt,
+            clients.passport_num as t2_passport,
             clients.last_name || ' ' || clients.first_name || ' ' || clients.patronymic as t2_fio,
             clients.phone as t2_phone,
-            3 as t2_event_type,
-            current_date as t2_report_dt,
-            transactions.CARD_NUM as t2_card_num,
-            transactions.TRANS_DATE as t2_trans_date,
-            terminals.TERMINAL_CITY as t2_term_city
+            transactions.card_num as t2_card_num,
+            transactions.trans_date as t2_trans_date
         from demipt2.gold_dwh_fact_transactions transactions
              left join demipt2.gold_dwh_dim_terminals_hist terminals on transactions.terminal = terminals.terminal_id
              left join demipt2.gold_dwh_dim_cards_hist cards on transactions.card_num = cards.card_num
@@ -175,7 +167,7 @@ on (
         1=1
         and t1.t1_card_num = t2.t2_card_num
         and t2.t2_trans_date > t1.t1_trans_date
-        and (24 * (t2.t2_trans_date - t1.t1_trans_date) <= 1)
-        and (t1.t1_term_city <> t2.t2_term_city)
+        and (1440 * (t2.t2_trans_date - t1.t1_trans_date) <= 20)
+
     )
 ;

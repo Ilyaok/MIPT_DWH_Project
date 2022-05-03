@@ -98,13 +98,13 @@ def create_fraud_report(conn, logger):
             from
                 (
                     select
-                        transactions.TRANS_DATE as t1_event_dt,
-                        clients.PASSPORT_NUM as t1_passport,
+                        transactions.trans_date as t1_event_dt,
+                        clients.passport_num as t1_passport,
                         clients.last_name || ' ' || clients.first_name || ' ' || clients.patronymic as t1_fio,
                         clients.phone as t1_phone,
-                        transactions.CARD_NUM as t1_card_num,
-                        transactions.TRANS_DATE as t1_trans_date,
-                        terminals.TERMINAL_CITY as t1_term_city
+                        transactions.card_num as t1_card_num,
+                        transactions.trans_date as t1_trans_date,
+                        terminals.terminal_city as t1_term_city
                     from demipt2.gold_dwh_fact_transactions transactions
                          left join demipt2.gold_dwh_dim_terminals_hist terminals on transactions.terminal = terminals.terminal_id
                          left join demipt2.gold_dwh_dim_cards_hist cards on transactions.card_num = cards.card_num
@@ -115,13 +115,13 @@ def create_fraud_report(conn, logger):
                      ) t1
             inner join (
                     select
-                        transactions.TRANS_DATE as t2_event_dt,
-                        clients.PASSPORT_NUM as t2_passport,
+                        transactions.trans_date as t2_event_dt,
+                        clients.passport_num as t2_passport,
                         clients.last_name || ' ' || clients.first_name || ' ' || clients.patronymic as t2_fio,
                         clients.phone as t2_phone,
-                        transactions.CARD_NUM as t2_card_num,
-                        transactions.TRANS_DATE as t2_trans_date,
-                        terminals.TERMINAL_CITY as t2_term_city
+                        transactions.card_num as t2_card_num,
+                        transactions.trans_date as t2_trans_date,
+                        terminals.terminal_city as t2_term_city
                     from demipt2.gold_dwh_fact_transactions transactions
                          left join demipt2.gold_dwh_dim_terminals_hist terminals on transactions.terminal = terminals.terminal_id
                          left join demipt2.gold_dwh_dim_cards_hist cards on transactions.card_num = cards.card_num
@@ -153,13 +153,13 @@ def create_fraud_report(conn, logger):
             from
                 (
                     select
-                        transactions.TRANS_DATE as t1_event_dt,
-                        clients.PASSPORT_NUM as t1_passport,
+                        transactions.trans_date as t1_event_dt,
+                        clients.passport_num as t1_passport,
                         clients.last_name || ' ' || clients.first_name || ' ' || clients.patronymic as t1_fio,
                         clients.phone as t1_phone,
-                        transactions.CARD_NUM as t1_card_num,
-                        transactions.TRANS_DATE as t1_trans_date,
-                        terminals.TERMINAL_CITY as t1_term_city
+                        transactions.card_num as t1_card_num,
+                        transactions.trans_date as t1_trans_date,
+                        terminals.terminal_city as t1_term_city
                     from demipt2.gold_dwh_fact_transactions transactions
                          left join demipt2.gold_dwh_dim_terminals_hist terminals on transactions.terminal = terminals.terminal_id
                          left join demipt2.gold_dwh_dim_cards_hist cards on transactions.card_num = cards.card_num
@@ -170,13 +170,13 @@ def create_fraud_report(conn, logger):
                      ) t1
             inner join (
                     select
-                        transactions.TRANS_DATE as t2_event_dt,
-                        clients.PASSPORT_NUM as t2_passport,
+                        transactions.trans_date as t2_event_dt,
+                        clients.passport_num as t2_passport,
                         clients.last_name || ' ' || clients.first_name || ' ' || clients.patronymic as t2_fio,
                         clients.phone as t2_phone,
-                        transactions.CARD_NUM as t2_card_num,
-                        transactions.TRANS_DATE as t2_trans_date,
-                        terminals.TERMINAL_CITY as t2_term_city
+                        transactions.card_num as t2_card_num,
+                        transactions.trans_date as t2_trans_date,
+                        terminals.terminal_city as t2_term_city
                     from demipt2.gold_dwh_fact_transactions transactions
                          left join demipt2.gold_dwh_dim_terminals_hist terminals on transactions.terminal = terminals.terminal_id
                          left join demipt2.gold_dwh_dim_cards_hist cards on transactions.card_num = cards.card_num
