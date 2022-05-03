@@ -9,7 +9,11 @@ select * from bank.accounts a ;
 select * from bank.cards c ;
 select * from bank.clients c ;
 
+select * from demipt2.gold_rep_fraud
+order by EVENT_DT;
+
 select * from demipt2.gold_rep_fraud;
+select count(*) from demipt2.gold_rep_fraud;
 
 select * from demipt2.gold_meta_bank;
 

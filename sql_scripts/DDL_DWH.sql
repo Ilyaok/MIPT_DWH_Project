@@ -6,7 +6,7 @@ create table demipt2.gold_rep_fraud (
     passport varchar2(20),
     fio varchar2(100),
     phone varchar(20),
-    event_type varchar2(100),
+    event_type int,
     report_dt date
 );
 
