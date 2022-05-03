@@ -1,3 +1,5 @@
+#!bin/bash/python3
+
 import os
 
 from py_scripts.pipeline_terminals import terminals_to_dwh

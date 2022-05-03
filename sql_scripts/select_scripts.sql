@@ -1,32 +1,7 @@
 -- Скрипт для отладки
 -- Выборка данных из таблиц и прочие запросы для анализа
-commit;
-rollback;
 
-delete from demipt2.gold_rep_fraud;
-commit;
-
-select * from dba_segments;
-
-select * from bank.accounts a ;
-select * from bank.cards c ;
-select * from bank.clients c ;
-
-select * from demipt2.gold_rep_fraud
-order by fio, EVENT_DT;
-
-select * from demipt2.gold_rep_fraud
-    where EVENT_TYPE = 3;
-select count(*) from demipt2.gold_rep_fraud;
-
-select count(*) from demipt2.gold_rep_fraud
-    where EVENT_TYPE = 3;
-
-select * from demipt2.gold_rep_fraud
-    where EVENT_TYPE = 3;
-
-select fio from demipt2.gold_rep_fraud
-    group by fio;
+select * from demipt2.gold_rep_fraud;
 
 select * from demipt2.gold_meta_bank;
 

@@ -195,4 +195,7 @@ def create_fraud_report(conn, logger):
     """
     make_sql_query(conn=conn, query=query, logger=logger)
 
+    # 4. Попытка подбора суммы
+    # К сожалению, не успел :(
+
     logger.info(f'Fraud-report created in the table: demipt2.gold_rep_fraud')
