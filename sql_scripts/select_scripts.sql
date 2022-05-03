@@ -15,6 +15,9 @@ order by EVENT_DT;
 select * from demipt2.gold_rep_fraud;
 select count(*) from demipt2.gold_rep_fraud;
 
+select fio from demipt2.gold_rep_fraud
+    group by fio;
+
 select * from demipt2.gold_meta_bank;
 
 select * from demipt2.gold_stg_dim_clients;

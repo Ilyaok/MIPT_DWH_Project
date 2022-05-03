@@ -120,6 +120,80 @@ def create_fraud_report(conn, logger):
     make_sql_query(conn=conn, query=query, logger=logger)
 
     # 3. Совершение операций в разных городах в течение одного часа
-
+    query = """
+            merge into demipt2.gold_rep_fraud t3
+            using (
+                    select
+                        t1.t1_event_dt as event_dt,
+                        t1.t1_passport as passport,
+                        t1.t1_fio as fio,
+                        t1.t1_phone as phone,
+                        t1.t1_event_type as event_type,
+                        t1_report_dt as report_dt
+                    from
+                        (
+                            select
+                                transactions.TRANS_DATE as t1_event_dt,
+                                clients.PASSPORT_NUM as t1_passport,
+                                clients.last_name || ' ' || clients.first_name || ' ' || clients.patronymic as t1_fio,
+                                clients.phone as t1_phone,
+                                3 as t1_event_type,
+                                current_date as t1_report_dt,
+                                transactions.CARD_NUM as t1_card_num,
+                                transactions.TRANS_DATE as t1_trans_date,
+                                terminals.TERMINAL_CITY as t1_term_city
+                            from demipt2.gold_dwh_fact_transactions transactions
+                                 left join demipt2.gold_dwh_dim_terminals_hist terminals on transactions.terminal = terminals.terminal_id
+                                 left join demipt2.gold_dwh_dim_cards_hist cards on transactions.card_num = cards.card_num
+                                 left join demipt2.gold_dwh_dim_accounts_hist accounts on cards.account_num = accounts.account_num
+                                 left join demipt2.gold_dwh_dim_clients_hist clients on accounts.client = clients.client_id
+                                 left join demipt2.gold_dwh_fact_pssprt_blcklst pssprt_blcklst
+                             on clients.passport_num = pssprt_blcklst.passport_num
+                             ) t1
+                    inner join (
+                            select
+                                transactions.TRANS_DATE as t2_event_dt,
+                                clients.PASSPORT_NUM as t2_passport,
+                                clients.last_name || ' ' || clients.first_name || ' ' || clients.patronymic as t2_fio,
+                                clients.phone as t2_phone,
+                                3 as t2_event_type,
+                                current_date as t2_report_dt,
+                                transactions.CARD_NUM as t2_card_num,
+                                transactions.TRANS_DATE as t2_trans_date,
+                                terminals.TERMINAL_CITY as t2_term_city
+                            from demipt2.gold_dwh_fact_transactions transactions
+                                 left join demipt2.gold_dwh_dim_terminals_hist terminals on transactions.terminal = terminals.terminal_id
+                                 left join demipt2.gold_dwh_dim_cards_hist cards on transactions.card_num = cards.card_num
+                                 left join demipt2.gold_dwh_dim_accounts_hist accounts on cards.account_num = accounts.account_num
+                                 left join demipt2.gold_dwh_dim_clients_hist clients on accounts.client = clients.client_id
+                                 left join demipt2.gold_dwh_fact_pssprt_blcklst pssprt_blcklst
+                             on clients.passport_num = pssprt_blcklst.passport_num
+                             ) t2
+                    on (
+                        1=1
+                        and t1.t1_card_num = t2.t2_card_num
+                        and t2.t2_trans_date > t1.t1_trans_date
+                        and (24 * (t2.t2_trans_date - t1.t1_trans_date) <= 1)
+                        and (t1.t1_term_city <> t2.t2_term_city)
+                        )
+                    ) t4
+            on (1 = 1
+                and t3.event_dt = t4.event_dt
+                and t3.passport = t4.passport
+                and t3.fio = t4.fio
+                and t3.phone = t4.phone
+                and t3.event_type = t4.event_type
+                )
+            when not matched then
+                insert values (
+                                t4.event_dt,
+                                t4.passport,
+                                t4.fio,
+                                t4.phone,
+                                t4.event_type,
+                                t4.report_dt
+                              )
+    """
+    make_sql_query(conn=conn, query=query, logger=logger)
 
     logger.info(f'Fraud-report created in the table: demipt2.gold_rep_fraud')
