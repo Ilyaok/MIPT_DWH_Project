@@ -1,1 +1,1 @@
-Educational ETL project at MIPT
+Educational ETL-project at MIPT
